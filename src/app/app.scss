@@ -138,7 +138,7 @@
   justify-content: flex-start;
   justify-self: start;
   color: inherit;
-  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  font-size: clamp(1.2rem, 2.3vw, 1.75rem);
   font-weight: 500;
   letter-spacing: -0.06em;
   line-height: 1;
@@ -340,7 +340,7 @@
    (con el CTA "Hablemos" en texto no entraría centrado a estos anchos). */
 @media (min-width: 761px) and (max-width: 1024px) {
   .topbar:not(.topbar--home) .brand {
-    font-size: clamp(2.3rem, 4vw, 2.9rem);
+    font-size: clamp(1.5rem, 2.6vw, 1.9rem);
   }
 
   .topbar:not(.topbar--home) .topbar-link {

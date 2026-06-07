@@ -69,7 +69,19 @@ export type PortfolioRow = {
               <svg lucideArrowUpRight [size]="22" [strokeWidth]="1"></svg>
             </span>
 
-            <img class="pt-thumb" [src]="row.poster" [alt]="row.client" loading="lazy" />
+            @if (row.videoSrc) {
+              <video
+                class="pt-media"
+                [src]="row.videoSrc"
+                [poster]="row.poster"
+                [muted]="true"
+                loop
+                playsinline
+                preload="none"
+              ></video>
+            } @else {
+              <img class="pt-media" [src]="row.poster" [alt]="row.client" loading="lazy" />
+            }
           </a>
         }
 
@@ -202,8 +214,9 @@ export type PortfolioRow = {
       transform: translate(2px, -2px);
     }
 
-    /* Thumb (poster) solo en mobile. */
-    .pt-thumb {
+    /* Media inline (video/poster) del proyecto: oculto en desktop (ahí se usa el flotante),
+       visible en tablet y mobile. */
+    .pt-media {
       display: none;
     }
 
@@ -282,7 +295,7 @@ export type PortfolioRow = {
         align-self: start;
       }
 
-      .pt-thumb {
+      .pt-media {
         grid-area: thumb;
         display: block;
         width: 100%;
@@ -290,6 +303,60 @@ export type PortfolioRow = {
         margin-top: 1rem;
         object-fit: cover;
         border-radius: 0.5rem;
+        background: rgba(17, 17, 17, 0.05);
+      }
+
+      .pt-float {
+        display: none;
+      }
+    }
+
+    /* Tablet: tarjeta con la info a la izquierda y el media (video) a la derecha — no la tabla. */
+    @media (min-width: 761px) and (max-width: 1024px) {
+      .pt-colhead {
+        display: none;
+      }
+
+      .pt-row {
+        grid-template-columns: minmax(0, 1fr) clamp(15rem, 34vw, 22rem);
+        grid-template-areas:
+          'num      media'
+          'client   media'
+          'industry media'
+          'type     media'
+          'arrow    media';
+        column-gap: clamp(1.5rem, 4vw, 2.5rem);
+        row-gap: 0.45rem;
+        align-items: start;
+        padding: clamp(1.4rem, 3vw, 2rem) clamp(1rem, 3vw, 2.5rem);
+      }
+
+      .pt-num {
+        grid-area: num;
+      }
+      .pt-client {
+        grid-area: client;
+      }
+      .pt-industry {
+        grid-area: industry;
+      }
+      .pt-type {
+        grid-area: type;
+      }
+      .pt-arrow {
+        grid-area: arrow;
+        justify-self: start;
+        align-self: end;
+      }
+
+      .pt-media {
+        grid-area: media;
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        align-self: center;
+        object-fit: cover;
+        border-radius: 0.6rem;
         background: rgba(17, 17, 17, 0.05);
       }
 
@@ -443,6 +510,12 @@ export class PortfolioTableComponent implements OnDestroy {
   private readonly aspectCache = new Map<string, number>();
   private isMobileOrReduced = false;
 
+  // Modo inline (tablet/mobile): el video va dentro de cada fila y se reproduce solo cuando cruza el
+  // centro de la pantalla; el observer/mutation gestionan eso (en vez del flotante de desktop).
+  private inlineObserver: IntersectionObserver | null = null;
+  private inlineMutation: MutationObserver | null = null;
+  private inlineActive: HTMLVideoElement | null = null;
+
   private readonly onPointerMove = (event: PointerEvent): void => {
     this.pointerX = event.clientX;
     this.pointerY = event.clientY;
@@ -471,14 +544,23 @@ export class PortfolioTableComponent implements OnDestroy {
     const win = this.document.defaultView;
     const reduced =
       typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const mobile =
+    // Tablet/mobile/touch (≤1024px o puntero grueso): los videos van inline en cada fila con autoplay
+    // por scroll, no el flotante que sigue al cursor.
+    const inline =
       !!win &&
       typeof win.matchMedia === 'function' &&
-      (win.matchMedia('(max-width: 760px)').matches ||
+      (win.matchMedia('(max-width: 1024px)').matches ||
         win.matchMedia('(pointer: coarse)').matches);
-    this.isMobileOrReduced = reduced || mobile;
+    this.isMobileOrReduced = reduced || inline;
 
-    if (this.isMobileOrReduced) {
+    if (inline) {
+      if (!reduced) {
+        this.setupInlineAutoplay();
+      }
+      return;
+    }
+
+    if (reduced) {
       return;
     }
 
@@ -490,6 +572,49 @@ export class PortfolioTableComponent implements OnDestroy {
 
     this.preloadVideos();
   }
+
+  // Reproduce solo el video que cruza el centro de la pantalla y pausa el anterior. El MutationObserver
+  // re-observa los videos que aparecen al "Ver más trabajos".
+  private setupInlineAutoplay(): void {
+    if (typeof IntersectionObserver !== 'function') {
+      return;
+    }
+    this.inlineObserver = new IntersectionObserver(this.onInlineIntersect, {
+      rootMargin: '-45% 0px -45% 0px',
+      threshold: 0
+    });
+    this.observeInlineVideos();
+
+    const rows = this.host.querySelector('.pt-rows');
+    if (rows && typeof MutationObserver === 'function') {
+      this.inlineMutation = new MutationObserver(() => this.observeInlineVideos());
+      this.inlineMutation.observe(rows, { childList: true });
+    }
+  }
+
+  private observeInlineVideos(): void {
+    this.host.querySelectorAll<HTMLVideoElement>('video.pt-media').forEach((video) => {
+      this.inlineObserver?.observe(video);
+    });
+  }
+
+  private readonly onInlineIntersect = (entries: IntersectionObserverEntry[]): void => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) {
+        continue;
+      }
+      const video = entry.target as HTMLVideoElement;
+      if (this.inlineActive && this.inlineActive !== video) {
+        this.inlineActive.pause();
+      }
+      this.inlineActive = video;
+      video.muted = true;
+      const playback = video.play();
+      if (playback && typeof playback.catch === 'function') {
+        playback.catch(() => {});
+      }
+    }
+  };
 
   // Precarga (prefetch) todos los videos del portafolio cuando el navegador está ocioso, para que al
   // llegar a la tabla el hover muestre el clip al instante. Solo desktop (mobile usa el poster).
@@ -532,6 +657,9 @@ export class PortfolioTableComponent implements OnDestroy {
     }
     // Campo directo (no el getter): ngOnDestroy corre también en SSR, donde no debe tocar el DOM.
     this._floatVideo?.pause();
+    this.inlineObserver?.disconnect();
+    this.inlineMutation?.disconnect();
+    this.inlineActive?.pause();
   }
 
   protected pad(n: number): string {

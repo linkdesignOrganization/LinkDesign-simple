@@ -552,7 +552,9 @@ export type LandingData = {
       display: grid;
       grid-template-rows: auto 1fr auto;
       gap: 1.5rem;
-      min-height: 34rem;
+      /* En pantallas bajas el card se ajusta al alto disponible (mismo patrón que .hero) para que
+         el home no tenga scroll; en pantallas altas mantiene su tamaño cómodo de 34rem. */
+      min-height: clamp(20rem, calc(100dvh - 8.5rem), 34rem);
       padding: clamp(1.8rem, 2.4vw, 2.4rem) clamp(1.8rem, 2.4vw, 2.4rem) clamp(2.1rem, 2.8vw, 2.8rem);
       border: 1px solid var(--line-strong);
       border-radius: 1.5rem;
@@ -647,7 +649,7 @@ export type LandingData = {
 
     .arm-body h2 {
       max-width: 10.5ch;
-      font-size: var(--hero-title-size);
+      font-size: calc(var(--hero-title-size) * 0.75);
       font-weight: var(--hero-title-weight);
       letter-spacing: var(--hero-title-tracking);
       line-height: var(--hero-title-leading);
@@ -1329,21 +1331,33 @@ export type LandingData = {
         grid-column: auto;
         padding-top: 0.6rem;
         padding-bottom: 1rem;
+        text-align: center;
       }
 
       .hero--software .hero-copy {
         grid-column: auto;
         gap: 1.25rem;
         padding-top: 1.25rem;
+        text-align: center;
+        justify-items: center;
       }
 
+      /* Botones uno al lado del otro: no envuelven, cada uno toma la mitad del ancho. */
       .hero--software .actions {
-        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 0.6rem;
       }
 
       .hero--software .button {
-        width: 100%;
+        flex: 1 1 0;
+        width: auto;
         min-width: 0;
+      }
+
+      .hero--software .button > span:first-child {
+        padding: 0 0.6rem;
       }
 
       .hero-feature {

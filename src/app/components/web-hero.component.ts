@@ -361,6 +361,24 @@ type Slide = { label: string; src: string; poster: string };
 
       .wh-left {
         max-width: none;
+        align-items: center;
+        text-align: center;
+      }
+
+      /* Botones uno al lado del otro: no envuelven, cada uno toma la mitad del ancho. */
+      .wh-actions {
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 0.6rem;
+      }
+
+      .wh-actions .button {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+
+      .wh-actions .button > span:first-child {
+        padding: 0 0.6rem;
       }
 
       .wh-media {
