@@ -8,8 +8,13 @@ import {
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { LanguageService } from '../services/language.service';
+import { AdsService } from '../services/ads.service';
+import { LeadFormService, LeadSubmitContext } from '../lead-form/services/lead-form.service';
+import { LeadFormRawValue } from '../lead-form/models/lead-payload.model';
+import { NeedOption, PreferredContactOption } from '../lead-form/models/lead-form-options';
 import {
   LucideCalendar,
   LucideCheck,
@@ -28,6 +33,19 @@ export type ContactInfo = {
 
 type NeedChip = { key: string; es: string; en: string };
 type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: string; en: string };
+
+// Mapeo de las keys del form (diseño nuevo) al contrato exacto que espera el CRM.
+const NEED_MAP: Record<string, NeedOption> = {
+  software: 'software_a_medida',
+  web: 'sitio_web',
+  ecommerce: 'ecommerce',
+  other: 'otro'
+};
+const CONTACT_MAP: Record<string, PreferredContactOption> = {
+  email: 'correo',
+  whatsapp: 'whatsapp',
+  call: 'llamada'
+};
 
 @Component({
   selector: 'app-contact-footer',
@@ -73,7 +91,7 @@ type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: stri
           </li>
 
           <li class="cf-contact">
-            <a class="cf-contact__link" [href]="info().whatsappLink">
+            <a class="cf-contact__link" [href]="info().whatsappLink" (click)="onWhatsapp()">
               <span class="cf-contact__icon" aria-hidden="true">
                 <svg lucideMessageCircle [size]="20" [strokeWidth]="1"></svg>
               </span>
@@ -82,7 +100,7 @@ type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: stri
           </li>
 
           <li class="cf-contact">
-            <a class="cf-contact__link" [href]="info().calendarLink">
+            <a class="cf-contact__link" [href]="info().calendarLink" (click)="onSchedule()">
               <span class="cf-contact__icon" aria-hidden="true">
                 <svg lucideCalendar [size]="20" [strokeWidth]="1"></svg>
               </span>
@@ -215,8 +233,11 @@ type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: stri
             ></textarea>
           </div>
 
-          <button type="submit" class="cf-submit">
-            <span>{{ t().submit }}</span>
+          @if (submitError()) {
+            <p class="cf-error" role="alert">{{ submitError() }}</p>
+          }
+          <button type="submit" class="cf-submit" [disabled]="submitting()">
+            <span>{{ submitting() ? t().sending : t().submit }}</span>
             <span class="cf-submit__arrow" aria-hidden="true">→</span>
           </button>
         }
@@ -612,6 +633,7 @@ export class ContactFooterComponent {
   readonly info = input.required<ContactInfo>();
 
   private readonly i18n = inject(LanguageService);
+  private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
   protected readonly t = computed(() => FOOTER_TEXT[this.lang()]);
 
@@ -645,6 +667,20 @@ export class ContactFooterComponent {
   protected readonly submitted = signal(false);
   protected readonly sent = signal(false);
   protected readonly copied = signal(false);
+  protected readonly submitting = signal(false);
+  protected readonly submitError = signal<string | null>(null);
+
+  // CRM: servicio + contexto anti-spam (tiempo en el form + nº de interacciones).
+  private readonly leadForm = inject(LeadFormService);
+  private readonly formLoadedAt = Date.now();
+  private interactionCount = 0;
+
+  constructor() {
+    // Cada cambio del form cuenta como interacción (anti-spam mínimo: ≥1).
+    this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.interactionCount += 1;
+    });
+  }
 
   protected isNeed(label: string): boolean {
     return this.needs().has(label);
@@ -655,10 +691,12 @@ export class ContactFooterComponent {
   }
 
   protected toggleNeed(label: string): void {
+    this.interactionCount += 1;
     this.needs.set(toggleInSet(this.needs(), label));
   }
 
   protected toggleContact(label: string): void {
+    this.interactionCount += 1;
     this.contactPrefs.set(toggleInSet(this.contactPrefs(), label));
   }
 
@@ -670,18 +708,52 @@ export class ContactFooterComponent {
 
   protected submit(): void {
     this.submitted.set(true);
+    this.submitError.set(null);
 
     // El grupo de contacto es requerido (≥1); los campos los valida el FormGroup.
     if (this.form.invalid || this.contactPrefs().size === 0) {
       this.form.markAllAsTouched();
       return;
     }
+    if (this.submitting()) {
+      return;
+    }
+    this.submitting.set(true);
 
-    // Envío visual por ahora: confirmamos sin mandar a ningún lado (se cablea después).
-    this.sent.set(true);
+    const v = this.form.getRawValue();
+    const raw: LeadFormRawValue = {
+      name: v.name,
+      company: v.company,
+      email: v.email,
+      phone: v.phone,
+      message: v.message,
+      need: [...this.needs()].map((k) => NEED_MAP[k]).filter((x): x is NeedOption => !!x),
+      preferred_contact: [...this.contactPrefs()]
+        .map((k) => CONTACT_MAP[k])
+        .filter((x): x is PreferredContactOption => !!x),
+      // Honeypots: el form visible no los expone, así que van vacíos (= humano).
+      website: '',
+      url: ''
+    };
+    const context: LeadSubmitContext = {
+      formLocation: 'footer',
+      formLoadedAt: this.formLoadedAt,
+      interactionCount: this.interactionCount
+    };
+
+    this.leadForm.submit(raw, context).subscribe((result) => {
+      this.submitting.set(false);
+      // 'spam_detected' se trata como éxito visual (no se le informa al bot).
+      if (result.status === 'success' || result.status === 'spam_detected') {
+        this.sent.set(true);
+      } else {
+        this.submitError.set(result.message);
+      }
+    });
   }
 
   protected copyEmail(): void {
+    this.ads.emailCopy();
     const email = this.info().email;
     const clip = typeof navigator !== 'undefined' ? navigator.clipboard : undefined;
     if (!clip) {
@@ -694,6 +766,14 @@ export class ContactFooterComponent {
         setTimeout(() => this.copied.set(false), 1800);
       })
       .catch(() => {});
+  }
+
+  protected onWhatsapp(): void {
+    this.ads.whatsapp();
+  }
+
+  protected onSchedule(): void {
+    this.ads.scheduleMeeting();
   }
 }
 
@@ -732,6 +812,7 @@ const FOOTER_TEXT = {
     contactLegend: '¿Cómo te contactamos?',
     contactErr: 'Elige al menos una opción.',
     submit: 'Enviar mensaje',
+    sending: 'Enviando…',
     sentTitle: '¡Listo! Te escribimos pronto.',
     sentBody: 'Gracias por tu mensaje. Te respondemos a la brevedad.',
     rights: 'Todos los derechos reservados.',
@@ -761,6 +842,7 @@ const FOOTER_TEXT = {
     contactLegend: 'How should we reach you?',
     contactErr: 'Choose at least one option.',
     submit: 'Send message',
+    sending: 'Sending…',
     sentTitle: "Got it! We'll be in touch soon.",
     sentBody: "Thanks for your message. We'll get back to you shortly.",
     rights: 'All rights reserved.',

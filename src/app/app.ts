@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { LucideArrowLeft, LucideHeadset } from '@lucide/angular';
@@ -7,6 +7,9 @@ import { filter, map, startWith } from 'rxjs';
 
 import { TechnicalGridSurfaceComponent } from './components/technical-grid-surface.component';
 import { LanguageService } from './services/language.service';
+import { AdsService } from './services/ads.service';
+import { SeoService } from './services/seo.service';
+import { seoForUrl } from './services/seo-content';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +21,8 @@ export class App {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly i18n = inject(LanguageService);
+  private readonly ads = inject(AdsService);
+  private readonly seo = inject(SeoService);
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -47,8 +52,20 @@ export class App {
     this.isSoftware() ? SOFTWARE_NAV : WEB_NAV
   );
 
+  constructor() {
+    // SEO por ruta + idioma: title, meta, OG y canonical reaccionan al navegar y al toggle ES/EN.
+    effect(() => {
+      this.seo.apply(seoForUrl(this.currentUrl(), this.i18n.lang()));
+    });
+  }
+
   protected toggleLang(): void {
     this.i18n.toggle();
+  }
+
+  // Click en el botón de WhatsApp del topbar → conversión de Google Ads.
+  protected onWhatsapp(): void {
+    this.ads.whatsapp();
   }
 
   // Flecha de "volver" del topbar en rutas terminales: vuelve a la página anterior, o al inicio si se

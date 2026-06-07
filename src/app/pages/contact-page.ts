@@ -12,6 +12,7 @@ import {
 import { ContactFooterComponent, ContactInfo } from '../components/contact-footer.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { LanguageService } from '../services/language.service';
+import { AdsService } from '../services/ads.service';
 
 @Component({
   selector: 'app-contact-page',
@@ -63,7 +64,7 @@ import { LanguageService } from '../services/language.service';
                 </button>
               </li>
               <li>
-                <a class="ct-row" [href]="info.whatsappLink" target="_blank" rel="noopener noreferrer">
+                <a class="ct-row" [href]="info.whatsappLink" target="_blank" rel="noopener noreferrer" (click)="onWhatsapp()">
                   <span class="ct-row__icon" aria-hidden="true">
                     <svg lucideMessageCircle [size]="20" [strokeWidth]="1"></svg>
                   </span>
@@ -71,7 +72,7 @@ import { LanguageService } from '../services/language.service';
                 </a>
               </li>
               <li>
-                <a class="ct-row" [href]="info.calendarLink" target="_blank" rel="noopener noreferrer">
+                <a class="ct-row" [href]="info.calendarLink" target="_blank" rel="noopener noreferrer" (click)="onSchedule()">
                   <span class="ct-row__icon" aria-hidden="true">
                     <svg lucideCalendar [size]="20" [strokeWidth]="1"></svg>
                   </span>
@@ -347,13 +348,14 @@ import { LanguageService } from '../services/language.service';
 })
 export class ContactPageComponent {
   private readonly i18n = inject(LanguageService);
+  private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
   protected readonly t = computed(() => CONTACT_TEXT[this.lang()]);
 
   protected readonly info: ContactInfo = {
     email: 'hola@linkdesign.cr',
     whatsappLink: 'https://wa.me/50672325943',
-    calendarLink: '#',
+    calendarLink: 'https://calendar.app.google/ZRkWtLvfCpUSwY1XA',
     location: 'San José, Costa Rica'
   };
 
@@ -361,6 +363,7 @@ export class ContactPageComponent {
 
   // Copia el correo al portapapeles y muestra el check por un instante.
   protected copyEmail(): void {
+    this.ads.emailCopy();
     const clip = typeof navigator !== 'undefined' ? navigator.clipboard : undefined;
     if (!clip) {
       return;
@@ -372,6 +375,14 @@ export class ContactPageComponent {
         setTimeout(() => this.copied.set(false), 1800);
       })
       .catch(() => {});
+  }
+
+  protected onWhatsapp(): void {
+    this.ads.whatsapp();
+  }
+
+  protected onSchedule(): void {
+    this.ads.scheduleMeeting();
   }
 }
 
