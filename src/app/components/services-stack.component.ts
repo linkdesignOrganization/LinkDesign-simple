@@ -5,9 +5,11 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export type ServiceItem = {
   body: string;
@@ -216,6 +218,7 @@ export class ServicesStackComponent implements AfterViewInit, OnDestroy {
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private resizeObserver: ResizeObserver | null = null;
   private lastWidth = 0;
@@ -226,6 +229,9 @@ export class ServicesStackComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     this.zone.runOutsideAngular(() => {
       this.lastWidth = this.hostRef.nativeElement.getBoundingClientRect().width;
       this.layoutStack();

@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,6 +6,7 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input
 } from '@angular/core';
@@ -279,6 +280,7 @@ export class ViewcasesComponent implements AfterViewInit, OnDestroy {
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly document = inject(DOCUMENT);
   private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
   private observer: IntersectionObserver | null = null;
 
   // Efecto de seguimiento del ícono al mouse. Reactivado tras aliviar la carga de video
@@ -370,6 +372,10 @@ export class ViewcasesComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     const win = this.document.defaultView;
     const mobile =
       !!win &&

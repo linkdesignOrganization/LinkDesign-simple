@@ -5,10 +5,12 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input,
   signal
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export type FeatureTab = {
   body: string;
@@ -207,6 +209,7 @@ export class FeatureTabsComponent implements AfterViewInit, OnDestroy {
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private intervalId: ReturnType<typeof setInterval> | null = null;
   private observer: IntersectionObserver | null = null;
@@ -214,6 +217,10 @@ export class FeatureTabsComponent implements AfterViewInit, OnDestroy {
   private userStopped = false;
 
   ngAfterViewInit(): void {
+    // Video/animaciones son browser-only: no correr en prerender (SSR).
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const host = this.hostRef.nativeElement as HTMLElement;
 
     // Reproducir los videos (y avanzar) solo cuando el hero está en pantalla. Fuera de

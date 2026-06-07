@@ -5,11 +5,13 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   computed,
   inject,
   input,
   signal
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideCircleOff } from '@lucide/angular';
 
@@ -400,6 +402,7 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   protected isHref(link: string): boolean {
@@ -407,6 +410,10 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    // Video/animaciones son browser-only: no correr en prerender (SSR).
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const count = this.stageSlides().length;
     const reduced =
       typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;

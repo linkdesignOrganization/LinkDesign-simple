@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,6 +6,7 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   computed,
   inject,
   input
@@ -286,6 +287,7 @@ export class PortfolioTableComponent implements AfterViewInit, OnDestroy {
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private static readonly ENTER_DELAY = 150;
   private static readonly OFFSET = 24;
@@ -319,6 +321,10 @@ export class PortfolioTableComponent implements AfterViewInit, OnDestroy {
   };
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.zone.runOutsideAngular(() => {
       const host = this.hostRef.nativeElement as HTMLElement;
       this.rowsEl = host.querySelector<HTMLElement>('.pt-rows');

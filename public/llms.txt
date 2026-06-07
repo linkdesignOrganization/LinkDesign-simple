@@ -1,0 +1,25 @@
+# Link Design
+
+> Link Design es un estudio de desarrollo de software y sitios web a medida con sede en San José, Costa Rica. Construimos software empresarial, aplicaciones internas, e-commerce y sitios corporativos desde código — sin plantillas ni constructores visuales.
+
+Link Design opera dos líneas de trabajo: **software a medida** (sistemas internos, CRM, ERP, automatización con IA, dashboards) y **sitios web a medida** (landing pages, sitios corporativos, e-commerce). El stack principal es Angular (frontend), Node.js (backend) y Azure (infraestructura).
+
+## Páginas
+
+- [Inicio](https://linkdesign.cr/): Resumen de las dos líneas — software y web a medida.
+- [Software a medida](https://linkdesign.cr/software): Sistemas internos, CRM, ERP, e-commerce con lógica propia, plataformas de reservas, dashboards y automatización con IA aplicada. Proceso en 4 etapas (contacto, discovery, desarrollo, lanzamiento).
+- [Sitios web](https://linkdesign.cr/web): Landing pages, sitios corporativos, e-commerce y apps internas. Construidos con código propio, mobile-first y con SEO técnico.
+- [Contacto](https://linkdesign.cr/contacto): Formulario, WhatsApp, correo y agenda de reuniones.
+- [Política de privacidad](https://linkdesign.cr/politicas-de-privacidad): Tratamiento de datos personales.
+
+## Contacto
+
+- Correo: hola@linkdesign.cr
+- WhatsApp: +506 7232 5943
+- Ubicación: San José, Costa Rica
+- Horario: Lunes a viernes, 8:00–17:00
+
+## Notas
+
+- El sitio está disponible en español (predeterminado) e inglés.
+- Cliente ideal: empresas con operación real (manufactura, agro, servicios, comercio) que necesitan ordenar procesos con software propio o una presencia web seria.
