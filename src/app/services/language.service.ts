@@ -2,7 +2,7 @@ import { Injectable, effect, signal } from '@angular/core';
 
 export type Lang = 'es' | 'en';
 
-const STORAGE_KEY = 'sowe-lang';
+const STORAGE_KEY = 'linkdesign-lang';
 
 function readInitialLang(): Lang {
   try {

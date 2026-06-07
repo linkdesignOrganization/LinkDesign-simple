@@ -82,7 +82,7 @@ const TOPBAR_TEXT = {
     talk: 'Hablemos',
     back: 'Volver',
     switchLang: 'Cambiar idioma',
-    whatsapp: 'Escribinos por WhatsApp'
+    whatsapp: 'Escríbenos por WhatsApp'
   },
   en: {
     talk: "Let's talk",

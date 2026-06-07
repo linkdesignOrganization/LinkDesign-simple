@@ -35,7 +35,7 @@ type PrivacySection = { title: string; body: string[] };
       </section>
     </article>
 
-    <div class="pp-legal">© {{ year }} Sowe. {{ t().rights }}</div>
+    <div class="pp-legal">© {{ year }} Link Design. {{ t().rights }}</div>
   `,
   styles: `
     :host {
@@ -153,22 +153,22 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
     title: 'Política de privacidad',
     updated: 'Última actualización: Junio de 2026',
     intro:
-      'En Sowe construimos software y sitios web a medida. Esta política explica qué datos ' +
-      'recopilamos cuando visitás nuestro sitio o nos contactás, cómo los usamos y qué derechos ' +
-      'tenés sobre ellos. Al usar el sitio, aceptás las prácticas que describimos acá.',
+      'En Link Design construimos software y sitios web a medida. Esta política explica qué datos ' +
+      'recopilamos cuando visitas nuestro sitio o nos contactas, cómo los usamos y qué derechos ' +
+      'tienes sobre ellos. Al usar el sitio, aceptas las prácticas que describimos aquí.',
     contactTitle: 'Contacto',
     contactText:
-      'Si tenés dudas sobre esta política o sobre el tratamiento de tus datos, escribinos a',
+      'Si tienes dudas sobre esta política o sobre el tratamiento de tus datos, escríbenos a',
     rights: 'Todos los derechos reservados.',
     sections: [
       {
         title: 'Información que recopilamos',
         body: [
-          'Datos que nos compartís: cuando completás un formulario o nos escribís, podemos recibir tu ' +
+          'Datos que nos compartes: cuando completas un formulario o nos escribes, podemos recibir tu ' +
             'nombre y apellido, correo electrónico, empresa u organización y teléfono, junto con ' +
             'cualquier dato que decidas incluir en tu mensaje.',
           'Datos técnicos: al navegar el sitio recopilamos de forma automática información como tu ' +
-            'dirección IP, el tipo de dispositivo y navegador, y las páginas que visitás. Nos sirve ' +
+            'dirección IP, el tipo de dispositivo y navegador, y las páginas que visitas. Nos sirve ' +
             'para entender el uso del sitio y mejorarlo.'
         ]
       },
@@ -202,16 +202,16 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         title: 'Cookies',
         body: [
           'El sitio usa cookies necesarias para su funcionamiento, analíticas para entender cómo se ' +
-            'usa y de preferencias para recordar tus elecciones. Podés gestionarlas o eliminarlas ' +
+            'usa y de preferencias para recordar tus elecciones. Puedes gestionarlas o eliminarlas ' +
             'desde la configuración de tu navegador.'
         ]
       },
       {
         title: 'Tus derechos',
         body: [
-          'Podés solicitar el acceso a tus datos, la corrección de información inexacta, su ' +
+          'Puedes solicitar el acceso a tus datos, la corrección de información inexacta, su ' +
             'eliminación, la limitación de su uso o el retiro de tu consentimiento en cualquier ' +
-            'momento. Para ejercerlos, escribinos a hola@linkdesign.cr.'
+            'momento. Para ejercerlos, escríbenos a hola@linkdesign.cr.'
         ]
       },
       {
@@ -227,7 +227,7 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
     title: 'Privacy policy',
     updated: 'Last updated: June 2026',
     intro:
-      'At Sowe we build custom software and websites. This policy explains what data we collect ' +
+      'At Link Design we build custom software and websites. This policy explains what data we collect ' +
       'when you visit our site or contact us, how we use it and what rights you have over it. By ' +
       'using the site, you accept the practices described here.',
     contactTitle: 'Contact',

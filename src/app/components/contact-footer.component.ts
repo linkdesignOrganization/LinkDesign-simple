@@ -224,7 +224,7 @@ type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: stri
     </div>
 
     <div class="cf-legal">
-      <p class="cf-legal__copy">© {{ year }} Sowe. {{ t().rights }}</p>
+      <p class="cf-legal__copy">© {{ year }} Link Design. {{ t().rights }}</p>
       <a class="cf-legal__link" routerLink="/politicas-de-privacidad">{{ t().privacy }}</a>
     </div>
   `,
@@ -723,14 +723,14 @@ const FOOTER_TEXT = {
     namePh: 'Tu nombre',
     companyPh: 'Nombre de tu empresa (opcional)',
     emailPh: 'tu@correo.com',
-    phonePh: '+54 11 5555 5555',
-    messagePh: 'Contanos un poco sobre tu proyecto (opcional)',
-    nameErr: 'Ingresá tu nombre.',
-    emailErr: 'Ingresá un correo válido.',
-    phoneErr: 'Ingresá un teléfono o WhatsApp.',
-    needsLegend: '¿Qué necesitás?',
+    phonePh: '+506 8888 8888',
+    messagePh: 'Cuéntanos un poco sobre tu proyecto (opcional)',
+    nameErr: 'Ingresa tu nombre.',
+    emailErr: 'Ingresa un correo válido.',
+    phoneErr: 'Ingresa un teléfono o WhatsApp.',
+    needsLegend: '¿Qué necesitas?',
     contactLegend: '¿Cómo te contactamos?',
-    contactErr: 'Elegí al menos una opción.',
+    contactErr: 'Elige al menos una opción.',
     submit: 'Enviar mensaje',
     sentTitle: '¡Listo! Te escribimos pronto.',
     sentBody: 'Gracias por tu mensaje. Te respondemos a la brevedad.',
@@ -752,7 +752,7 @@ const FOOTER_TEXT = {
     namePh: 'Your name',
     companyPh: 'Your company (optional)',
     emailPh: 'you@email.com',
-    phonePh: '+54 11 5555 5555',
+    phonePh: '+506 8888 8888',
     messagePh: 'Tell us a bit about your project (optional)',
     nameErr: 'Enter your name.',
     emailErr: 'Enter a valid email.',

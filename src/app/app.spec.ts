@@ -28,7 +28,7 @@ describe('App', () => {
     const brand = compiled.querySelector('.brand')?.textContent?.trim();
 
     expect(links.length).toBe(0);
-    expect(brand).toBe('sowe');
+    expect(brand).toBe('Link Design');
   });
 
   it('should render the software header navigation on internal pages', async () => {
@@ -88,7 +88,7 @@ describe('App', () => {
     const wa = compiled.querySelector('.wa-button');
 
     expect(wa).toBeTruthy();
-    expect(wa?.getAttribute('aria-label')).toBe('Escribinos por WhatsApp');
+    expect(wa?.getAttribute('aria-label')).toBe('Escríbenos por WhatsApp');
     expect(wa?.querySelector('svg')).toBeTruthy();
   });
 });

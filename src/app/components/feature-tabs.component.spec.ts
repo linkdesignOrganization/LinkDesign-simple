@@ -4,9 +4,9 @@ import { afterEach, vi } from 'vitest';
 import { FeatureTab, FeatureTabsComponent } from './feature-tabs.component';
 
 const tabs: FeatureTab[] = [
-  { lead: 'Ordená', body: 'la operación que ya tenés.', videoSrc: '/media/a.mp4' },
-  { lead: 'Centralizá', body: 'las fichas y los flujos.', videoSrc: '/media/b.mp4' },
-  { lead: 'Automatizá', body: 'las tareas repetitivas.', videoSrc: '/media/c.mp4' }
+  { lead: 'Ordena', body: 'la operación que ya tienes.', videoSrc: '/media/a.mp4' },
+  { lead: 'Centraliza', body: 'las fichas y los flujos.', videoSrc: '/media/b.mp4' },
+  { lead: 'Automatiza', body: 'las tareas repetitivas.', videoSrc: '/media/c.mp4' }
 ];
 
 describe('FeatureTabsComponent', () => {
@@ -41,7 +41,7 @@ describe('FeatureTabsComponent', () => {
     const videos = element.querySelectorAll('.feature-video');
 
     expect(tabButtons.length).toBe(3);
-    expect(leads).toEqual(['Ordená', 'Centralizá', 'Automatizá']);
+    expect(leads).toEqual(['Ordena', 'Centraliza', 'Automatiza']);
     expect(tabButtons[0].getAttribute('aria-selected')).toBe('true');
     expect(tabButtons[1].getAttribute('aria-selected')).toBe('false');
     expect(videos[0].classList.contains('is-active')).toBe(true);

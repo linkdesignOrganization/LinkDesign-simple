@@ -6,7 +6,7 @@ import { PrivacyPageComponent } from './pages/privacy-page';
 
 const contactInfo = {
   email: 'hola@linkdesign.cr',
-  whatsappLink: '#',
+  whatsappLink: 'https://wa.me/50672325943',
   calendarLink: '#'
 };
 
@@ -16,10 +16,10 @@ const contactInfo = {
 
 const homePageEs: LandingData = {
   isHome: true,
-  eyebrow: 'Sowe / 001',
+  eyebrow: 'Link Design / 001',
   title: 'Dos brazos. Un mismo criterio para construir software y webs a medida.',
   description:
-    'Sowe separa su oferta en dos entradas claras. Un brazo para software a medida y otro para webs a medida, dentro de una interfaz viva, precisa y con mucho peso tipográfico.',
+    'Link Design separa su oferta en dos entradas claras. Un brazo para software a medida y otro para webs a medida, dentro de una interfaz viva, precisa y con mucho peso tipográfico.',
   homeArms: [
     {
       eyebrow: '/software',
@@ -49,10 +49,10 @@ const homePageEs: LandingData = {
 
 const homePageEn: LandingData = {
   isHome: true,
-  eyebrow: 'Sowe / 001',
+  eyebrow: 'Link Design / 001',
   title: 'Two sides. One standard for building custom software and websites.',
   description:
-    'Sowe splits into two clear entry points: one for custom software, one for custom websites — inside a living, precise, type-heavy interface.',
+    'Link Design splits into two clear entry points: one for custom software, one for custom websites — inside a living, precise, type-heavy interface.',
   homeArms: [
     {
       eyebrow: '/software',
@@ -88,26 +88,26 @@ const softwarePageEs: LandingData = {
   eyebrow: '',
   title: 'Software construido alrededor de tu operación.',
   description:
-    'No adaptás tu empresa al software. Construimos el software alrededor de cómo ya funciona tu operación.',
+    'No adaptas tu empresa al software. Construimos el software alrededor de cómo ya funciona tu operación.',
   ctaPrimary: 'Agendar reunión',
   ctaPrimaryLink: '/contacto',
   ctaSecondary: 'Mandar mensaje',
   ctaSecondaryLink: '/contacto',
   featureTabs: [
     {
-      lead: 'Ordená',
+      lead: 'Ordena',
       body:
-        'la operación que ya tenés sin cambiar cómo trabaja el equipo. Visibilidad, control de costos y alertas reales.',
+        'la operación que ya tienes sin cambiar cómo trabaja el equipo. Visibilidad, control de costos y alertas reales.',
       videoSrc: '/media/software-demo.mp4'
     },
     {
-      lead: 'Centralizá',
+      lead: 'Centraliza',
       body:
-        'las fichas, los flujos y los datos en un solo sistema. Información clara para vos y tu equipo.',
+        'las fichas, los flujos y los datos en un solo sistema. Información clara para ti y tu equipo.',
       videoSrc: '/media/software-demo.mp4'
     },
     {
-      lead: 'Automatizá',
+      lead: 'Automatiza',
       body:
         'las tareas que se repiten y las decisiones basadas en datos. IA con criterio operativo, no decoración tecnológica.',
       videoSrc: '/media/software-demo.mp4'
@@ -208,7 +208,7 @@ const softwarePageEs: LandingData = {
         name: 'Primer contacto',
         duration: 'Hoy mismo',
         description:
-          'Entendemos qué necesitás resolver, validamos viabilidad y armamos un primer alcance estimado.'
+          'Entendemos qué necesitas resolver, validamos viabilidad y armamos un primer alcance estimado.'
       },
       {
         order: '02',
@@ -236,7 +236,7 @@ const softwarePageEs: LandingData = {
   viewcases: {
     title: 'Así se ve un sistema hecho a medida.',
     intro:
-      'No son capturas. Son sistemas funcionando que podés recorrer pantalla por pantalla. Cada uno representa una industria distinta.',
+      'No son capturas. Son sistemas funcionando que puedes recorrer pantalla por pantalla. Cada uno representa una industria distinta.',
     items: [
       { label: 'CRM a la medida', videoSrc: '/media/software-demo.mp4', link: '#' },
       { label: 'ERP de operación', videoSrc: '/media/software-demo.mp4', link: '#' },
@@ -296,7 +296,7 @@ const softwarePageEs: LandingData = {
       }
     ]
   },
-  contact: { ...contactInfo, location: 'CABA, Argentina' },
+  contact: { ...contactInfo, location: 'San José, Costa Rica' },
   stats: [],
   theme: 'software'
 };
@@ -513,7 +513,7 @@ const softwarePageEn: LandingData = {
       }
     ]
   },
-  contact: { ...contactInfo, location: 'Buenos Aires, Argentina' },
+  contact: { ...contactInfo, location: 'San José, Costa Rica' },
   stats: [],
   theme: 'software'
 };
@@ -631,7 +631,7 @@ const webPageEs: LandingData = {
           'Tienda en línea desarrollada a medida, con catálogo, carrito, pagos integrados y panel propio para gestionar productos, stock y ventas. Construida para escalar con el negocio y adaptarse a las reglas comerciales reales, sin las limitaciones de una plataforma enlatada.',
         highlights: [
           'Gestión propia de productos, precios y stock',
-          'Pagos integrados con las pasarelas que usás (Mercado Pago, transferencia, tarjeta)',
+          'Pagos integrados con las pasarelas que usas (Mercado Pago, transferencia, tarjeta)',
           'Panel de administración para el equipo de ventas',
           'Conexión con sistemas de logística, facturación y envíos'
         ],
@@ -697,7 +697,7 @@ const webPageEs: LandingData = {
         name: 'Desarrollo',
         duration: '3 a 8 semanas',
         description:
-          'Diseñamos, programamos y revisamos el sitio por etapas. Validás cada avance antes de seguir, sin sorpresas al final ni entregas de último momento.'
+          'Diseñamos, programamos y revisamos el sitio por etapas. Validas cada avance antes de seguir, sin sorpresas al final ni entregas de último momento.'
       },
       {
         order: '04',
@@ -729,7 +729,7 @@ const webPageEs: LandingData = {
       {
         question: '¿Cómo funciona el soporte después de entregar el sitio?',
         answer:
-          'Cada sitio se entrega con un año de garantía funcional. Durante ese período corregimos sin costo cualquier error que aparezca. Como el sitio se desarrolla, se prueba y se valida antes de salir, no necesita mantenimiento constante para seguir funcionando. Si más adelante necesitás un cambio o una nueva funcionalidad, cotizamos ese trabajo puntual. No tenemos cobros recurrentes por servicios que un sitio a medida no necesita.'
+          'Cada sitio se entrega con un año de garantía funcional. Durante ese período corregimos sin costo cualquier error que aparezca. Como el sitio se desarrolla, se prueba y se valida antes de salir, no necesita mantenimiento constante para seguir funcionando. Si más adelante necesitas un cambio o una nueva funcionalidad, cotizamos ese trabajo puntual. No tenemos cobros recurrentes por servicios que un sitio a medida no necesita.'
       },
       {
         question: '¿Puedo actualizar el contenido yo mismo?',
@@ -739,7 +739,7 @@ const webPageEs: LandingData = {
       {
         question: '¿Qué pasa con el dominio y el hosting?',
         answer:
-          'El dominio es siempre del cliente, registrado a su nombre. Si ya tenés uno, lo seguimos usando. Si no, te ayudamos a registrarlo. Para el hosting hay dos opciones: lo alojamos nosotros en Azure con un costo mensual, o configuramos un hosting a nombre del cliente que paga directo al proveedor. En cualquier caso, ni el dominio ni el sitio quedan atados a nosotros.'
+          'El dominio es siempre del cliente, registrado a su nombre. Si ya tienes uno, lo seguimos usando. Si no, te ayudamos a registrarlo. Para el hosting hay dos opciones: lo alojamos nosotros en Azure con un costo mensual, o configuramos un hosting a nombre del cliente que paga directo al proveedor. En cualquier caso, ni el dominio ni el sitio quedan atados a nosotros.'
       },
       {
         question: '¿Cómo aseguran que el sitio aparezca bien en Google?',
@@ -753,7 +753,7 @@ const webPageEs: LandingData = {
       }
     ]
   },
-  contact: { ...contactInfo, location: 'CABA, Argentina' }
+  contact: { ...contactInfo, location: 'San José, Costa Rica' }
 };
 
 const webPageEn: LandingData = {
@@ -987,7 +987,7 @@ const webPageEn: LandingData = {
       }
     ]
   },
-  contact: { ...contactInfo, location: 'Buenos Aires, Argentina' }
+  contact: { ...contactInfo, location: 'San José, Costa Rica' }
 };
 
 // ────────────────────────────────────────────────────────────────────────────

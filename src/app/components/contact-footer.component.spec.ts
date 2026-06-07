@@ -5,7 +5,7 @@ import { ContactFooterComponent, ContactInfo } from './contact-footer.component'
 
 const info: ContactInfo = {
   email: 'hola@test.com',
-  location: 'CABA, Argentina',
+  location: 'San José, Costa Rica',
   whatsappLink: '#',
   calendarLink: '#'
 };
@@ -53,7 +53,7 @@ describe('ContactFooterComponent', () => {
     expect(el.querySelector('.cf-submit')?.textContent).toContain('Enviar mensaje');
 
     // Barra de cierre: copyright con la marca + link de privacidad.
-    expect(el.querySelector('.cf-legal__copy')?.textContent).toContain('Sowe');
+    expect(el.querySelector('.cf-legal__copy')?.textContent).toContain('Link Design');
     expect(el.querySelector('.cf-legal__link')?.textContent?.trim()).toBe('Política de privacidad');
 
     fixture.destroy();
@@ -90,7 +90,7 @@ describe('ContactFooterComponent', () => {
     // Campos requeridos completos, pero sin método de contacto: tampoco confirma.
     setValue(el, '#cf-name', 'Ada');
     setValue(el, '#cf-email', 'ada@test.com');
-    setValue(el, '#cf-phone', '+54 11 5555 5555');
+    setValue(el, '#cf-phone', '+506 8888 8888');
     submitForm(el);
     fixture.detectChanges();
     expect(el.querySelector('.cf-sent')).toBeNull();

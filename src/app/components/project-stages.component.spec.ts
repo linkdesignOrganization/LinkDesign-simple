@@ -4,7 +4,7 @@ import { afterEach, vi } from 'vitest';
 import { ProjectStage, ProjectStagesComponent } from './project-stages.component';
 
 const stages: ProjectStage[] = [
-  { order: '01', name: 'Primer contacto', duration: '1 semana', description: 'Entendemos qué necesitás.' },
+  { order: '01', name: 'Primer contacto', duration: '1 semana', description: 'Entendemos qué necesitas.' },
   { order: '02', name: 'Discovery', duration: '4 semanas', description: 'Mapeamos el flujo real.' },
   { order: '03', name: 'Desarrollo', duration: '4 a 6 meses', description: 'Construimos por módulos.' },
   { order: '04', name: 'Lanzamiento', duration: '2 semanas', description: 'Implementamos en producción.' }

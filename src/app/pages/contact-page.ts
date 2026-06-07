@@ -32,7 +32,10 @@ import { LanguageService } from '../services/language.service';
     <section class="contact" [attr.aria-label]="t().aria">
       <div class="contact-grid">
         <div class="ct-brand">
-          <h1 class="ct-title">sowe</h1>
+          <h1 class="ct-title">
+            <span>Link</span>
+            <span>Design</span>
+          </h1>
         </div>
 
         <div class="ct-cards">
@@ -146,18 +149,20 @@ import { LanguageService } from '../services/language.service';
       display: flex;
       align-items: flex-end;
       /* Container query: el título se mide contra el ancho de SU columna, no del viewport,
-         así "sowe" llena la columna sin desbordar hacia el recuadro. */
+         así el wordmark llena la columna sin desbordar hacia el recuadro. */
       container-type: inline-size;
     }
 
-    /* "sowe" llena el ancho de su columna (≈42% del ancho de columna por glifo del wordmark). */
+    /* "Link" / "Design" apilados; la palabra más larga ("Design") llena el ancho de la columna. */
     .ct-title {
+      display: flex;
+      flex-direction: column;
       margin: 0;
       color: var(--ink);
-      font-size: 44cqw;
+      font-size: 30cqw;
       font-weight: 600;
       letter-spacing: -0.06em;
-      line-height: 0.8;
+      line-height: 0.82;
       /* Wordmark decorativo: no se selecciona ni se copia con el cursor. */
       cursor: default;
       user-select: none;
@@ -347,9 +352,9 @@ export class ContactPageComponent {
 
   protected readonly info: ContactInfo = {
     email: 'hola@linkdesign.cr',
-    whatsappLink: '#',
+    whatsappLink: 'https://wa.me/50672325943',
     calendarLink: '#',
-    location: 'Buenos Aires, Argentina'
+    location: 'San José, Costa Rica'
   };
 
   protected readonly copied = signal(false);
@@ -376,8 +381,8 @@ const CONTACT_TEXT = {
     channels: 'Canales',
     info: 'Información',
     areas: 'Áreas de trabajo',
-    whatsapp: 'Escribinos por WhatsApp',
-    calendar: 'Agendá una reunión',
+    whatsapp: 'Escríbenos por WhatsApp',
+    calendar: 'Agenda una reunión',
     schedule: 'Lunes a viernes, 9 a 18',
     response: 'Respuesta dentro de las 24 horas hábiles',
     software: 'Software a medida',

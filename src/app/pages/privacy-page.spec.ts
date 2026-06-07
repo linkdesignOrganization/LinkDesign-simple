@@ -21,12 +21,12 @@ describe('PrivacyPageComponent', () => {
     expect(mailto?.getAttribute('href')).toBe('mailto:hola@linkdesign.cr');
   });
 
-  it('closes with a simple legal bar mentioning Sowe (no contact footer)', () => {
+  it('closes with a simple legal bar mentioning Link Design (no contact footer)', () => {
     const fixture = TestBed.createComponent(PrivacyPageComponent);
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    expect(el.querySelector('.pp-legal')?.textContent).toContain('Sowe');
+    expect(el.querySelector('.pp-legal')?.textContent).toContain('Link Design');
     expect(el.querySelector('app-contact-footer')).toBeNull();
   });
 });
