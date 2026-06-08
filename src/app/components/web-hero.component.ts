@@ -383,8 +383,12 @@ type Slide = { label: string; src: string; poster: string };
         min-width: 0;
       }
 
+      /* Una sola línea por botón (ej. "Agendar reunión"): nowrap + tipografía/padding algo menores
+         para que el texto entre completo en la mitad de ancho, sin partirse, hasta ~320px. */
       .wh-actions .button > span:first-child {
-        padding: 0 0.6rem;
+        padding: 0 0.5rem;
+        font-size: 0.82rem;
+        white-space: nowrap;
       }
 
       .wh-media {
