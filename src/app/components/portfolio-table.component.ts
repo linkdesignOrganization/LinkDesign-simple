@@ -74,13 +74,20 @@ export type PortfolioRow = {
                 class="pt-media"
                 [src]="row.videoSrc"
                 [poster]="row.poster"
+                [style.aspect-ratio]="aspectFor(row.poster)"
                 [muted]="true"
                 loop
                 playsinline
                 preload="none"
               ></video>
             } @else {
-              <img class="pt-media" [src]="row.poster" [alt]="row.client" loading="lazy" />
+              <img
+                class="pt-media"
+                [src]="row.poster"
+                [style.aspect-ratio]="aspectFor(row.poster)"
+                [alt]="row.client"
+                loading="lazy"
+              />
             }
           </a>
         }
@@ -301,7 +308,6 @@ export type PortfolioRow = {
         grid-area: thumb;
         display: block;
         width: 100%;
-        aspect-ratio: 16 / 10;
         margin-top: 1rem;
         object-fit: cover;
         border-radius: 0.5rem;
@@ -355,7 +361,6 @@ export type PortfolioRow = {
         grid-area: media;
         display: block;
         width: 100%;
-        aspect-ratio: 16 / 10;
         align-self: center;
         object-fit: cover;
         border-radius: 0.6rem;
@@ -472,6 +477,15 @@ export class PortfolioTableComponent implements OnDestroy {
     return rel <= 0 ? 0 : rel * 60;
   }
 
+  // Proporción real del poster por fila (mobile/tablet): el media inline respeta su ratio en vez del
+  // 16/10 fijo que recortaba. posterAspects se llena al medir cada poster (measureInlineAspects).
+  private readonly posterAspects = signal<Record<string, number>>({});
+
+  protected aspectFor(poster: string): string {
+    const ratio = this.posterAspects()[poster];
+    return ratio ? String(ratio) : '16 / 10';
+  }
+
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
@@ -556,6 +570,7 @@ export class PortfolioTableComponent implements OnDestroy {
     this.isMobileOrReduced = reduced || inline;
 
     if (inline) {
+      this.measureInlineAspects();
       if (!reduced) {
         this.setupInlineAutoplay();
       }
@@ -766,6 +781,38 @@ export class PortfolioTableComponent implements OnDestroy {
     this.floatEl.style.aspectRatio = String(ratio);
     this.cacheFloatSize();
     this.positionFloat();
+  }
+
+  // Mide la proporción real del poster de cada fila y la guarda en posterAspects, para que el media
+  // inline (mobile/tablet) use [style.aspect-ratio] real en vez de un 16/10 que recorta. Reusa el cache
+  // del flotante y precarga los posters de TODAS las filas (también las que aparecen con "Ver más").
+  private measureInlineAspects(): void {
+    for (const row of this.rows()) {
+      if (!row.poster) {
+        continue;
+      }
+      const cached = this.aspectCache.get(row.poster);
+      if (cached) {
+        this.setInlineAspect(row.poster, cached);
+        continue;
+      }
+      const img = new Image();
+      img.onload = () => {
+        if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+          const ratio = img.naturalWidth / img.naturalHeight;
+          this.aspectCache.set(row.poster, ratio);
+          this.setInlineAspect(row.poster, ratio);
+        }
+      };
+      img.src = row.poster;
+    }
+  }
+
+  private setInlineAspect(poster: string, ratio: number): void {
+    // setupViewer corre runOutsideAngular; volvemos a la zona para que el signal refresque el binding (OnPush).
+    this.zone.run(() =>
+      this.posterAspects.update((m) => (m[poster] === ratio ? m : { ...m, [poster]: ratio }))
+    );
   }
 
   private deactivate(): void {

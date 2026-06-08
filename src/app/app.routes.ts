@@ -235,7 +235,7 @@ const softwarePageEs: LandingData = {
     ]
   },
   viewcases: {
-    title: 'Esto no es portfolio. Son demos para que pruebes.',
+    title: 'Prueba un sistema hecho a medida.',
     intro:
       'Cada demo es una versión funcional de un sistema a medida, pensada para que recorras la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajas.',
     items: [
@@ -450,7 +450,7 @@ const softwarePageEn: LandingData = {
     ]
   },
   viewcases: {
-    title: "This isn't a portfolio. These are demos for you to try.",
+    title: 'Try a custom-built system.',
     intro:
       "Each demo is a working version of a custom system, built for you to walk through the full operation of a different industry. You'll feel how simple and fast software designed specifically for the way you work can be.",
     items: [
@@ -628,7 +628,7 @@ const webPageEs: LandingData = {
           'Tienda en línea desarrollada a medida, con catálogo, carrito, pagos integrados y panel propio para gestionar productos, stock y ventas. Construida para escalar con el negocio y adaptarse a las reglas comerciales reales, sin las limitaciones de una plataforma enlatada.',
         highlights: [
           'Gestión propia de productos, precios y stock',
-          'Pagos integrados con las pasarelas que usas (Mercado Pago, transferencia, tarjeta)',
+          'Pagos integrados con las pasarelas que usas (SINPE, transferencia, tarjeta)',
           'Panel de administración para el equipo de ventas',
           'Conexión con sistemas de logística, facturación y envíos'
         ],
@@ -878,7 +878,7 @@ const webPageEn: LandingData = {
           'A custom-built online store with catalog, cart, integrated payments and its own dashboard to manage products, stock and sales. Built to scale with the business and bend to your real commercial rules, without the limits of an off-the-shelf platform.',
         highlights: [
           'Manage your own products, prices and stock',
-          'Payments integrated with the gateways you use (Mercado Pago, bank transfer, card)',
+          'Payments integrated with the gateways you use (SINPE, bank transfer, card)',
           'Admin panel for the sales team',
           'Connection with logistics, billing and shipping systems'
         ],
