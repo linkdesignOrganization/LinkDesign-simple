@@ -22,7 +22,7 @@ export interface SeoData {
 @Injectable({ providedIn: 'root' })
 export class SeoService {
   private readonly siteOrigin = this.normalizeOrigin(environment.siteUrl) || 'https://linkdesign.cr';
-  private readonly defaultImage = 'https://linkdesign.cr/assets/img/favicons/1200x630opengraph.png';
+  private readonly defaultImage = 'https://linkdesign.cr/og-image.png';
 
   constructor(
     private title: Title,
@@ -57,6 +57,8 @@ export class SeoService {
     this.meta.updateTag({ name: 'twitter:image', content: image });
 
     this.setCanonical(url);
+    this.setHreflang(url);
+    this.setJsonLd(data, url);
   }
 
   private setCanonical(url: string): void {
@@ -67,6 +69,81 @@ export class SeoService {
       this.doc.head.appendChild(link);
     }
     link.setAttribute('href', url);
+  }
+
+  // Sitio single-URL bilingüe (toggle client-side): declaramos 'es' y 'x-default' a la URL canónica.
+  // No declaramos 'en' porque la misma URL no sirve inglés por defecto a los crawlers (evita una señal
+  // contradictoria); el SEO bilingüe pleno requeriría URLs por idioma.
+  private setHreflang(url: string): void {
+    this.setAlternate('es', url);
+    this.setAlternate('x-default', url);
+  }
+
+  private setAlternate(hreflang: string, url: string): void {
+    let link = this.doc.querySelector<HTMLLinkElement>(
+      `link[rel="alternate"][hreflang="${hreflang}"]`
+    );
+    if (!link) {
+      link = this.doc.createElement('link');
+      link.setAttribute('rel', 'alternate');
+      link.setAttribute('hreflang', hreflang);
+      this.doc.head.appendChild(link);
+    }
+    link.setAttribute('href', url);
+  }
+
+  // JSON-LD por ruta: WebPage (inLanguage según idioma), Breadcrumb y Service para las dos líneas de
+  // negocio. Se conecta al Organization/WebSite estáticos del index.html por @id.
+  private setJsonLd(data: SeoData, url: string): void {
+    const inLanguage = (data.locale || 'es_CR').replace('_', '-');
+    const path = (data.canonicalPath ?? '/').split('#')[0].split('?')[0] || '/';
+    const shortName = data.title.split('|')[0].trim();
+
+    const graph: Record<string, unknown>[] = [
+      {
+        '@type': 'WebPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: data.title,
+        description: data.description,
+        inLanguage,
+        isPartOf: { '@id': `${this.siteOrigin}/#website` }
+      }
+    ];
+
+    if (path !== '/') {
+      graph.push({
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${this.siteOrigin}/` },
+          { '@type': 'ListItem', position: 2, name: shortName, item: url }
+        ]
+      });
+    }
+
+    if (path === '/software' || path === '/web') {
+      graph.push({
+        '@type': 'Service',
+        '@id': `${url}#service`,
+        name: shortName,
+        description: data.description,
+        serviceType: path === '/software' ? 'Custom software development' : 'Web development',
+        areaServed: 'CR',
+        provider: { '@id': `${this.siteOrigin}/#organization` }
+      });
+    }
+
+    let script = this.doc.querySelector<HTMLScriptElement>(
+      'script[type="application/ld+json"][data-seo="route"]'
+    );
+    if (!script) {
+      script = this.doc.createElement('script');
+      script.setAttribute('type', 'application/ld+json');
+      script.setAttribute('data-seo', 'route');
+      this.doc.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
   }
 
   private currentPath(): string {

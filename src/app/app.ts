@@ -40,6 +40,7 @@ export class App {
   protected readonly isSoftware = computed(() => this.currentUrl().startsWith('/software'));
   protected readonly isContact = computed(() => this.currentUrl().startsWith('/contacto'));
   protected readonly isPrivacy = computed(() => this.currentUrl().startsWith('/politicas-de-privacidad'));
+  protected readonly isNotFound = computed(() => this.currentUrl().startsWith('/404'));
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver (contacto + privacidad).
   protected readonly backOnly = computed(() => this.isContact() || this.isPrivacy());

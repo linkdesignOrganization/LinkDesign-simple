@@ -34,7 +34,7 @@
     } @else {
       <a class="brand" routerLink="/">Link Design</a>
 
-      @if (!isHome()) {
+      @if (!isHome() && !isNotFound()) {
         <nav class="nav" aria-label="Primary">
           @for (link of navLinks(); track link.href) {
             <a class="nav-link" [href]="link.href">{{ link.label[lang()] }}</a>
@@ -77,7 +77,7 @@
           </svg>
         </a>
 
-        @if (!isHome()) {
+        @if (!isHome() && !isNotFound()) {
           <a class="button topbar-link" routerLink="/contacto">
             <span>{{ t().talk }}</span>
             <span class="button-arrow" aria-hidden="true">→</span>

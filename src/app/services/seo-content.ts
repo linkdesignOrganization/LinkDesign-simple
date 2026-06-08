@@ -97,6 +97,25 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
       canonicalPath: '/politicas-de-privacidad',
       locale: 'en_US'
     }
+  },
+  '/404': {
+    es: {
+      title: 'Página no encontrada | Link Design Costa Rica',
+      description:
+        'La página que buscas no existe o se movió. Vuelve al inicio de Link Design.',
+      keywords: 'link design, costa rica',
+      canonicalPath: '/404',
+      robots: 'noindex, follow'
+    },
+    en: {
+      title: 'Page not found | Link Design Costa Rica',
+      description:
+        "The page you're looking for doesn't exist or has moved. Head back to the Link Design home.",
+      keywords: 'link design, costa rica',
+      canonicalPath: '/404',
+      locale: 'en_US',
+      robots: 'noindex, follow'
+    }
   }
 };
 
