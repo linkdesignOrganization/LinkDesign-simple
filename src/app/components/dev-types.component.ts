@@ -366,7 +366,7 @@ export class DevTypesComponent implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
 
   private static readonly MOBILE_MAX = 860;
-  private static readonly LOCK_MS = 700;
+  private static readonly LOCK_FALLBACK_MS = 3000;
 
   private panelEls: HTMLElement[] = [];
   private panelTops: number[] = [];
@@ -419,9 +419,22 @@ export class DevTypesComponent implements AfterViewInit, OnDestroy {
   // Click en un tab: marca activo de inmediato y desplaza (suave) al bloque. El lock evita que el
   // scroll-spy parpadee por los tabs intermedios mientras dura la animación.
   protected select(index: number): void {
-    this.lockUntil = this.now() + DevTypesComponent.LOCK_MS;
+    // Refrescar posiciones por si el layout de arriba cambió de altura (videos del hero/portafolio al
+    // cargar) o los nodos se recrearon en la hidratación SSG.
+    this.measure();
     this.activeIndex.set(index);
-    this.panelEls[index]?.scrollIntoView({
+    const panel = this.panelEls[index];
+    if (!panel) {
+      return;
+    }
+    // Bloquear el scroll-spy hasta que el scroll suave TERMINE. Un tiempo fijo (700 ms) se quedaba
+    // corto en scrolls largos: el lock expiraba a media animación y el spy "rebotaba" a un panel
+    // intermedio, dejando el tab clickeado como si no respondiera. 'scrollend' libera justo al
+    // terminar; el timeout es respaldo (y cubre el caso sin scroll, donde 'scrollend' no dispara).
+    this.lockUntil = this.now() + DevTypesComponent.LOCK_FALLBACK_MS;
+    const win = this.document.defaultView;
+    win?.addEventListener('scrollend', () => (this.lockUntil = 0), { once: true });
+    panel.scrollIntoView({
       behavior: this.reducedMotion ? 'auto' : 'smooth',
       block: 'start'
     });
@@ -437,6 +450,11 @@ export class DevTypesComponent implements AfterViewInit, OnDestroy {
     if (!win) {
       return;
     }
+    // Re-leer los paneles del DOM (no usar un cache de ngAfterViewInit): tras la hidratación SSG los
+    // nodos pueden recrearse y quedar desconectados, y el contenido de arriba cambia de altura al cargar.
+    this.panelEls = Array.from(
+      (this.hostRef.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.dt-panel')
+    );
     const scrollY = win.scrollY;
     this.panelTops = this.panelEls.map((el) => el.getBoundingClientRect().top + scrollY);
     this.docBottom = this.document.documentElement.scrollHeight;
