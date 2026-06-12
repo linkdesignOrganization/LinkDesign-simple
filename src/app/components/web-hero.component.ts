@@ -362,6 +362,12 @@ type Slide = { label: string; src: string; poster: string };
         padding-top: clamp(1.5rem, 3vw, 2.25rem);
       }
 
+      /* Fade superior más corto en mobile: el de /web arranca dentro del hero (tras el topbar de 2
+         filas), así que con el alto de desktop se ve más alto que el de /software. Lo acortamos. */
+      .wh-bg::before {
+        height: clamp(3rem, 9vw, 5rem);
+      }
+
       .wh-inner {
         min-height: 0;
       }
