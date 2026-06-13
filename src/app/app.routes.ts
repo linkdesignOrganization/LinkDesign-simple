@@ -8,7 +8,7 @@ import { PrivacyPageComponent } from './pages/privacy-page';
 const contactInfo = {
   email: 'hola@linkdesign.cr',
   whatsappLink: 'https://wa.me/50672325943',
-  calendarLink: 'https://calendar.app.google/ZRkWtLvfCpUSwY1XA'
+  calendarLink: 'https://cal.com/linkdesign.cr/reunion-con-link-design'
 };
 
 // ────────────────────────────────────────────────────────────────────────────
