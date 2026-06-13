@@ -356,7 +356,7 @@ export class ContactPageComponent {
     email: 'hola@linkdesign.cr',
     whatsappLink: 'https://wa.me/50672325943',
     calendarLink: 'https://cal.com/linkdesign.cr/reunion-con-link-design',
-    calendarLinkEn: 'https://cal.com/sowe.ar/meeting-with-link-design',
+    calendarLinkEn: 'https://cal.com/linkdesign.cr/meeting-with-link-design',
     location: 'San José, Costa Rica'
   };
 

@@ -11,7 +11,7 @@ const contactInfo = {
   // Reunión en cal.com por idioma: ES (reunion-con-link-design) / EN (meeting-with-link-design),
   // para que el user siga su experiencia en el mismo idioma. La conversión de Google no cambia.
   calendarLink: 'https://cal.com/linkdesign.cr/reunion-con-link-design',
-  calendarLinkEn: 'https://cal.com/sowe.ar/meeting-with-link-design'
+  calendarLinkEn: 'https://cal.com/linkdesign.cr/meeting-with-link-design'
 };
 
 // ────────────────────────────────────────────────────────────────────────────
