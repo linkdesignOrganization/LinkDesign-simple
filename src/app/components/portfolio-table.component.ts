@@ -573,6 +573,8 @@ export class PortfolioTableComponent implements OnDestroy {
       this.measureInlineAspects();
       if (!reduced) {
         this.setupInlineAutoplay();
+        // Precarga los clips (chicos) también en mobile/tablet → reproducen al instante al scrollear.
+        this.preloadVideos();
       }
       return;
     }
@@ -634,7 +636,7 @@ export class PortfolioTableComponent implements OnDestroy {
   };
 
   // Precarga (prefetch) todos los videos del portafolio cuando el navegador está ocioso, para que al
-  // llegar a la tabla el hover muestre el clip al instante. Solo desktop (mobile usa el poster).
+  // interactuar (hover en desktop, autoplay por scroll en mobile/tablet) el clip esté listo al instante.
   private preloadVideos(): void {
     const win = this.document.defaultView;
     // Prefetch de los videos con prioridad BAJA: no deben competir con los logos (que llenan la fila).
@@ -741,7 +743,11 @@ export class PortfolioTableComponent implements OnDestroy {
       this.activeSrc = row.videoSrc;
     }
     video.poster = row.poster;
-    video.currentTime = 0;
+    // Solo reiniciar a 0 si ya hay datos: hacerlo sobre un video sin buffer borra el poster y muestra
+    // un frame en blanco. Sin datos, play() arranca desde el inicio y el poster cubre la carga.
+    if (video.readyState >= 2) {
+      video.currentTime = 0;
+    }
     video.play().catch(() => {});
     this.activePoster = row.poster;
     this.applyMediaAspect(row);
