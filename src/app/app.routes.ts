@@ -8,7 +8,10 @@ import { PrivacyPageComponent } from './pages/privacy-page';
 const contactInfo = {
   email: 'hola@linkdesign.cr',
   whatsappLink: 'https://wa.me/50672325943',
-  calendarLink: 'https://cal.com/linkdesign.cr/reunion-con-link-design'
+  // Reunión en cal.com por idioma: ES (reunion-con-link-design) / EN (meeting-with-link-design),
+  // para que el user siga su experiencia en el mismo idioma. La conversión de Google no cambia.
+  calendarLink: 'https://cal.com/linkdesign.cr/reunion-con-link-design',
+  calendarLinkEn: 'https://cal.com/sowe.ar/meeting-with-link-design'
 };
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -306,7 +309,7 @@ const softwarePageEn: LandingData = {
   description:
     "You don't adapt your company to the software. We build the software around how your operation already works.",
   ctaPrimary: 'Book a meeting',
-  ctaPrimaryLink: contactInfo.calendarLink,
+  ctaPrimaryLink: contactInfo.calendarLinkEn,
   ctaSecondary: 'Send a message',
   ctaSecondaryLink: '#hablemos',
   featureTabs: [
@@ -779,7 +782,7 @@ const webPageEn: LandingData = {
     title: 'Real websites. Real code.',
     lead: 'No templates. No shortcuts. No generic builders. Every site is built from code.',
     actions: [
-      { label: 'Book a meeting', link: contactInfo.calendarLink },
+      { label: 'Book a meeting', link: contactInfo.calendarLinkEn },
       { label: 'Send a message', link: '#hablemos' }
     ],
     slides: [],
