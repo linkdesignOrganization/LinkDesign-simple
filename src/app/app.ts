@@ -37,13 +37,22 @@ export class App {
   protected readonly t = computed(() => TOPBAR_TEXT[this.lang()]);
 
   protected readonly isHome = computed(() => this.currentUrl() === '/');
-  protected readonly isSoftware = computed(() => this.currentUrl().startsWith('/software'));
+  // Match EXACTO: /software es la landing. /software/<slug> es la página de detalle (terminal,
+  // header back-only) → se trata con isSystemDetail, no como la landing de software.
+  protected readonly isSoftware = computed(() => {
+    const p = this.currentUrl().split('#')[0].split('?')[0];
+    return p === '/software';
+  });
+  protected readonly isSystemDetail = computed(() => {
+    const p = this.currentUrl().split('#')[0].split('?')[0];
+    return /^\/software\/[^/]+$/.test(p);
+  });
   protected readonly isContact = computed(() => this.currentUrl().startsWith('/contacto'));
   protected readonly isPrivacy = computed(() => this.currentUrl().startsWith('/politicas-de-privacidad'));
   protected readonly isNotFound = computed(() => this.currentUrl().startsWith('/404'));
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver (contacto + privacidad).
-  protected readonly backOnly = computed(() => this.isContact() || this.isPrivacy());
+  protected readonly backOnly = computed(() => this.isContact() || this.isPrivacy() || this.isSystemDetail());
 
   // Opciones del nav por landing: cada una apunta a una sección real de esa página.
   // /software → Sistemas, Proceso, Casos · /web → Capacidades, Servicios, Portfolio.

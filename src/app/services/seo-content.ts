@@ -1,5 +1,6 @@
 import { Lang } from './language.service';
 import { SeoData } from './seo.service';
+import { getSystemDetail, SystemDetail } from '../pages/systems-content';
 
 /**
  * Contenido SEO por ruta e idioma (ES/EN). Textos reales del sitio en producción
@@ -122,9 +123,65 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
 /** Fallback (home) para rutas no mapeadas. */
 export const SEO_FALLBACK = SEO_CONTENT['/'];
 
-/** Resuelve el contenido SEO de una URL (limpiando query/fragment). */
+// Recorta el primer párrafo de "Qué es" a una meta-descripción limpia (~158 chars): prioriza
+// terminar en fin de oración; si no entra, cierra en el ":" de una enumeración; en último caso
+// corta en límite de palabra + elipsis. Nunca corta a media palabra (lo que se veía roto en SERP).
+function lastSentenceBoundary(s: string, punct: string): number {
+  for (let i = s.length - 1; i >= 0; i--) {
+    if (s[i] === punct && (i + 1 >= s.length || s[i + 1] === ' ')) return i;
+  }
+  return -1;
+}
+
+function metaDescription(text: string, max = 158): string {
+  const para = text.split('\n\n')[0].trim();
+  if (para.length <= max) return para;
+
+  const window = para.slice(0, max + 1);
+  const sentenceEnd = Math.max(
+    lastSentenceBoundary(window, '.'),
+    lastSentenceBoundary(window, '!'),
+    lastSentenceBoundary(window, '?')
+  );
+  if (sentenceEnd >= 80) return para.slice(0, sentenceEnd + 1).trim();
+
+  const colon = window.lastIndexOf(':');
+  if (colon >= 80) return para.slice(0, colon).trim() + '.';
+
+  const cut = para.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd() + '…';
+}
+
+// SEO derivado del contenido aprobado de cada sistema (no es copy nuevo: el title usa el nombre
+// del sistema y la descripción es su párrafo "Qué es" recortado para el meta).
+function systemSeo(detail: SystemDetail, lang: Lang): SeoData {
+  const description = metaDescription(detail.whatItIs);
+  const suffix = lang === 'en' ? 'Custom software — Link Design' : 'Software a medida — Link Design';
+  const keywords =
+    lang === 'en'
+      ? `${detail.name.toLowerCase()}, custom software, software development, costa rica, link design`
+      : `${detail.name.toLowerCase()}, software a medida, desarrollo de software, costa rica, link design`;
+  return {
+    title: `${detail.name} | ${suffix}`,
+    description,
+    keywords,
+    canonicalPath: `/software/${detail.slug}`,
+    locale: lang === 'en' ? 'en_US' : 'es_CR'
+  };
+}
+
+/** Resuelve el contenido SEO de una URL (limpiando query/fragment). Maneja /software/<slug>. */
 export function seoForUrl(url: string, lang: Lang): SeoData {
   const path = (url || '/').split('#')[0].split('?')[0] || '/';
+
+  // Detalle de sistema: /software/<slug>
+  const detailMatch = path.match(/^\/software\/([^/]+)$/);
+  if (detailMatch) {
+    const detail = getSystemDetail(detailMatch[1], lang);
+    if (detail) return systemSeo(detail, lang);
+  }
+
   const entry = SEO_CONTENT[path] ?? SEO_FALLBACK;
   return entry[lang];
 }

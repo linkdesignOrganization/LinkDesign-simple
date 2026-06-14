@@ -4,6 +4,7 @@ import { ContactPageComponent } from './pages/contact-page';
 import { LandingData, LandingPageComponent } from './pages/landing-page';
 import { NotFoundPageComponent } from './pages/not-found-page';
 import { PrivacyPageComponent } from './pages/privacy-page';
+import { SystemDetailPageComponent } from './pages/system-detail-page';
 
 const contactInfo = {
   email: 'hola@linkdesign.cr',
@@ -123,42 +124,49 @@ const softwarePageEs: LandingData = {
       'Cada categoría representa una capacidad real, con sistemas en producción. No vendemos un producto empaquetado.',
     items: [
       {
+        slug: 'crm-a-medida',
         title: 'CRM a la medida',
         body:
           'Unificamos WhatsApp, llamadas y correo en un mismo flujo de venta. La cotización se arma con IA según los criterios del negocio, no con plantillas genéricas. El equipo comercial ve en qué etapa está cada lead sin saltar entre herramientas.',
         chips: ['Multicanal', 'Cotización con IA', 'Pipeline visible', 'Historial unificado']
       },
       {
+        slug: 'erp-operacion-inventario',
         title: 'ERP de operación e inventario',
         body:
-          'Stock por depósito o sucursal, ventas con registro de despacho y trazabilidad completa de cada movimiento. Todo queda en el mismo sistema, con datos vivos en lugar de planillas paralelas. Pensado para que el control no dependa de pasar información de una herramienta a otra.',
+          'Stock por depósito o sucursal, ventas con registro de despacho y trazabilidad completa de cada movimiento. Todo queda en el mismo sistema, con datos vivos en lugar de hojas de cálculo paralelas. Pensado para que el control no dependa de pasar información de una herramienta a otra.',
         chips: ['Stock multi depósito', 'Despacho', 'Trazabilidad', 'Movimientos en tiempo real']
       },
       {
+        slug: 'ecommerce-logica-propia',
         title: 'E-commerce con lógica propia',
         body:
           'Tiendas con reglas comerciales construidas según el modelo del negocio. Tipos de cliente, listas de precio, condiciones de pago y descuentos viven dentro del sistema, no como excepciones manuales. Si la operación cambia, el código cambia con ella.',
         chips: ['Reglas comerciales', 'Tipos de cliente', 'Listas de precio', 'Condiciones de pago']
       },
       {
+        slug: 'ticketing-marca-propia',
         title: 'Ticketing con marca propia',
         body:
           'Plataformas de venta de entradas para artistas, productoras y espacios que quieren operar con su propia marca. El público compra desde el sitio oficial, recibe su ticket con QR y accede al evento dentro del mismo flujo. Pagos, ventas, asistentes y control de ingreso quedan centralizados, sin depender de una ticketera externa.',
         chips: ['Marca propia', 'Venta de entradas', 'Tickets con QR', 'Control de acceso']
       },
       {
+        slug: 'reservas-y-agenda',
         title: 'Plataformas de reservas y agenda',
         body:
           'Sistemas de reservas con agenda, disponibilidad, recordatorios automáticos y pago en línea integrados a la operación. Cada cita entra al flujo del negocio, actualiza la capacidad disponible y queda vinculada con el cliente. La información no queda atrapada en una herramienta separada que después haya que conciliar.',
         chips: ['Agenda', 'Disponibilidad', 'Recordatorios automáticos', 'Pago en línea']
       },
       {
+        slug: 'dashboards-y-reporting',
         title: 'Dashboards y reporting',
         body:
           'Tableros con métricas en tiempo real y reportes descargables, alimentados directamente desde los sistemas en producción. No son extractos manuales ni archivos cargados aparte. Si el dato existe en la operación, está en el tablero.',
         chips: ['Tiempo real', 'Reportes descargables', 'KPIs configurables', 'Datos en vivo']
       },
       {
+        slug: 'automatizacion-ia',
         title: 'Automatización con IA aplicada',
         body:
           'Flujos que leen documentos, completan formularios, clasifican datos y conectan tareas manuales que antes se hacían a mano. La IA opera en segundo plano sin cambiar la forma de trabajar del equipo, y sin reemplazar la relación con el cliente.',
@@ -344,42 +352,49 @@ const softwarePageEn: LandingData = {
       "Each category represents a real capability, with systems in production. We don't sell a packaged product.",
     items: [
       {
+        slug: 'crm-a-medida',
         title: 'Custom CRM',
         body:
           "We unify WhatsApp, calls and email into a single sales flow. Quotes are built with AI based on the business's criteria, not generic templates. The sales team sees what stage each lead is in without jumping between tools.",
         chips: ['Multichannel', 'AI quoting', 'Visible pipeline', 'Unified history']
       },
       {
+        slug: 'erp-operacion-inventario',
         title: 'Operations & inventory ERP',
         body:
           "Stock by warehouse or branch, sales with dispatch records and full traceability of every movement. Everything stays in one system, with live data instead of parallel spreadsheets. Designed so control doesn't depend on moving information from one tool to another.",
         chips: ['Multi-warehouse stock', 'Dispatch', 'Traceability', 'Real-time movements']
       },
       {
+        slug: 'ecommerce-logica-propia',
         title: 'E-commerce with its own logic',
         body:
           'Stores with commercial rules built around the business model. Customer types, price lists, payment terms and discounts live inside the system, not as manual exceptions. If the operation changes, the code changes with it.',
         chips: ['Commercial rules', 'Customer types', 'Price lists', 'Payment terms']
       },
       {
+        slug: 'ticketing-marca-propia',
         title: 'Own-brand ticketing',
         body:
           'Ticket-sales platforms for artists, producers and venues that want to operate under their own brand. The audience buys from the official site, gets a QR ticket and enters the event within the same flow. Payments, sales, attendees and access control stay centralized, without depending on an external ticketing service.',
         chips: ['Own brand', 'Ticket sales', 'QR tickets', 'Access control']
       },
       {
+        slug: 'reservas-y-agenda',
         title: 'Booking & scheduling platforms',
         body:
           "Booking systems with scheduling, availability, automatic reminders and online payment integrated into the operation. Each appointment enters the business flow, updates available capacity and stays linked to the client. The information doesn't get stuck in a separate tool you have to reconcile afterward.",
         chips: ['Scheduling', 'Availability', 'Automatic reminders', 'Online payment']
       },
       {
+        slug: 'dashboards-y-reporting',
         title: 'Dashboards & reporting',
         body:
           "Dashboards with real-time metrics and downloadable reports, fed directly from the systems in production. No manual extracts or files loaded on the side. If the data exists in the operation, it's on the dashboard.",
         chips: ['Real-time', 'Downloadable reports', 'Configurable KPIs', 'Live data']
       },
       {
+        slug: 'automatizacion-ia',
         title: 'Applied AI automation',
         body:
           'Flows that read documents, fill out forms, classify data and connect tasks that used to be done by hand. AI runs in the background without changing how the team works — and without replacing the client relationship.',
@@ -657,7 +672,7 @@ const webPageEs: LandingData = {
         tab: 'Apps y sistemas internos',
         title: 'Apps y sistemas internos',
         description:
-          'Aplicaciones web y móviles desarrolladas para ordenar la operación interna de tu empresa. Conectamos procesos, equipos y datos en un sistema propio que evoluciona con el negocio, sin depender de planillas, herramientas dispersas o software enlatado que no encaja.',
+          'Aplicaciones web y móviles desarrolladas para ordenar la operación interna de tu empresa. Conectamos procesos, equipos y datos en un sistema propio que evoluciona con el negocio, sin depender de hojas de cálculo, herramientas dispersas o software enlatado que no encaja.',
         highlights: [
           'Diseñado según el flujo real de trabajo de tu equipo',
           'Roles y permisos según la operación',
@@ -665,7 +680,7 @@ const webPageEs: LandingData = {
           'Acceso desde computadora y móvil'
         ],
         cases: [
-          'Empresas que coordinan operaciones complejas con planillas o herramientas dispersas',
+          'Empresas que coordinan operaciones complejas con hojas de cálculo o herramientas dispersas',
           'Empresas con sistemas viejos que necesitan modernizar parte de la operación'
         ]
       }
@@ -1065,6 +1080,10 @@ export const routes: Routes = [
   {
     path: '404',
     component: NotFoundPageComponent
+  },
+  {
+    path: 'software/:slug',
+    component: SystemDetailPageComponent
   },
   {
     path: '**',

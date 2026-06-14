@@ -122,13 +122,13 @@ export class SeoService {
       });
     }
 
-    if (path === '/software' || path === '/web') {
+    if (path === '/software' || path === '/web' || path.startsWith('/software/')) {
       graph.push({
         '@type': 'Service',
         '@id': `${url}#service`,
         name: shortName,
         description: data.description,
-        serviceType: path === '/software' ? 'Custom software development' : 'Web development',
+        serviceType: path === '/web' ? 'Web development' : 'Custom software development',
         areaServed: 'CR',
         provider: { '@id': `${this.siteOrigin}/#organization` }
       });

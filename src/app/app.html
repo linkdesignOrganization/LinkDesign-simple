@@ -1,12 +1,12 @@
 <div
   class="shell"
   appTechnicalGridSurface
-  [appTechnicalGridDisabled]="!isSoftware() && !isContact()"
+  [appTechnicalGridDisabled]="!isSoftware() && !isContact() && !isSystemDetail()"
   [appTechnicalGridViewport]="true"
   [appTechnicalGridMode]="null"
-  [appTechnicalGridCellSize]="isSoftware() || isContact() ? 18 : null"
+  [appTechnicalGridCellSize]="isSoftware() || isContact() || isSystemDetail() ? 18 : null"
   [class.shell--plain]="isHome()"
-  [class.shell--software]="isSoftware()"
+  [class.shell--software]="isSoftware() || isSystemDetail()"
   [class.shell--contact]="isContact()"
 >
   <header
@@ -106,7 +106,7 @@
     }
   </header>
 
-  <main class="content" [class.content--software]="isSoftware()">
+  <main class="content" [class.content--software]="isSoftware() || isSystemDetail()">
     <router-outlet />
   </main>
 </div>

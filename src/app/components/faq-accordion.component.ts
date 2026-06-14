@@ -196,6 +196,23 @@ export type FaqItem = {
       text-wrap: pretty;
     }
 
+    /* Tema oscuro de página (cuando el FAQ vive dentro de una zona oscura, p.ej. la página de
+       detalle de sistema): texto e hilos claros. El + se queda en --accent (se ve bien sobre negro). */
+    :host-context(.app-dark) .faq-title,
+    :host-context(.app-dark) .faq-q,
+    :host-context(.app-dark) .faq-q__index,
+    :host-context(.app-dark) .faq-a__text {
+      color: #f4f4f4;
+    }
+
+    :host-context(.app-dark) .faq-list {
+      border-bottom-color: rgba(255, 255, 255, 0.16);
+    }
+
+    :host-context(.app-dark) .faq-item {
+      border-top-color: rgba(255, 255, 255, 0.16);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .faq-item {
         opacity: 1;
