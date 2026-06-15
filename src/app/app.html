@@ -33,12 +33,12 @@
         <span class="lang-toggle__opt" [class.is-active]="lang() === 'en'">EN</span>
       </button>
     } @else {
-      <a class="brand" routerLink="/">Link Design</a>
+      <a class="brand" [routerLink]="localizeUrl('/')">Link Design</a>
 
       @if (!isHome() && !isNotFound()) {
         <nav class="nav" aria-label="Primary">
           @for (link of navLinks(); track link.href) {
-            <a class="nav-link" [href]="link.href">{{ link.label[lang()] }}</a>
+            <a class="nav-link" [href]="localizeUrl(link.href)">{{ link.label[lang()] }}</a>
             <span class="nav-dot" aria-hidden="true">
               <span></span>
               <span></span>
@@ -79,7 +79,7 @@
         </a>
 
         @if (!isHome() && !isNotFound()) {
-          <a class="button topbar-link cbtn" routerLink="/contacto">
+          <a class="button topbar-link cbtn" [routerLink]="localizeUrl('/contacto')">
             <span>{{ t().talk }}</span>
             <span class="button-arrow" aria-hidden="true">→</span>
           </a>
@@ -97,7 +97,7 @@
         <a
           class="hs-button"
           [class.cbtn]="!isHome() && !isNotFound()"
-          routerLink="/contacto"
+          [routerLink]="localizeUrl('/contacto')"
           [attr.aria-label]="t().talk"
         >
           <svg lucideHeadset [size]="22" [strokeWidth]="1" aria-hidden="true"></svg>
