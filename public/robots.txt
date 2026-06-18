@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://linkdesign.cr/sitemap.xml
+Sitemap: https://linkdesign.cr/sitemap-videos.xml
