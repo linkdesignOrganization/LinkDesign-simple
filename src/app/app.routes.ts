@@ -1,12 +1,11 @@
 import { Routes } from '@angular/router';
 
-import { ContactPageComponent } from './pages/contact-page';
-import { LandingData, LandingPageComponent } from './pages/landing-page';
-import { NotFoundPageComponent } from './pages/not-found-page';
-import { PrivacyPageComponent } from './pages/privacy-page';
-import { SystemDetailPageComponent } from './pages/system-detail-page';
+import type { LandingData } from './pages/landing-page';
 
 import { langGuard } from './services/lang.guard';
+
+// Páginas en lazy (loadComponent) → cada una es su propio chunk, fuera del bundle inicial.
+// El SSG las prerenderiza igual; el cliente solo descarga el chunk de la ruta que visita.
 
 const contactInfo = {
   email: 'hola@linkdesign.cr',
@@ -1069,34 +1068,35 @@ function contentRoutes(): Routes {
   return [
     {
       path: '',
-      component: LandingPageComponent,
+      loadComponent: () => import('./pages/landing-page').then((m) => m.LandingPageComponent),
       data: { es: homePageEs, en: homePageEn }
     },
     {
       path: 'software',
-      component: LandingPageComponent,
+      loadComponent: () => import('./pages/landing-page').then((m) => m.LandingPageComponent),
       data: { es: softwarePageEs, en: softwarePageEn }
     },
     {
       path: 'web',
-      component: LandingPageComponent,
+      loadComponent: () => import('./pages/landing-page').then((m) => m.LandingPageComponent),
       data: { es: webPageEs, en: webPageEn }
     },
     {
       path: 'contacto',
-      component: ContactPageComponent
+      loadComponent: () => import('./pages/contact-page').then((m) => m.ContactPageComponent)
     },
     {
       path: 'politicas-de-privacidad',
-      component: PrivacyPageComponent
+      loadComponent: () => import('./pages/privacy-page').then((m) => m.PrivacyPageComponent)
     },
     {
       path: '404',
-      component: NotFoundPageComponent
+      loadComponent: () => import('./pages/not-found-page').then((m) => m.NotFoundPageComponent)
     },
     {
       path: 'software/:slug',
-      component: SystemDetailPageComponent
+      loadComponent: () =>
+        import('./pages/system-detail-page').then((m) => m.SystemDetailPageComponent)
     },
     // Catch-all relativo: dentro de /en → /en/404; en la raíz → /404.
     {
