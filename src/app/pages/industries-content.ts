@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Contenido de las páginas de industria (Link Design, CR).
 // El ES está adaptado del contenido de Nolo: voseo→"tú" + regionalismos CR (planilla→hoja de
-// cálculo, frigorífico→procesadora de carne, obra social/prepaga→seguro/medicina prepagada).
+// cálculo, frigorífico→procesadora de carne, obra social/prepaga→seguro/convenio).
 // (español neutro con "tú", tildes). No editar el copy ES "a ojo".
 //
 // Bilingüe es/en. El EN reusa el de Nolo (inglés neutro "you", sirve igual para CR).
@@ -391,7 +391,7 @@ export const INDUSTRIES_CONTENT: Record<IndustrySlug, { es: IndustryDetail; en: 
         ],
         inTheSector: {
           paragraphs: [
-            'Cuando hablamos con gente que dirige una clínica médica, un consultorio odontológico, un centro de kinesiología, una clínica de estética médica o una veterinaria escuchamos cosas que se repiten. Software de turnos que se quedó viejo o está atado a una sola cobertura. Historia clínica que vive en distintos formatos según el profesional que la lleva. Facturación armada a mano cruzando seguros, medicina prepagada y particulares. Recordatorios de turno que se mandan uno por uno por WhatsApp. Información del paciente o del cliente dispersa entre el sistema, el cuaderno y la memoria del personal administrativo.',
+            'Cuando hablamos con gente que dirige una clínica médica, un consultorio odontológico, un centro de kinesiología, una clínica de estética médica o una veterinaria escuchamos cosas que se repiten. Software de turnos que se quedó viejo o está atado a una sola cobertura. Historia clínica que vive en distintos formatos según el profesional que la lleva. Facturación armada a mano cruzando seguros, convenios y particulares. Recordatorios de turno que se mandan uno por uno por WhatsApp. Información del paciente o del cliente dispersa entre el sistema, el cuaderno y la memoria del personal administrativo.',
             'No son problemas exclusivos del sector pero, juntos, forman un cuadro que cualquier centro con cierto movimiento termina enfrentando.',
           ],
           disclaimer:
@@ -412,7 +412,7 @@ export const INDUSTRIES_CONTENT: Record<IndustrySlug, { es: IndustryDetail; en: 
             },
             {
               kind: 'billing',
-              text: 'Un módulo de facturación que cruza atención con cobertura, calcula honorarios por profesional y deja reportes claros de ingresos por especialidad, por seguro, por medicina prepagada o particular.',
+              text: 'Un módulo de facturación que cruza atención con cobertura, calcula honorarios por profesional y deja reportes claros de ingresos por especialidad, por seguro, por convenio o particular.',
             },
             {
               kind: 'records',
