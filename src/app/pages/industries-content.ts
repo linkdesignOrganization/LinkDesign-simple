@@ -1,7 +1,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Contenido de las páginas de industria (Link Design, CR).
 // El ES está adaptado del contenido de Nolo: voseo→"tú" + regionalismos CR (planilla→hoja de
-// cálculo, frigorífico→procesadora de carne, obra social/prepaga→seguro/convenio).
+// cálculo, frigorífico→procesadora de carne, obra social/prepaga→seguro/convenio, ruteros→rutas
+// de venta, cuenta corriente→cuentas por cobrar/estado de cuenta, rubro→sector). depósito,
+// mercadería y turno se mantienen: LinkDesign ya los usa en systems-content (su voz CR).
 // (español neutro con "tú", tildes). No editar el copy ES "a ojo".
 //
 // Bilingüe es/en. El EN reusa el de Nolo (inglés neutro "you", sirve igual para CR).
@@ -113,14 +115,14 @@ export const INDUSTRIES_CONTENT: Record<IndustrySlug, { es: IndustryDetail; en: 
         inTheSector: {
           paragraphs: [
             'Cuando hablamos con gente que dirige una metalúrgica, una textil, una alimenticia o una procesadora de carne escuchamos cosas que se repiten. Hojas de cálculo que crecieron hasta volverse imposibles de mantener. Cotizaciones que después no coinciden con los costos reales y nadie sabe bien por qué. Información de OTs y lotes que vive en la cabeza de quien las armó. Comunicación con clientes B2B distribuida entre mails, mensajes y llamadas sin un solo lugar donde quede registro.',
-            'No son problemas exclusivos de un rubro pero, juntos, forman un cuadro que cualquier empresa que produce termina enfrentando.',
+            'No son problemas exclusivos de un sector pero, juntos, forman un cuadro que cualquier empresa que produce termina enfrentando.',
           ],
           disclaimer:
             'Y acá te lo aclaramos directo: no somos industriales. No tenemos planta propia, no operamos tus máquinas, no entendemos los matices técnicos de tu producción específica ni vamos a pretender hacerlo. Eso es lo tuyo y lo respetamos. Lo que sí hacemos es escuchar cómo funciona tu operación en concreto y traducirla en software que la haga más simple de gestionar.',
         },
         roles: {
           yours:
-            'El conocimiento de cómo se produce en tu empresa. Qué haces, con qué materias primas, en qué equipos, para qué clientes. Las particularidades de tu rubro, tus tiempos y tus márgenes. Las decisiones operativas y de prioridad que solo tú puedes tomar.',
+            'El conocimiento de cómo se produce en tu empresa. Qué haces, con qué materias primas, en qué equipos, para qué clientes. Las particularidades de tu sector, tus tiempos y tus márgenes. Las decisiones operativas y de prioridad que solo tú puedes tomar.',
           ours: 'La metodología para escuchar y entender tu operación en profundidad. La arquitectura técnica del sistema. El desarrollo del software, del sitio web, del portal de clientes o de lo que la solución necesite incluir. El acompañamiento durante la implementación y el soporte después.',
         },
         couldBuild: {
@@ -247,7 +249,7 @@ export const INDUSTRIES_CONTENT: Record<IndustrySlug, { es: IndustryDetail; en: 
           'Software, sitios web y herramientas digitales para distribuidoras, importadoras, operadores logísticos, transporte de cargas y empresas de venta mayorista. Sin enlatados ni plantillas.',
         whatWeDo: [
           'Convertimos la operación que ya está pasando en tu empresa en un sistema digital que la ordene. Tomamos todo lo que hoy vive en hojas de cálculo, mails, mensajes de WhatsApp con vendedores y cuadernos en el depósito, y lo transformamos en algo que tu negocio pueda registrar, seguir, controlar y consultar desde un solo lugar.',
-          'Esto no cambia cómo vendes ni cómo mueves mercadería. Cambia cómo se ve y se administra todo lo que pasa entre el pedido y el cobro: stock, despacho, ruteros, facturación, cuentas corrientes y comunicación con cartera de clientes. Para que la información trabaje a tu favor en lugar de demandarte el tiempo del equipo para perseguirla.',
+          'Esto no cambia cómo vendes ni cómo mueves mercadería. Cambia cómo se ve y se administra todo lo que pasa entre el pedido y el cobro: stock, despacho, rutas de venta, facturación, cuentas por cobrar y comunicación con cartera de clientes. Para que la información trabaje a tu favor en lugar de demandarte el tiempo del equipo para perseguirla.',
           'Da igual si tienes un depósito solo con un par de empleados, varias sucursales con vendedores propios o una operación logística con flota y rutas armadas. Lo que diseñamos se adapta al tamaño y a la complejidad de tu operación. No te vendemos sistemas ERP gigantes con módulos que nunca vas a usar. Te construimos exactamente la solución que tu empresa necesita ahora, con margen para crecer cuando crezcas.',
         ],
         inTheSector: {
@@ -273,15 +275,15 @@ export const INDUSTRIES_CONTENT: Record<IndustrySlug, { es: IndustryDetail; en: 
             },
             {
               kind: 'portal',
-              text: 'Un portal para clientes B2B donde puedan ver el catálogo con su lista de precios particular, cargar pedidos directamente, consultar su cuenta corriente y descargar comprobantes.',
+              text: 'Un portal para clientes B2B donde puedan ver el catálogo con su lista de precios particular, cargar pedidos directamente, consultar su estado de cuenta y descargar comprobantes.',
             },
             {
               kind: 'mobile',
-              text: 'Una app o solución móvil para vendedores en ruta o representantes que les permita cargar pedidos en el momento, ver stock actualizado y consultar la cuenta corriente del cliente desde el celular.',
+              text: 'Una app o solución móvil para vendedores en ruta o representantes que les permita cargar pedidos en el momento, ver stock actualizado y consultar el estado de cuenta del cliente desde el celular.',
             },
             {
               kind: 'billing',
-              text: 'Un módulo de gestión de cuentas corrientes y cobros que cruce facturación con pagos, marque vencimientos, alerte sobre saldos críticos y deje reportes claros por cliente.',
+              text: 'Un módulo de gestión de cuentas por cobrar y cobros que cruce facturación con pagos, marque vencimientos, alerte sobre saldos críticos y deje reportes claros por cliente.',
             },
             {
               kind: 'web',
