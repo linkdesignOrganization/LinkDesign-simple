@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import type { LandingData } from './pages/landing-page';
+import { INDUSTRY_CARDS } from './pages/industries-content';
 
 import { langGuard } from './services/lang.guard';
 
@@ -14,6 +15,22 @@ const contactInfo = {
   // para que el user siga su experiencia en el mismo idioma. La conversión de Google no cambia.
   calendarLink: 'https://cal.com/linkdesign.cr/reunion-con-link-design',
   calendarLinkEn: 'https://cal.com/linkdesign.cr/meeting-with-link-design'
+};
+
+// Sección "Industrias": misma data en /software y /web (por idioma). Las cards salen de
+// INDUSTRY_CARDS (derivadas del contenido por-industria). Copy de conexión en voz "tú".
+const industriasSection = {
+  heading: 'Lo construimos para tu industria',
+  intro:
+    'Cada sector opera distinto. Entra al tuyo y mira qué software y qué sitio web tendrían sentido para tu operación.',
+  items: INDUSTRY_CARDS('es')
+};
+
+const industriasSectionEn = {
+  heading: 'We build it for your industry',
+  intro:
+    'Every sector runs differently. Step into yours and see what software and what website would make sense for your operation.',
+  items: INDUSTRY_CARDS('en')
 };
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -319,7 +336,8 @@ const softwarePageEs: LandingData = {
   },
   contact: { ...contactInfo, location: 'San José, Costa Rica' },
   stats: [],
-  theme: 'software'
+  theme: 'software',
+  industries: industriasSection
 };
 
 const softwarePageEn: LandingData = {
@@ -551,7 +569,8 @@ const softwarePageEn: LandingData = {
   },
   contact: { ...contactInfo, location: 'San José, Costa Rica' },
   stats: [],
-  theme: 'software'
+  theme: 'software',
+  industries: industriasSectionEn
 };
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -805,7 +824,8 @@ const webPageEs: LandingData = {
       }
     ]
   },
-  contact: { ...contactInfo, location: 'San José, Costa Rica' }
+  contact: { ...contactInfo, location: 'San José, Costa Rica' },
+  industries: industriasSection
 };
 
 const webPageEn: LandingData = {
@@ -1055,7 +1075,8 @@ const webPageEn: LandingData = {
       }
     ]
   },
-  contact: { ...contactInfo, location: 'San José, Costa Rica' }
+  contact: { ...contactInfo, location: 'San José, Costa Rica' },
+  industries: industriasSectionEn
 };
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -1088,6 +1109,16 @@ function contentRoutes(): Routes {
     {
       path: 'politicas-de-privacidad',
       loadComponent: () => import('./pages/privacy-page').then((m) => m.PrivacyPageComponent)
+    },
+    {
+      path: 'industrias',
+      loadComponent: () =>
+        import('./pages/industries-page').then((m) => m.IndustriesPageComponent)
+    },
+    {
+      path: 'industrias/:slug',
+      loadComponent: () =>
+        import('./pages/industry-detail-page').then((m) => m.IndustryDetailPageComponent)
     },
     {
       path: '404',

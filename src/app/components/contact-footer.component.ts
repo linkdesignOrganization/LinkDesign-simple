@@ -773,6 +773,12 @@ export class ContactFooterComponent {
    */
   readonly systemContext = input<SystemContext | null>(null);
 
+  /**
+   * Igual que systemContext pero para una página de industria (/industrias/<slug>): antepone una
+   * línea al mensaje del lead para que el CRM identifique de qué industria vino. Mismo canal (`message`).
+   */
+  readonly industryContext = input<SystemContext | null>(null);
+
   private readonly i18n = inject(LanguageService);
   private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
@@ -867,7 +873,7 @@ export class ContactFooterComponent {
       company: v.company,
       email: v.email,
       phone: v.phone,
-      message: this.withSystemContext(v.message),
+      message: this.withIndustryContext(this.withSystemContext(v.message)),
       need: [...this.needs()].map((k) => NEED_MAP[k]).filter((x): x is NeedOption => !!x),
       preferred_contact: [...this.contactPrefs()]
         .map((k) => CONTACT_MAP[k])
@@ -905,6 +911,21 @@ export class ContactFooterComponent {
       this.lang() === 'en'
         ? `[Lead from the system page: ${sys.name}]`
         : `[Consulta desde la página del sistema: ${sys.name}]`;
+    const body = message.trim();
+    return body ? `${note}\n\n${body}` : note;
+  }
+
+  // Igual que withSystemContext pero para industria. Solo uno de los dos contextos está activo por
+  // página, así que se pueden encadenar sin pisarse.
+  private withIndustryContext(message: string): string {
+    const ind = this.industryContext();
+    if (!ind) {
+      return message;
+    }
+    const note =
+      this.lang() === 'en'
+        ? `[Lead from the industry page: ${ind.name}]`
+        : `[Consulta desde la industria: ${ind.name}]`;
     const body = message.trim();
     return body ? `${note}\n\n${body}` : note;
   }

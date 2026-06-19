@@ -53,20 +53,33 @@ export class App {
   protected readonly isContact = computed(() => this.pathNoLang().startsWith('/contacto'));
   protected readonly isPrivacy = computed(() => this.pathNoLang().startsWith('/politicas-de-privacidad'));
   protected readonly isNotFound = computed(() => this.pathNoLang().startsWith('/404'));
+  // /industrias es el índice/hub (header normal, nav a los brazos); /industrias/<slug> es el detalle
+  // (terminal, back-only). Ambos muestran la grilla del shell en su hero.
+  protected readonly isIndustries = computed(() => this.pathNoLang() === '/industrias');
+  protected readonly isIndustryDetail = computed(() => /^\/industrias\/[^/]+$/.test(this.pathNoLang()));
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver (contacto, privacidad, detalle).
-  protected readonly backOnly = computed(() => this.isContact() || this.isPrivacy() || this.isSystemDetail());
+  protected readonly backOnly = computed(
+    () => this.isContact() || this.isPrivacy() || this.isSystemDetail() || this.isIndustryDetail()
+  );
 
   // Opciones del nav por landing: cada una apunta a una sección real de esa página.
   // /software → Sistemas, Proceso, Casos · /web → Capacidades, Servicios, Portfolio.
+  // /industrias (índice/hub) → links a los dos brazos (Software, Web), no anclas de sección.
   // El href lleva la ruta completa porque con <base href="/"> un "#frag" suelto resolvería
   // contra la raíz (/#frag = home), no contra la página actual. El label se resuelve por idioma.
   protected readonly navLinks = computed<NavLink[]>(() =>
-    this.isSoftware() ? SOFTWARE_NAV : WEB_NAV
+    this.isIndustries() ? INDUSTRIES_NAV : this.isSoftware() ? SOFTWARE_NAV : WEB_NAV
   );
 
   // Conversión de scroll (acción "Scroll" de Ads): una sola vez por página, se rearma al navegar.
   private scrollConversionSent = false;
+
+  // history.length al cargar la app (entrada directa/pestaña nueva: la entrada previa es externa,
+  // p. ej. about:blank). Si luego crece por navegación interna, location.back() es seguro; si no,
+  // goBack usa un fallback con sentido. (La nav inicial del router usa replaceState, no agranda el
+  // historial, así que este valor es estable.)
+  private readonly initialHistoryLength = typeof history !== 'undefined' ? history.length : 0;
 
   constructor() {
     // SEO por ruta + idioma: title, meta, OG y canonical reaccionan al navegar y al toggle ES/EN.
@@ -118,14 +131,22 @@ export class App {
     }
   }
 
-  // Flecha de "volver" del topbar en rutas terminales: vuelve a la página anterior, o al inicio si se
-  // entró directo por URL (sin historial), para no salir del sitio.
+  // Flecha de "volver" del topbar en rutas terminales: vuelve a la página anterior, o a un padre con
+  // sentido si se entró directo por URL (sin historial in-app), para no salir del sitio.
   protected goBack(): void {
-    if (typeof history !== 'undefined' && history.length > 1) {
+    // history.length > 1 NO alcanza: al abrir en pestaña nueva o por link directo, la entrada previa
+    // suele ser about:blank (length 2) y location.back() saldría a una página en blanco. Solo usamos
+    // el historial del navegador si creció por navegación REAL dentro de la app.
+    if (typeof history !== 'undefined' && history.length > this.initialHistoryLength) {
       this.location.back();
-    } else {
-      this.router.navigateByUrl('/');
+      return;
     }
+    const fallback = this.isIndustryDetail()
+      ? '/industrias'
+      : this.isSystemDetail()
+        ? '/software'
+        : '/';
+    this.router.navigateByUrl(this.i18n.link(fallback));
   }
 }
 
@@ -142,6 +163,12 @@ const WEB_NAV: NavLink[] = [
   { label: { es: 'Capacidades', en: 'Capabilities' }, href: '/web#capacidades' },
   { label: { es: 'Servicios', en: 'Services' }, href: '/web#servicios' },
   { label: { es: 'Portafolio', en: 'Portfolio' }, href: '/web#portfolio' }
+];
+
+// El índice /industrias es un hub: su nav apunta a los dos brazos del sitio.
+const INDUSTRIES_NAV: NavLink[] = [
+  { label: { es: 'Software', en: 'Software' }, href: '/software' },
+  { label: { es: 'Web', en: 'Web' }, href: '/web' }
 ];
 
 const TOPBAR_TEXT = {
