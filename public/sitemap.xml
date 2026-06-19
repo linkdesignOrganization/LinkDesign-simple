@@ -96,6 +96,71 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+  <!-- Industrias (es) -->
+  <url>
+    <loc>https://linkdesign.cr/industrias</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/industrias/industria-y-produccion</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/industria-y-produccion"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/industria-y-produccion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/industria-y-produccion"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/industrias/distribucion-y-logistica</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/distribucion-y-logistica"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/distribucion-y-logistica"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/distribucion-y-logistica"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/industrias/salud-y-bienestar</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/salud-y-bienestar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/salud-y-bienestar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/salud-y-bienestar"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/industrias/servicios-profesionales</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/servicios-profesionales"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/servicios-profesionales"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/servicios-profesionales"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/industrias/servicios-tecnicos</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/servicios-tecnicos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/servicios-tecnicos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/servicios-tecnicos"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/industrias/fitness-y-wellness</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/fitness-y-wellness"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/fitness-y-wellness"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/fitness-y-wellness"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/industrias/educacion-y-formacion</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/educacion-y-formacion"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/educacion-y-formacion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/educacion-y-formacion"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://linkdesign.cr/en</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/"/>
@@ -191,5 +256,70 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/politicas-de-privacidad"/>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <!-- Industrias (en) -->
+  <url>
+    <loc>https://linkdesign.cr/en/industrias</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/en/industrias/industria-y-produccion</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/industria-y-produccion"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/industria-y-produccion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/industria-y-produccion"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/en/industrias/distribucion-y-logistica</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/distribucion-y-logistica"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/distribucion-y-logistica"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/distribucion-y-logistica"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/en/industrias/salud-y-bienestar</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/salud-y-bienestar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/salud-y-bienestar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/salud-y-bienestar"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/en/industrias/servicios-profesionales</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/servicios-profesionales"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/servicios-profesionales"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/servicios-profesionales"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/en/industrias/servicios-tecnicos</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/servicios-tecnicos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/servicios-tecnicos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/servicios-tecnicos"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/en/industrias/fitness-y-wellness</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/fitness-y-wellness"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/fitness-y-wellness"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/fitness-y-wellness"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://linkdesign.cr/en/industrias/educacion-y-formacion</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://linkdesign.cr/industrias/educacion-y-formacion"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linkdesign.cr/en/industrias/educacion-y-formacion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linkdesign.cr/industrias/educacion-y-formacion"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

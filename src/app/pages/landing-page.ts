@@ -7,6 +7,7 @@ import { DevTypeBlock, DevTypesComponent } from '../components/dev-types.compone
 import { FaqAccordionComponent, FaqItem } from '../components/faq-accordion.component';
 import { FeatureShowcaseComponent, ShowcaseFeature } from '../components/feature-showcase.component';
 import { FeatureTab, FeatureTabsComponent } from '../components/feature-tabs.component';
+import { IndustriesSectionComponent } from '../components/industries-section.component';
 import { PortfolioRow, PortfolioTableComponent } from '../components/portfolio-table.component';
 import { ProjectStage, ProjectStagesComponent } from '../components/project-stages.component';
 import { ServiceItem, ServicesStackComponent } from '../components/services-stack.component';
@@ -19,6 +20,7 @@ import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { LanguageService } from '../services/language.service';
 import { AdsService } from '../services/ads.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
+import { IndustryCard } from './industries-content';
 
 export type LandingModuleFigure =
   | 'arrows'
@@ -83,6 +85,7 @@ export type LandingData = {
   sectionTitle?: string;
   showcase?: { features: ShowcaseFeature[]; title: string };
   stats: Array<{ label: string; value: string }>;
+  industries?: { heading: string; intro: string; items: IndustryCard[] };
   systems?: { heading: string; intro: string; items: ServiceItem[] };
   theme?: 'software' | 'website';
   title: string;
@@ -108,6 +111,7 @@ export type LandingData = {
     PortfolioTableComponent,
     ProjectStagesComponent,
     ServicesStackComponent,
+    IndustriesSectionComponent,
     ViewcasesComponent,
     WebCapabilitiesComponent,
     WebHeroComponent,
@@ -279,6 +283,10 @@ export type LandingData = {
 
         @if (page().viewcases; as v) {
           <app-viewcases id="casos" [title]="v.title" [intro]="v.intro" [items]="v.items" />
+        }
+
+        @if (page().industries; as ind) {
+          <app-industries id="industrias" [heading]="ind.heading" [intro]="ind.intro" [items]="ind.items" />
         }
 
         @if (page().faq; as faq) {
