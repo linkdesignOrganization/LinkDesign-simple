@@ -35,6 +35,7 @@ import {
 } from '../components/contact-footer.component';
 import { BuildCard, IndustryBuildComponent } from '../components/industry-build.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
+import { TrackSectionDirective } from '../directives/track-section.directive';
 import { LanguageService } from '../services/language.service';
 import { BuildKind, getIndustryDetail } from './industries-content';
 
@@ -50,6 +51,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     ContactFooterComponent,
     IndustryBuildComponent,
     DarkZoneDirective,
+    TrackSectionDirective,
     LucideBriefcase,
     LucideCode,
     LucideDumbbell,
@@ -65,7 +67,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     @if (d(); as s) {
       <article class="id">
         <!-- 01 — HERO sobre el artefacto de grilla del shell -->
-        <header class="id-hero">
+        <header class="id-hero" appTrackSection="industria-intro">
           <div class="id-hero__text">
             <p class="id-hero__eyebrow">{{ L().eyebrow }}</p>
             <h1 class="id-hero__title">{{ s.pageTitle }}</h1>
@@ -106,7 +108,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
         </header>
 
         <!-- 02 — Lo que hacemos (statement a 2 columnas) -->
-        <section class="id-section id-do">
+        <section class="id-section id-do" appTrackSection="industria-quehacemos">
           <header class="id-section__head">
             <span class="id-num">02</span>
             <h2 class="id-label">{{ L().whatWeDo }}</h2>
@@ -168,7 +170,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
         </section>
 
         <!-- 05 — Algunas cosas que podríamos construir (scroll horizontal con título+intro fijos en el pin) -->
-        <section class="id-section id-build">
+        <section class="id-section id-build" appTrackSection="industria-build">
           <app-industry-build
             [num]="'05'"
             [label]="L().couldBuild"
@@ -182,6 +184,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       <app-contact-footer
         appDarkZone
         id="hablemos"
+        appTrackSection="hablemos"
         [info]="info"
         [industryContext]="industryContext()"
       />
