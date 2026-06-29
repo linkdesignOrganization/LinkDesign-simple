@@ -6,6 +6,7 @@ import { PortfolioRow, PortfolioTableComponent } from './portfolio-table.compone
 const rows: PortfolioRow[] = [
   {
     client: 'Tornos del Sur',
+    logo: '/media/portfolio/logos/tornos.svg',
     industry: 'Metalúrgica',
     projectType: 'Sistema interno + reportes',
     link: 'https://ejemplo-uno.com',
@@ -14,6 +15,7 @@ const rows: PortfolioRow[] = [
   },
   {
     client: 'Estudio Bertolino',
+    logo: '/media/portfolio/logos/bertolino.svg',
     industry: 'Estudio jurídico',
     projectType: 'Corporativo',
     link: 'https://ejemplo-dos.com',
@@ -22,6 +24,7 @@ const rows: PortfolioRow[] = [
   },
   {
     client: 'Clínica Mendieta',
+    logo: '/media/portfolio/logos/mendieta.svg',
     industry: 'Salud',
     projectType: 'Corporativo + reservas',
     link: 'https://ejemplo-tres.com',
@@ -52,7 +55,7 @@ describe('PortfolioTableComponent', () => {
     const rowEls = el.querySelectorAll('.pt-row');
     expect(rowEls.length).toBe(3);
 
-    const clients = [...el.querySelectorAll('.pt-client')].map((n) => n.textContent?.trim());
+    const clients = [...el.querySelectorAll('.pt-logo')].map((img) => img.getAttribute('alt'));
     expect(clients).toEqual(['Tornos del Sur', 'Estudio Bertolino', 'Clínica Mendieta']);
 
     rowEls.forEach((a, i) => {

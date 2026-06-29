@@ -4,12 +4,12 @@ import { afterEach, vi } from 'vitest';
 import { Viewcase, ViewcasesComponent } from './viewcases.component';
 
 const items: Viewcase[] = [
-  { label: 'CRM', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'ERP', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'E-commerce', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'Reservas', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'Dashboards', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'Automatización', videoSrc: '/media/software-demo.mp4', link: '#' }
+  { label: 'CRM', category: 'Gestión', videoSrc: '/media/software-demo.mp4', poster: '/media/software-demo-poster.jpg', link: '#' },
+  { label: 'ERP', category: 'Operaciones', videoSrc: '/media/software-demo.mp4', poster: '/media/software-demo-poster.jpg', link: '#' },
+  { label: 'E-commerce', category: 'Ventas', videoSrc: '/media/software-demo.mp4', poster: '/media/software-demo-poster.jpg', link: '#' },
+  { label: 'Reservas', category: 'Agenda', videoSrc: '/media/software-demo.mp4', poster: '/media/software-demo-poster.jpg', link: '#' },
+  { label: 'Dashboards', category: 'Analítica', videoSrc: '/media/software-demo.mp4', poster: '/media/software-demo-poster.jpg', link: '#' },
+  { label: 'Automatización', category: 'Procesos', videoSrc: '/media/software-demo.mp4', poster: '/media/software-demo-poster.jpg', link: '#' }
 ];
 
 describe('ViewcasesComponent', () => {
@@ -41,7 +41,7 @@ describe('ViewcasesComponent', () => {
 
     expect(el.querySelectorAll('video').length).toBe(6);
 
-    const labels = [...el.querySelectorAll('.vc-panel')].map((p) => p.textContent?.trim());
+    const labels = [...el.querySelectorAll('.vc-panel__name')].map((p) => p.textContent?.trim());
     expect(labels).toEqual(['CRM', 'ERP', 'E-commerce', 'Reservas', 'Dashboards', 'Automatización']);
 
     fixture.destroy();
