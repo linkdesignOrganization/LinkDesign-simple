@@ -64,6 +64,6 @@ Umbrales del 13 ago ajustados a estos montos:
 
 ### Pendientes relacionados
 
-- [x] Réplica del ×2 en el sitio Nolõ (Argentina): **desplegada el 24 jul 2026** (commit `e860ca1` en `nolo-simple`). Timing deliberado: las campañas AR ya tenían el aprendizaje reseteado por un cambio de estrategia del 19 jul, así que ambos cambios se absorben en una sola ventana. El análisis de "Búsqueda #2" quedó pospuesto por datos insuficientes (~4 días hábiles post-cambio) y se suma a la revisión del 13 ago.
+- [x] Réplica del ×2 en el sitio Nolõ (Argentina): **desplegada el 24 jul 2026** (commit `e860ca1` en `nolo-simple`). Timing deliberado: las campañas AR ya tenían el aprendizaje reseteado por el cambio de estrategia del 19 jul (**de Maximizar conversiones a Maximizar valor de conversión** — la estrategia vieja optimizaba por cantidad y explicaba el mix AR de 92% scrolls), así que ambos cambios se absorben en una sola ventana. OJO para el 13 ago: el historial AR previo al 19 jul NO es comparable en comportamiento de puja (otro régimen de optimización); sirven solo las métricas de mercado (CPCs, volumen, search terms, QS). El análisis de "Búsqueda #2" quedó pospuesto por datos insuficientes (~4 días hábiles post-cambio) y se suma a la revisión del 13 ago.
 - Negativas sugeridas para "Búsqueda": `webstudios`, `bravebits`, `guatemala`; decidir política del tráfico en inglés global ("landing page", "best website design", …).
 - Revisar anomalía de jun 2026: Scroll reportó valor 93 con 64 conversiones (hubo scrolls con value > 1 durante el despliegue de la modulación).
