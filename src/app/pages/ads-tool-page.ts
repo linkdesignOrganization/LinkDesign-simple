@@ -14,12 +14,12 @@ import { Meta, Title } from '@angular/platform-browser';
   template: `
     <article class="adsapp">
       <header class="ap-head">
-        <h1 class="ap-title">LinkDesign</h1>
+        <h1 class="ap-title">Link Design</h1>
         <p class="ap-meta">Aplicación interna de gestión y análisis de Google Ads</p>
       </header>
 
       <p class="ap-intro">
-        LinkDesign es la aplicación interna con la que el equipo de LinkDesign — la agencia de
+        Link Design es la aplicación interna con la que el equipo de Link Design — la agencia de
         diseño web y desarrollo de software de Costa Rica detrás de
         <a class="ap-link" href="https://linkdesign.cr">linkdesign.cr</a> — analiza y gestiona sus
         propias campañas publicitarias de Google Ads mediante la API de Google Ads.
@@ -39,7 +39,7 @@ import { Meta, Title } from '@angular/platform-browser';
         <h2 class="ap-section__title">Acceso y datos</h2>
         <p class="ap-text">
           La aplicación se autentica con Google OAuth y accede únicamente a las cuentas de Google
-          Ads propiedad de LinkDesign. No es una herramienta pública: la usa exclusivamente el
+          Ads propiedad de Link Design. No es una herramienta pública: la usa exclusivamente el
           equipo interno, no accede a datos de terceros y no comparte información con nadie fuera
           de LinkDesign. El tratamiento de datos se describe en nuestra
           <a class="ap-link" href="/politicas-de-privacidad">política de privacidad</a>.
@@ -49,9 +49,9 @@ import { Meta, Title } from '@angular/platform-browser';
       <section class="ap-section">
         <h2 class="ap-section__title">About this app (English)</h2>
         <p class="ap-text">
-          LinkDesign is the internal application used by the LinkDesign team (linkdesign.cr) to
+          Link Design is the internal application used by the Link Design team (linkdesign.cr) to
           analyze and manage our own Google Ads campaigns through the Google Ads API. It
-          authenticates with Google OAuth, accesses only LinkDesign's own advertising accounts,
+          authenticates with Google OAuth, accesses only Link Design's own advertising accounts,
           and does not share data with third parties.
         </p>
       </section>
@@ -155,13 +155,13 @@ export class AdsToolPageComponent {
   readonly year = new Date().getFullYear();
 
   constructor() {
-    inject(Title).setTitle('LinkDesign — Aplicación de gestión de Google Ads');
+    inject(Title).setTitle('Link Design | Aplicación de gestión de Google Ads');
     const meta = inject(Meta);
     meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
     meta.updateTag({
       name: 'description',
       content:
-        'LinkDesign es la aplicación interna con la que el equipo de linkdesign.cr analiza y gestiona sus propias campañas de Google Ads mediante la API de Google Ads.'
+        'Link Design es la aplicación interna con la que el equipo de linkdesign.cr analiza y gestiona sus propias campañas de Google Ads mediante la API de Google Ads.'
     });
   }
 }

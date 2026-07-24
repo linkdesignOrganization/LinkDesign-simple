@@ -12,7 +12,7 @@ describe('AdsToolPageComponent', () => {
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('h1')?.textContent).toContain('LinkDesign');
+    expect(el.querySelector('h1')?.textContent).toContain('Link Design');
     expect(el.textContent).toContain('Google Ads');
     expect(el.textContent).toContain('OAuth');
   });
