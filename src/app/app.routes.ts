@@ -1095,6 +1095,12 @@ function contentRoutes(): Routes {
 // Dos árboles de idioma. 'en' primero para que /en/... matchee el subtree inglés. El parent
 // componentless con path '' no agrega segmento → las URLs ES quedan idénticas (sin migración).
 export const routes: Routes = [
+  // Página descriptiva de la app interna de Google Ads (verificación de marca OAuth).
+  // Fuera de los árboles de idioma: contenido fijo, noindex, sin variante /en.
+  {
+    path: 'ads',
+    loadComponent: () => import('./pages/ads-tool-page').then((m) => m.AdsToolPageComponent)
+  },
   { path: 'en', canActivate: [langGuard], data: { lang: 'en' }, children: contentRoutes() },
   { path: '', canActivate: [langGuard], data: { lang: 'es' }, children: contentRoutes() }
 ];
