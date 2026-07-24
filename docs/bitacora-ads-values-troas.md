@@ -41,9 +41,10 @@ La transición de junio fue doble — keyword a concordancia de frase (med-jun) 
 
 ### Decisión (se aplica manualmente en la UI — el acceso API es read-only)
 1. Grupo "Software": crear `empresa de desarrollo de software` en **AMPLIA**; remover la PHRASE actual (la amplia la subsume). La broad vieja está REMOVED → se crea de nuevo; esperar 1–2 semanas de re-aprendizaje.
-2. Higiene: remover `desarrollo de sitios web` AMPLIA del "Grupo de anuncios 1" de la campaña Software (residuo de duplicación de Búsqueda; hoy 0 tráfico porque Búsqueda gana la selección interna, pero es riesgo latente).
-3. Presupuesto: 5.60 → **15.00/día** (el par histórico probado: amplia + 15 = ratio 0.75, CPC 2.56 sostenido mar–may).
-4. Nada más cambia: estrategia, schedule y negativas quedan igual.
+2. Presupuesto: 5.60 → **15.00/día** (el par histórico probado: amplia + 15 = ratio 0.75, CPC 2.56 sostenido mar–may).
+3. Nada más cambia: estrategia, schedule y negativas quedan igual.
+
+Nota (corrección 23 jul): se descartó un supuesto paso de higiene sobre una keyword `desarrollo de sitios web` detectada vía API dentro de esta campaña — vive en el grupo "Grupo de anuncios 1", que está **ELIMINADO** (la UI no lo muestra; la API lista sus criterios con status propio ENABLED). Un grupo eliminado nunca participa en subastas: no hay riesgo ni acción pendiente.
 
 ### Gates de la revisión del 13 ago 2026 (misma cita del plan tROAS)
 - Subir a **20/día** SOLO si: pérdida por presupuesto >35% Y ratio ≥1.2 (escala nueva de values). Techo sin nueva evidencia: 20.
