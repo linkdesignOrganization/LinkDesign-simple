@@ -64,6 +64,6 @@ Umbrales del 13 ago ajustados a estos montos:
 
 ### Pendientes relacionados
 
-- Réplica del ×2 en el sitio Nolõ (Argentina) si se quiere el mismo esquema para sus campañas ("Búsqueda #2" / "Software #2" de la misma cuenta de Ads).
+- [x] Réplica del ×2 en el sitio Nolõ (Argentina): **desplegada el 24 jul 2026** (commit `e860ca1` en `nolo-simple`). Timing deliberado: las campañas AR ya tenían el aprendizaje reseteado por un cambio de estrategia del 19 jul, así que ambos cambios se absorben en una sola ventana. El análisis de "Búsqueda #2" quedó pospuesto por datos insuficientes (~4 días hábiles post-cambio) y se suma a la revisión del 13 ago.
 - Negativas sugeridas para "Búsqueda": `webstudios`, `bravebits`, `guatemala`; decidir política del tráfico en inglés global ("landing page", "best website design", …).
 - Revisar anomalía de jun 2026: Scroll reportó valor 93 con 64 conversiones (hubo scrolls con value > 1 durante el despliegue de la modulación).
