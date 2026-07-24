@@ -30,8 +30,8 @@ El algoritmo de scoring NO cambia (paridad con el CRM intacta); solo cambia el m
 ### Cronograma
 
 - [x] **23 jul 2026** — Deploy de values ×2 (este commit).
-- [ ] **23 jul → 13 ago** — Aprendizaje. No tocar presupuesto (15/día) ni estrategia de puja. Vigilar el mix de valor.
-- [ ] **13 ago 2026** (recordatorio en Calendar) — Revisar con datos del 24 jul–12 ago: contactos/semana, mix de valor, ratio nuevo. Si el mix está ≥80% y los contactos se mantuvieron (~4–5/semana): **activar tROAS inicial ~70%** (≈ ratio esperado con values nuevos ~0.9 × 0.8 de margen). El presupuesto queda en 15 como techo.
+- [ ] **23 jul → 13 ago** — Aprendizaje. Presupuesto de Búsqueda en 10/día desde el 23 jul (ver "presupuestos del período" abajo); no tocar estrategia de puja. Vigilar el mix de valor.
+- [ ] **13 ago 2026** (recordatorio en Calendar) — Revisar con datos del 24 jul–12 ago: contactos/semana, mix de valor, ratio nuevo. Si el mix está ≥80% y los contactos se mantuvieron (~3/semana con 10/día): **activar tROAS inicial ~70%** (≈ ratio esperado con values nuevos ~0.9 × 0.8 de margen). El presupuesto vigente actúa como techo.
 - [ ] **Cada 2 semanas post-tROAS** — Ajustar el target ±10–15% mirando la cantidad de contactos (no el ratio total). Si el volumen de contactos cae >30%, bajar el target.
 
 ## 23 jul 2026 — Fase 1b (decisión): revertir "Software" a concordancia amplia con USD 15/día
@@ -49,6 +49,18 @@ Nota (corrección 23 jul): se descartó un supuesto paso de higiene sobre una ke
 ### Gates de la revisión del 13 ago 2026 (misma cita del plan tROAS)
 - Subir a **20/día** SOLO si: pérdida por presupuesto >35% Y ratio ≥1.2 (escala nueva de values). Techo sin nueva evidencia: 20.
 - Sumar Software al plan tROAS SOLO si recupera ≥10 contactos/mes; con menos señal, sin target.
+
+## 23 jul 2026 — Aplicado: presupuestos del período de aprendizaje (opción intermedia)
+
+Verificado por API el mismo día: Búsqueda a 10/día, Software a 15/día, y la keyword de Software ya en AMPLIA (la versión en frase quedó REMOVED — la edición de la UI hace remove+create interno, como se anticipó; QS e historial arrancan de nuevo, 1–2 semanas de aprendizaje).
+
+Por presupuesto limitado se eligió la opción intermedia de la escalera (25/día nominal; ~32/día reales esperables con sobregasto):
+- **Búsqueda: 15 → 10/día** — piso sano (~3.5 clics/día al CPC ~2.89); el Planner conserva ~84% del valor con 2/3 del gasto.
+- **Software: 5.60 → 15/día** — el dólar marginal fue acá por mejor economía histórica y mayor necesidad de datos.
+
+Umbrales del 13 ago ajustados a estos montos:
+- Búsqueda: contactos esperados **~3/semana** (no 4–5). Extra: si budget lost >35% con mix sano, considerar volver a 15/día.
+- Software: gates sin cambio (20/día solo con budget lost >35% y ratio ≥1.2; tROAS solo con ≥10 contactos/mes).
 
 ### Pendientes relacionados
 
