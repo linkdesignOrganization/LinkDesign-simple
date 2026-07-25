@@ -13,6 +13,12 @@ export interface SeoData {
   image?: string;
   locale?: string;
   robots?: string;
+  /**
+   * Ruta fuera de los árboles de idioma: una sola URL sirve ES+EN (no existe la variante
+   * `/en/...`). Mantiene el canonical sin prefijo y apunta los tres hreflang a esa misma URL,
+   * en vez de declarar un `/en/...` que daría 404.
+   */
+  singleUrl?: boolean;
 }
 
 /**
@@ -57,7 +63,7 @@ export class SeoService {
     this.meta.updateTag({ name: 'twitter:image', content: image });
 
     this.setCanonical(url);
-    this.setHreflang(data.canonicalPath ?? this.currentPath());
+    this.setHreflang(data.canonicalPath ?? this.currentPath(), data.singleUrl);
     this.setJsonLd(data, url);
   }
 
@@ -76,7 +82,17 @@ export class SeoService {
   // contradictoria); el SEO bilingüe pleno requeriría URLs por idioma.
   // hreflang recíproco a partir del path base (ES, sin /en): cada página declara su par es↔en
   // + x-default (= ES). Vale igual en páginas ES y EN.
-  private setHreflang(canonicalPath: string): void {
+  // `singleUrl`: la ruta no tiene par /en (ver SeoData) → los tres apuntan a ella misma. Hay que
+  // reescribirlos igual: los <link> viven en el <head> y sobreviven a la navegación, así que sin
+  // esto quedarían los de la página anterior.
+  private setHreflang(canonicalPath: string, singleUrl?: boolean): void {
+    if (singleUrl) {
+      const self = this.absoluteUrl(canonicalPath);
+      this.setAlternate('es', self);
+      this.setAlternate('en', self);
+      this.setAlternate('x-default', self);
+      return;
+    }
     const base = (canonicalPath || '/').replace(/^\/en(?=\/|$)/, '') || '/';
     const enPath = base === '/' ? '/en' : '/en' + base;
     this.setAlternate('es', this.absoluteUrl(base));

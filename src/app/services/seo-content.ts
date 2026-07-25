@@ -118,6 +118,36 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
       locale: 'en_US'
     }
   },
+  // Página principal de la app OAuth interna de Google Ads: existe porque la verificación de marca
+  // de Google Auth Platform exige una homepage accesible que explique su propósito. NO es contenido
+  // del sitio: `noindex` y sin enlaces entrantes — describe una herramienta de uso interno.
+  //
+  // El noindex sólo funciona desde acá: App aplica seoForUrl() en un effect por ruta, así que un
+  // Meta.updateTag en el componente pierde siempre (por eso la página servía el SEO del home, con
+  // canonical a '/', hasta el 25 jul 2026).
+  //
+  // `singleUrl`: vive fuera de los árboles de idioma, una sola URL sirve ES+EN (no hay /en/ads).
+  '/ads': {
+    es: {
+      title: 'Link Design | Aplicación de gestión de Google Ads',
+      description:
+        'Link Design es la aplicación interna con la que el equipo de linkdesign.cr analiza y gestiona campañas de Google Ads mediante la API de Google Ads.',
+      keywords: 'link design, google ads api, aplicación interna, costa rica',
+      canonicalPath: '/ads',
+      singleUrl: true,
+      robots: 'noindex, follow'
+    },
+    en: {
+      title: 'Link Design | Google Ads management app',
+      description:
+        'Link Design is the internal application the linkdesign.cr team uses to analyze and manage Google Ads campaigns through the Google Ads API.',
+      keywords: 'link design, google ads api, internal tool, costa rica',
+      canonicalPath: '/ads',
+      locale: 'en_US',
+      singleUrl: true,
+      robots: 'noindex, follow'
+    }
+  },
   '/404': {
     es: {
       title: 'Página no encontrada | Link Design Costa Rica',
@@ -216,9 +246,13 @@ export function seoForUrl(url: string, lang: Lang): SeoData {
   const raw = (url || '/').split('#')[0].split('?')[0] || '/';
   const base = raw.replace(/^\/en(?=\/|$)/, '') || '/';
   const toCanonical = (p: string) => (lang === 'en' ? '/en' + (p === '/' ? '' : p) : p);
+  // `singleUrl` (rutas sin variante /en) conserva su canonical tal cual: prefijarlo apuntaría
+  // a una URL que no existe cuando el idioma activo es inglés.
   const withCanonical = (data: SeoData): SeoData => ({
     ...data,
-    canonicalPath: toCanonical(data.canonicalPath ?? base)
+    canonicalPath: data.singleUrl
+      ? (data.canonicalPath ?? base)
+      : toCanonical(data.canonicalPath ?? base)
   });
 
   // Detalle de sistema: /software/<slug>

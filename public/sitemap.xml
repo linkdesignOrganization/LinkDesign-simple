@@ -108,6 +108,8 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+  <!-- /ads (homepage de la app OAuth interna) queda fuera a propósito: es noindex y no es
+       contenido del sitio. Ver SEO_CONTENT['/ads'] en seo-content.ts. -->
   <!-- Industrias (es) -->
   <url>
     <loc>https://linkdesign.cr/industrias</loc>
