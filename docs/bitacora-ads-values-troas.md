@@ -66,6 +66,85 @@ Umbrales del 13 ago ajustados a estos montos:
 - Búsqueda: contactos esperados **~3/semana** (no 4–5). Extra: si budget lost >35% con mix sano, considerar volver a 15/día.
 - Software: gates sin cambio (20/día solo con budget lost >35% y ratio ≥1.2; tROAS solo con ≥10 contactos/mes).
 
+## 30 jul 2026 — Atribución del embudo: qué se descartó y por qué
+
+Al evaluar si convenía medir el desenlace comercial (lead → cliente ganado) para alimentar la puja,
+apareció un límite que condiciona todo el plan de medición. Aplica igual a Nolõ, que comparte el
+modelo de conversiones (ver `docs/bitacora-ads.md` en `nolo-simple`).
+
+### El hallazgo: hoy no se puede medir el mix de canales
+
+Existen **solo dos acciones de conversión** por sitio: `SCROLL` y `CONTACTO`. Esta última agrupa
+WhatsApp, copiar correo, agendar reunión y formulario bajo un único identificador
+(`ads.service.ts`). Ningún informe de Ads los separa.
+
+Ene–29 jul 2026: Contacto (CR) 197 conversiones / valor 2620 · Contacto Argentina 34 / 522,5 ·
+Scroll (CR+AR) 836 / 865. El promedio por contacto de CR es **13,3** — muy alto para ser casi todo
+WhatsApp (value 10), muy bajo para estar dominado por formularios; consistente con un mix cercano a
+mitad y mitad. Pero es **una inferencia frágil**: los values se duplicaron a mitad del período y
+además se modulan 0,7–1,0. No es un número para decidir.
+
+### Descartado: medir el desenlace solo con los leads del formulario
+
+El CRM guarda `gclid` en los web-leads y el lead enlazado llega a `ganado`/`perdido`
+(`WebLead.gclid → convertedToLeadId → Lead.status`), así que la cadena clic→cliente es
+reconstruible… **solo para quien llenó el formulario**.
+
+Se descartó como fuente principal, y no por tamaño de muestra sino por **sesgo**: quien escribe por
+WhatsApp busca inmediatez y quien completa un formulario acepta un proceso formal; es probable que
+respondan a keywords distintas. Concluir con esa muestra llevaría justo al error de descartar
+keywords útiles o sobrevalorar otras.
+
+**Lo que sí sigue siendo válido**: Ads ya atribuye a su keyword el clic de WhatsApp y el de copiar
+correo. Las decisiones de keywords de esta bitácora **no** están sesgadas — el hueco es el desenlace.
+
+### Descartado: código de referencia en el mensaje de WhatsApp
+
+Ya se intentó en otra empresa y falló: una porción alta de la gente borra el código. Darle un
+propósito (código de descuento) generó desconfianza. No se reintenta.
+
+### Descartado: mini formulario pidiendo el celular antes de abrir WhatsApp
+
+Mete fricción inmediata en el canal de más volumen y **no hay volumen para medir el daño**: con ~28
+contactos/mes un A/B tardaría meses en ser concluyente. Encima cubriría solo WhatsApp y dejaría
+fuera el correo, que es el canal de leads más serios.
+
+### Abierto: subir conversiones con identificadores hasheados
+
+`ClickConversion` acepta `user_identifiers` (`hashed_email`, `hashed_phone_number`) **en lugar de**
+gclid: al marcar un lead como ganado se sube su correo o teléfono hasheado y Google lo matchea
+contra cuentas de Google. Cero fricción y cubre WhatsApp y correo por igual. El CRM ya guarda el
+teléfono en E.164, el formato exigido antes de hashear.
+
+Dos límites:
+
+- **Match parcial** — funciona mejor cuando el dato también se capturó en el sitio (formulario), que
+  no es el caso de WhatsApp.
+- **La Google Ads API ya no sirve para esto.** Desde el 15 jun 2026 `UploadClickConversions` falla
+  si el developer token nunca subió conversiones offline; el nuestro estrenó Basic el 28 jul y cae
+  del lado bloqueado. Va por la **Data Manager API**, otra habilitación aparte.
+
+Y aun con match perfecto, 1–3 clientes ganados al mes no alcanzan para que Smart Bidding puje sobre
+eso: el valor sería **medición para decisiones humanas**, no automatización.
+
+### Descartado: crear GA4
+
+El sitio ya captura por lead más detalle del que GA4 daría (tiempo activo, tiempo en foco por
+sección, clics por CTA, timeline) y el CRM ya tiene `site-sessions`. GA4 sumaría una tercera cifra
+de conversiones que nunca coincidiría con Ads ni con el CRM, y tampoco vería el desenlace de una
+conversación de WhatsApp. El campo `ga_client_id` del payload queda viajando en `null`, a la espera.
+
+### Decisión para el 13 ago 2026
+
+**Separar las acciones de conversión por canal** (WhatsApp, copiar correo, agendar, formulario),
+todas primarias con sus values. No perjudica a Smart Bidding —optimiza sobre el conjunto— y entrega
+el mix por keyword, hoy invisible. Es lo único sin fricción, sin dependencias externas y barato.
+Aplicar recién el 13 ago para no perturbar el aprendizaje. Con dos o tres semanas de datos se decide
+si vale montar la Data Manager API.
+
+Ojo: "copiar correo" solo se registra si usan el botón; quien lee el correo y lo escribe a mano no
+deja rastro ni siquiera como conversión.
+
 ### Pendientes relacionados
 
 - [x] Réplica del ×2 en el sitio Nolõ (Argentina): **desplegada el 24 jul 2026** (commit `e860ca1` en `nolo-simple`). Timing deliberado: las campañas AR ya tenían el aprendizaje reseteado por el cambio de estrategia del 19 jul (**de Maximizar conversiones a Maximizar valor de conversión** — la estrategia vieja optimizaba por cantidad y explicaba el mix AR de 92% scrolls), así que ambos cambios se absorben en una sola ventana. OJO para el 13 ago: el historial AR previo al 19 jul NO es comparable en comportamiento de puja (otro régimen de optimización); sirven solo las métricas de mercado (CPCs, volumen, search terms, QS). El análisis de "Búsqueda #2" quedó pospuesto por datos insuficientes (~4 días hábiles post-cambio) y se suma a la revisión del 13 ago.
