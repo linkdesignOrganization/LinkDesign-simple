@@ -147,10 +147,88 @@ apagada y opcional por si algún día se necesitara el otro camino.
 — no hay variante de solo lectura ni una ampliada. No limita ningún análisis. El techo real lo ponen
 el nivel de acceso de la service account en Google Ads y el developer token, nunca el scope. Otras
 APIs (GA4, Search Console) se resolverían igual: agregando el email de la service account allá.
+Search Console se resolvió exactamente así el 7 ago 2026 — ver la sección siguiente.
 
 **Alcance actual**: `6364218319` Link Design · `3332293537` MCC · `9018431297` PsicoYng ·
 `6593270911` Zacate Tierra Fertil. La cuenta `6460296196` **ya no es visible**: era accesible desde
 el usuario pero no cuelga del MCC. Si hace falta, se agrega la service account ahí también.
+
+## Ampliación: la Search Console API (7 ago 2026)
+
+Se cumplió lo anticipado arriba — la misma service account, agregada del otro lado. **No hizo falta
+credencial, proyecto ni librería nueva**: la API es REST plana y basta `AuthorizedSession` de
+`google-auth`, así que `google-api-python-client` (que no está en el venv) sigue sin instalarse.
+
+**Montaje**, en el mismo `%USERPROFILE%\.google-ads\`:
+
+- `searchconsole.googleapis.com` habilitada en el proyecto `linkdesign-ads-api` (`217676920431`).
+- La service account agregada en **Search Console → Configuración → Usuarios y permisos**, nivel
+  **Completo**.
+- `gsc.py` — base común espejo de `ads.py` (`consulta` ya paginada y con las dimensiones
+  desempaquetadas, `propiedades`, `filtro`, `inspeccionar`), registrada por el mismo `.pth`: `import
+  gsc` funciona sin preámbulo.
+- `verificar_gsc.py` — diagnóstico de 4 escalones, porque acá se confunden **tres permisos
+  distintos**: la API habilitada en el proyecto Cloud, el nivel dentro de la propiedad, y el scope
+  del token. El 403 por API deshabilitada y el 403 por falta de permiso se parecen; solo el mensaje
+  los separa.
+
+**Dos caminos muertos, para no repetirlos**: la service account **no puede habilitarse servicios a
+sí misma** (403 `AUTH_PERMISSION_DENIED` en Service Usage), y `gcloud` tenía el reauth caducado
+(`cannot prompt during non-interactive execution`) — el mismo problema que motivó la migración a
+service account, reapareciendo por el otro flanco. Se hizo por la consola web.
+
+**Por qué Completo y no Restringido**: la **URL Inspection API devuelve 403 con Restringido**. El
+freno de escritura real lo pone el scope `webmasters.readonly`, no el nivel de permiso, así que
+Completo no abre riesgo; Propietario —único que gestiona usuarios— sí sería de más. Verificado:
+`urlInspection` responde `PASS` / "Enviada e indexada" sobre `https://linkdesign.cr/`.
+
+**Trampa que no da error**: el país va en **ISO 3166-1 alpha-3** y Costa Rica es `cri` — `crc` es el
+colón. Con el código equivocado la API devuelve **cero filas sin quejarse**, que es peor que fallar.
+
+**Alcance**: una sola propiedad, `sc-domain:linkdesign.cr` (de dominio). **Nolõ no tiene propiedad en
+Search Console**, así que Argentina no tiene contraparte orgánica medible; ahí Ads es el único canal.
+
+### También se vinculó Search Console con Google Ads
+
+Es un camino aparte del anterior y da otra cosa: el recurso `paid_organic_search_term_view` de la
+**API de Google Ads**, que cruza pago y orgánico por término en una sola tabla, segmentado por
+`search_engine_results_page_type` (solo anuncio / solo orgánico / ambos).
+
+La ruta vieja `/aw/settings/linkedaccounts` da **404**. Ahora es **Herramientas → Administrador de
+datos → Productos conectados → Conectar producto → Search Console**, y pide la URL del sitio como
+`linkdesign.cr` (queda registrada como `http://linkdesign.cr` aunque la propiedad sea `sc-domain:`).
+Se vinculó sola por ser el mismo usuario propietario de ambos lados.
+
+**Ese informe no tiene backfill**: `paid_organic_search_term_view` seguía devolviendo 0 filas justo
+después de vincular, con 445 clics en los 30 días previos. Los datos se acumulan **desde la
+vinculación en adelante**, así que para el 13 ago habrá ~6 días. El cruce histórico hay que armarlo a
+mano con `gsc.py` contra los datos de Ads.
+
+### Qué aporta esto y qué no
+
+**No es GA4 ni lo reemplaza.** La decisión de descartar GA4
+([bitacora-ads-values-troas.md](./bitacora-ads-values-troas.md), 30 jul) sigue en pie y no se
+contradice: Search Console no mide comportamiento en el sitio ni desenlace de leads, mide la
+búsqueda. Tampoco resuelve el hueco del **mix de canales** (WhatsApp vs formulario), que sigue
+dependiendo de separar las acciones de conversión.
+
+Lo que sí agrega, medido el 7 ago sobre 16 meses (160 consultas, 25 páginas, 83 clics, 9.221
+impresiones):
+
+- **No hay canibalización pago/orgánico.** Ningún término comercial rankea en primera página: "web
+  design costa rica" 884 impresiones y **0 clics** en posición 37,5; "desarrollo web en costa rica"
+  328/0 en pos. 78; "diseño de sitios web en costa rica" 315/0 en pos. 74,3. Cada clic pagado es
+  incremental — queda descartada la hipótesis de bajar pujas donde ya se sale orgánico.
+- **El orgánico es casi todo de marca**: 73 de los 83 clics vienen de "link design" (51) y
+  "linkdesign" (22). El 88%.
+- **Insumo para el pendiente del tráfico en inglés**: las consultas en inglés acumulan impresiones
+  altas con cero clics ("costa rica website design" 224, "website design costa rica" 220, "web
+  designer costa rica" 189), y EE.UU. aporta 516 impresiones y **0 clics** en 16 meses.
+- **Demanda por mercado**: Costa Rica 139 consultas / 7.345 impresiones · Argentina 12 / 46. La
+  asimetría orgánica es mucho mayor que la de Ads.
+
+Cuidado al leer volúmenes: Search Console **omite las consultas de bajo volumen por privacidad**, así
+que la suma por query nunca cuadra con el total del sitio.
 
 ## Nota para el futuro
 

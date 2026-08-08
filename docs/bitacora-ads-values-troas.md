@@ -31,7 +31,7 @@ El algoritmo de scoring NO cambia (paridad con el CRM intacta); solo cambia el m
 
 - [x] **23 jul 2026** — Deploy de values ×2 (este commit).
 - [ ] **23 jul → 13 ago** — Aprendizaje. Presupuesto de Búsqueda en 10/día desde el 23 jul (ver "presupuestos del período" abajo); no tocar estrategia de puja. Vigilar el mix de valor.
-- [ ] **13 ago 2026** (recordatorio en Calendar) — Revisar con datos del 24 jul–12 ago: contactos/semana, mix de valor, ratio nuevo. Si el mix está ≥80% y los contactos se mantuvieron (~3/semana con 10/día): **activar tROAS inicial ~70%** (≈ ratio esperado con values nuevos ~0.9 × 0.8 de margen). El presupuesto vigente actúa como techo. **El análisis y el cambio se pueden hacer por API** (acceso Basic desde el 28 jul); Keyword Planner también quedó disponible para esta revisión.
+- [ ] **13 ago 2026** (recordatorio en Calendar) — Revisar con datos del 24 jul–12 ago: contactos/semana, mix de valor, ratio nuevo. Si el mix está ≥80% y los contactos se mantuvieron (~3/semana con 10/día): **activar tROAS inicial ~70%** (≈ ratio esperado con values nuevos ~0.9 × 0.8 de margen). El presupuesto vigente actúa como techo. **El análisis y el cambio se pueden hacer por API** (acceso Basic desde el 28 jul); Keyword Planner también quedó disponible para esta revisión. Desde el 7 ago se suma la **Search Console API** (`import gsc`) para la cara orgánica — ver la entrada del 7 ago, que incluye una lectura anticipada del criterio y dos advertencias sobre cómo leerlo.
 - [ ] **Cada 2 semanas post-tROAS** — Ajustar el target ±10–15% mirando la cantidad de contactos (no el ratio total). Si el volumen de contactos cae >30%, bajar el target.
 
 ## 23 jul 2026 — Fase 1b (decisión): revertir "Software" a concordancia amplia con USD 15/día
@@ -148,5 +148,53 @@ deja rastro ni siquiera como conversión.
 ### Pendientes relacionados
 
 - [x] Réplica del ×2 en el sitio Nolõ (Argentina): **desplegada el 24 jul 2026** (commit `e860ca1` en `nolo-simple`). Timing deliberado: las campañas AR ya tenían el aprendizaje reseteado por el cambio de estrategia del 19 jul (**de Maximizar conversiones a Maximizar valor de conversión** — la estrategia vieja optimizaba por cantidad y explicaba el mix AR de 92% scrolls), así que ambos cambios se absorben en una sola ventana. OJO para el 13 ago: el historial AR previo al 19 jul NO es comparable en comportamiento de puja (otro régimen de optimización); sirven solo las métricas de mercado (CPCs, volumen, search terms, QS). El análisis de "Búsqueda #2" quedó pospuesto por datos insuficientes (~4 días hábiles post-cambio) y se suma a la revisión del 13 ago.
-- Negativas sugeridas para "Búsqueda": `webstudios`, `bravebits`, `guatemala`; decidir política del tráfico en inglés global ("landing page", "best website design", …).
+- Negativas sugeridas para "Búsqueda": `webstudios`, `bravebits`, `guatemala`; decidir política del tráfico en inglés global ("landing page", "best website design", …). **Insumo nuevo (7 ago)**: Search Console confirma que el inglés genera impresiones sin retorno también en orgánico — "costa rica website design" 224 impresiones / 0 clics, "website design costa rica" 220/0, "web designer costa rica" 189/0, y EE.UU. aporta 516 impresiones y **0 clics** en 16 meses. No prueba qué hace ese tráfico al pagarlo, pero quita la hipótesis de que sea demanda desatendida que el orgánico ya estaría capturando.
 - Revisar anomalía de jun 2026: Scroll reportó valor 93 con 64 conversiones (hubo scrolls con value > 1 durante el despliegue de la modulación).
+
+## 7 ago 2026 — Search Console disponible + lectura anticipada del criterio del 13
+
+### Nueva fuente: la cara orgánica del mismo mercado
+
+Quedó montada la **Search Console API** sobre la misma service account, y además se **vinculó Search
+Console con Google Ads**. Montaje, trampas y alcance en
+[bitacora-google-ads-api-basic.md](./bitacora-google-ads-api-basic.md); acá solo lo que cambia para
+este plan:
+
+- Se consulta con `import gsc` igual que `import ads`. Hay **16 meses** de histórico, filtrable por
+  país, página y consulta.
+- **No reemplaza a GA4 ni reabre esa decisión** (30 jul): mide la búsqueda, no el sitio. El hueco del
+  mix de canales sigue dependiendo de separar las acciones de conversión.
+- El informe pago/orgánico de Ads (`paid_organic_search_term_view`) **no tiene backfill**: arranca en
+  cero el 7 ago, así que el 13 tendrá ~6 días. El cruce histórico se arma a mano con `gsc.py`.
+- **Hallazgo que cierra una hipótesis**: no hay canibalización. Ningún término comercial rankea en
+  primera página ("web design costa rica": 884 impresiones, 0 clics, posición 37,5), y el 88% del
+  clic orgánico es de marca. Cada clic pagado es incremental.
+
+### Lectura anticipada del criterio (23 jul – 6 ago, faltan 6 días)
+
+Calculado **solo sobre el período post ×2**, que es el único rango comparable:
+
+| | Contacto | Scroll | Mix de valor |
+|---|---:|---:|---:|
+| **Costa Rica** ("Búsqueda") | 11,5 conv · 168,5 | 42,5 conv · 42,5 | **79,9%** |
+| **Argentina** ("Búsqueda #2") | 21,0 conv · 410,5 | 80,9 conv · 80,9 | **83,5%** |
+
+Referencia pre-×2 (8–22 jul): CR 57,5% · AR 67,1%.
+
+Los contactos **no se mantuvieron: casi se duplicaron** — CR 0,40 → 0,77/día (≈5,4/semana, muy por
+encima del ~3/semana esperado con 10/día), AR 0,74 → 1,40/día.
+
+**Dos advertencias antes de leer esto como luz verde:**
+
+1. **Buena parte de la subida del mix es aritmética, no de comportamiento.** Tomando los volúmenes de
+   julio y duplicando solo el value de Contacto, el mix de CR daría **73,0%** por pura construcción.
+   O sea: de 57,5% a 73,0% es el cambio de escala, y sólo de 73,0% a 79,9% es señal real. El umbral
+   del 80% se fijó **antes** de duplicar los values, así que hoy mide algo distinto de lo que medía
+   cuando se definió. Vale revisar el umbral, no sólo compararse contra él.
+2. **El valor promedio por contacto bajó.** En unidades comparables: CR de 10,6 a **7,3** (−31%), AR
+   de 11,7 a **9,8** (−16%). Más contactos, de menor calidad promedio — el comportamiento esperable
+   de Smart Bidding cuando se le amplía la señal. El valor total sube, que es lo que optimiza, pero
+   el lead promedio es más flojo.
+
+Con 11,5 contactos en CR en quince días, un solo lead hot o nurture mueve el mix más de un punto: la
+muestra es chica para decidir. Recalcular el 13 con el rango completo antes de activar nada.
