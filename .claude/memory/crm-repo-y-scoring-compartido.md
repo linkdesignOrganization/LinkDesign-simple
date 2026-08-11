@@ -17,3 +17,10 @@ El CRM de LinkDesign vive en `C:\Users\Roberth Castillo\Desktop\LinkDesign CRM` 
 - Solo el formulario llega al CRM; los clicks de contacto (WhatsApp/correo/agendar) no generan WebLead, por eso su modulación de value es puramente client-side. Ver [[google-ads-conversion-setup]].
 
 **How to apply:** si se tocan pesos/umbrales del scoring en un repo, replicar en el otro o el value que el sitio manda a Ads se desincroniza de la categoría que el CRM almacena.
+
+**Candado de vectores desde 2026-08-11:** los tres repos corren los MISMOS 22 vectores
+(`lead-score-vectors.shared.ts`, idéntico byte a byte junto a `lead-score.ts`); tocar la fórmula en
+un solo lado pone su suite en rojo. **Regla de oro de Robert: la prioridad #1 es Google Ads** — LA
+COPIA DE ESTE SITIO es la fuente de verdad (su score decide el value de Smart Bidding); si hay
+divergencia se alinea el CRM, nunca este repo; si un cambio altera lo que ve Ads, no se hace. La
+tabla `LEAD_SCORE_ADS_VALUE` (null/30/36/48/60) quedó candada por test explícito.
