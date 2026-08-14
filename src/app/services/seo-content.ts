@@ -29,17 +29,17 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
   },
   '/software': {
     es: {
-      title: 'Software a medida para empresas | Link Design CR',
+      title: 'Desarrollo de software a medida | Link Design Costa Rica',
       description:
-        'Aplicaciones internas, automatización e integración tecnológica. Creamos software a medida que ordena procesos y mejora la productividad.',
+        'Empresa de desarrollo de software en Costa Rica: aplicaciones internas, automatización e integración tecnológica que ordenan procesos y mejoran la productividad.',
       keywords:
         'software a medida, desarrollo de software, aplicaciones internas, automatización, integración tecnológica, costa rica',
       canonicalPath: '/software'
     },
     en: {
-      title: 'Custom software for companies | Link Design CR',
+      title: 'Custom software development | Link Design Costa Rica',
       description:
-        'Internal apps, automation and tech integration. We build custom software that organizes processes and boosts productivity.',
+        'Custom software development company in Costa Rica: internal apps, automation and tech integration that organize processes and boost productivity.',
       keywords:
         'custom software, software development, internal apps, automation, tech integration, costa rica',
       canonicalPath: '/software',
@@ -48,17 +48,17 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
   },
   '/web': {
     es: {
-      title: 'Desarrollo web a medida | Link Design Costa Rica',
+      title: 'Diseño y desarrollo de páginas web | Link Design Costa Rica',
       description:
-        'Sitios web corporativos, e-commerce y landing pages a medida. Diseño moderno, rendimiento y escalabilidad para empresas en Costa Rica.',
+        'Páginas web corporativas, e-commerce y landing pages a medida. Diseño y desarrollo web con rendimiento y escalabilidad para empresas en Costa Rica.',
       keywords:
         'desarrollo web, sitios corporativos, e-commerce, landing pages, diseño web, costa rica',
       canonicalPath: '/web'
     },
     en: {
-      title: 'Custom web development | Link Design Costa Rica',
+      title: 'Web design and development | Link Design Costa Rica',
       description:
-        'Custom corporate websites, e-commerce and landing pages. Modern design, performance and scalability for companies in Costa Rica.',
+        'Custom web design and development in Costa Rica: corporate websites, e-commerce and landing pages, with performance and scalability for growing companies.',
       keywords:
         'web development, corporate websites, e-commerce, landing pages, web design, costa rica',
       canonicalPath: '/web',
