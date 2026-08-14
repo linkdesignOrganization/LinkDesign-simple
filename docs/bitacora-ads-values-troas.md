@@ -1209,5 +1209,106 @@ Alinea con el criterio de que los dos sitios se distingan **sólo cuando haga fa
   > conviene no encimarla con el cambio de conversiones en curso, y que `/web` no tiene teléfono
   > escrito ni cédula jurídica. La prueba histórica que daba el sitio viejo —mismo patrón de copy,
   > misma nota, cuatro años antes— la cubre ahora, por otra vía, el sitio gemelo.
-- **Pendiente, sin cambios de código todavía**: escribir el copy. Lo que falta es la redacción, no el
-  diagnóstico ni la priorización.
+- ~~**Pendiente, sin cambios de código todavía**: escribir el copy.~~ **Hecho y publicado el mismo
+  día**; ver la entrada siguiente.
+
+## 14 ago 2026 (noche) — El copy nuevo y los videos, EN PRODUCCIÓN
+
+Se publicó en `main` de los dos sitios (merge `9639876` acá, `af7eb8a` en `nolo-simple`) y el
+workflow de Azure terminó en verde. Verificado en producción sobre las cuatro páginas.
+
+### Qué se cambió, y con qué criterio
+
+**La regla fue: cada texto conserva su idea; cambia el sustantivo por el que la gente escribe.** El
+`h1` de `/web` pasó de *«Sitios web hechos en serio»* a *«Páginas web hechas en serio»* — mismo
+mensaje, la palabra que se lleva el 48,2 % del gasto. Nada se reescribió de cero.
+
+`/web` (español), medido sobre el HTML de producción:
+
+| familia | antes | ahora | densidad |
+|---|---:|---:|---:|
+| páginas web | 4 | **13** | 0,75 % |
+| sitios web | 1 | **14** | 0,81 % |
+| diseño web | 1 | 6 | 0,35 % |
+| desarrollo web | 2 | 6 | 0,35 % |
+| «Costa Rica» | 2 | 5 | 0,29 % |
+| **peso temático** | **0,48 %** | **2,26 %** | |
+
+`/software` no se infló, se **rebalanceó**: ya estaba en 2,56 % —dentro del rango del mercado, porque
+decía «sistema» 31 veces— pero hablaba de lo que poco se busca. Quedó en 2,99 %, con «desarrollo de
+software» de 3 a 9 y el país de 3 a 8.
+
+### El método, que es lo reutilizable
+
+Tres insumos, y ninguno alcanza solo:
+
+1. **El gasto por familia** (`search_term_view`) — qué escribe la gente por la que ya pagamos.
+2. **La competencia que rankea** — cuánta densidad tolera y premia el nicho. Se bajaron seis landings
+   de `/web` y seis de `/software` en Costa Rica, y siete y cuatro en Argentina, midiendo lo mismo.
+   **Se excluyeron los blogs tipo «top 10 empresas»**: son listados, no páginas de venta, e inflan la
+   referencia.
+3. **El conteo sobre la página propia** — dónde estamos parados.
+
+> **Referencia del mercado, para no volver a medirla.** `/web` Costa Rica: mediana 3,93 %, rango
+> 1,75–4,91 %. `/web` Argentina: mediana 4,26 %, rango 1,94–9,40 %. `/software` Costa Rica: mediana
+> 3,27 %. `/software` Argentina: mediana 2,54 %. **El objetivo fue el piso del rango, no la mediana**:
+> nos saca del extremo donde estábamos sin comprometernos con una receta que puede ser correlación y
+> no causa. La zona de penalización vive muy por encima — web.cr repite «diseño web» 58 veces y está
+> primero.
+
+**No se agregó contenido.** La página decía «sitio» a secas 30 veces y en la mayoría se completó la
+palabra que ya estaba implícita. Ésa es la diferencia entre subir la densidad y hacer *keyword
+stuffing*.
+
+### Tres cosas que se aprendieron midiendo
+
+- **«Software a medida» vale 0,0 % del gasto en Costa Rica y 14,8 % en Argentina.** La misma frase,
+  valor opuesto según el mercado. La competencia costarricense sí la usa (0,67 % de mediana): es un
+  caso donde el mercado y la búsqueda no coinciden, y **para la nota de Ads manda la búsqueda**.
+- **El geo cambia por página, no sólo por país.** En `/web` argentino pesa 9,3 % y en `/software`
+  argentino, 46,2 %. Por eso el titular de `nolo.ar/web` no nombra el país y el de `/software` sí.
+- **«Empresa de tecnología / informática» es 19,1 % del gasto en Costa Rica y 0,0 % en Argentina.**
+  Está sólo en `linkdesign.cr/software`.
+
+### Los videos: el prefetch no hacía lo que prometía
+
+Se reemplazó el `<link rel="prefetch">` de los 25 clips por **precarga por proximidad**: cada clip se
+descarga cuando su fila está a ~1,5 pantallas, con un `IntersectionObserver` propio (`rootMargin:
+150%`). El observer que reproduce no se tocó. Se observa **la fila y no el `<video>`**, porque en
+desktop el video de la fila está oculto y un elemento sin caja nunca dispara el observer.
+
+Medido con Chrome real y la red limitada por CDP, producción vieja contra el preview:
+
+| | 4G móvil | desktop |
+|---|---|---|
+| sin bajar al portafolio, antes | 25,35 MB · 27 clips | 26,86 MB · 28 clips |
+| sin bajar al portafolio, ahora | **9,71 MB · 3 clips** | **8,34 MB · 3 clips** |
+
+Los tres que quedan son los del encabezado, verificado por URL. El portafolio está a **ocho
+pantallas** del punto de entrada, así que la precarga no lo alcanza hasta que el visitante se acerca.
+
+> **Lo contraintuitivo, y el motivo por el que el cambio también mejora la experiencia:** con el
+> prefetch viejo los clips llegaban al centro de la pantalla **con `readyState` 0 — sin un byte
+> cargado — en 5 de 5 casos**. Con la precarga por proximidad llegan en `readyState` 4, completos, en
+> 5 de 5. El prefetch fallaba por tres razones juntas: `fetchpriority="low"`, esperaba a que cargaran
+> **todos** los logos, y ponía 25 descargas a competir por las ~6 conexiones del navegador.
+>
+> **En 3G (1,6 Mbps) ninguna de las dos llega a tiempo** — 0 de 7 contra 0 de 5, con el poster
+> cubriendo en ambas. Para que alcanzara habría que precargar con diez pantallas de anticipación, lo
+> que anularía el ahorro. El camino ahí es recodificar los clips, que hoy pesan entre 1 y 2,9 MB.
+
+### Cómo se revisó
+
+Se desplegaron dos Static Web Apps Standard temporales con cada texto cambiado **resaltado en
+amarillo** y el original al pasar el mouse, más un botón para apagar el resaltado y ver el sitio como
+quedaría. La lista de cambios **se generaba del diff contra `main`**, no a mano. Robert aprobó el copy
+entero; el script y las dos SWA ya se borraron.
+
+### Cuándo se puede leer el resultado
+
+Google recalcula la nota de página de destino con datos acumulados: **dos o tres semanas, o sea
+alrededor del 4 de septiembre**, al lado de la revisión ya agendada del 3.
+
+**La nota de página de destino se va a poder leer limpia**, porque es lo único que este cambio toca.
+Lo que queda mezclado es el efecto en leads: ahí se superponen las conversiones separadas del 13 de
+agosto, las extensiones del 14 y este copy.
