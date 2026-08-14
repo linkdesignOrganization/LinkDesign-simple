@@ -1085,3 +1085,121 @@ de cada una:
 
 **"Búsqueda" es la que más impresiones pierde por ranking de las cuatro (36,3 %)**, y eso no se
 arregla con keywords nuevas: es calidad. Otra vez la página de destino.
+
+## 14 ago 2026 (cierre del día) — Qué palabra va en qué lugar de `/web`, y por qué sirve igual para Nolõ
+
+El apartado anterior dejó el orden por gasto anotado «para cuando se escriba el copy». Esto lo
+cierra: se midió **el otro lado** —cuántas veces dice la página cada una de esas palabras— y se
+comparó con Nolõ para decidir si hacían falta dos documentos. **No hacen falta.**
+
+Salió de una pregunta de Robert sobre el artefacto del 13 ago: si la lista de frases que citaba
+alcanzaba para empezar y si estaba priorizada. **No y no** — eran cuatro frases sueltas que suman el
+**14,6 % del gasto**, en un orden que no era el de importancia (la #1 estaba segunda, y las dos
+últimas eran la #11 y la #12). La cola es larguísima: 504 frases distintas con gasto y hacen falta 23
+para cubrir la mitad. **Una lista de frases literales nunca iba a ser el insumo correcto**; lo son
+las familias.
+
+### El reparto del gasto contra lo que la página dice
+
+Campaña "Búsqueda", todos los términos del 1 ene 2025 al 13 ago 2026 —3.659 USD y 1.283 clics—
+repartidos en familias **excluyentes**, contra el texto visible que devuelve hoy `linkdesign.cr/web`
+(1.661 palabras):
+
+| cómo llama la gente a lo que busca | % gasto | % clics | veces en la página |
+|---|---:|---:|---:|
+| **páginas web** | **48,2 %** | **41,9 %** | **0** |
+| desarrollo web | 15,2 % | 12,8 % | **0** |
+| diseño web | 13,4 % | 13,7 % | **0** |
+| sitios web — *lo único que la página dice* | 3,3 % | 4,1 % | 4 |
+
+**El 77 % del gasto no tiene una sola aparición literal en el cuerpo.** Los verbos sí están
+—«desarrollamos» y «diseñamos», una vez cada uno— pero no la frase, que es lo que Google compara. Y
+el `title` sí dice «Desarrollo web a medida | Link Design Costa Rica»: está bien, pero Google lo lee
+para el anuncio, no para juzgar la página.
+
+Los acompañantes, mismo método:
+
+| | % gasto | veces en la página |
+|---|---:|---:|
+| «Costa Rica» | 42,7 % | 1, en la dirección del pie |
+| creación / creadores / crear | 10,7 % | 0 |
+| empresa(s) | 7,4 % | **20** ✔ |
+| agencia | 2,6 % | 0 — y está bien así |
+
+> **No todo lo que falta hay que agregarlo.** «Agencia» no aparece nunca y casi nadie la busca acá;
+> «e-commerce» y «landing page» están 7 y 2 veces valiendo 1,3 % y 1,6 %, pero son servicios reales y
+> ordenan la página. Se dejan.
+
+### Nota de método: por qué estos números no son los del apartado anterior
+
+**Las dos tablas son correctas y miden cosas distintas.** La de arriba, en este mismo día, es
+**solapada**: un término como «diseño de páginas web» cuenta en «páginas web» *y* en «diseño web», y
+por eso aquellos porcentajes suman 118 %. La de acá es **excluyente**: cada término cae en una sola
+familia y suma 100 %.
+
+Verificado corriendo las dos sobre la misma ventana (1 ene – 13 ago 2026, "Búsqueda"):
+
+| | páginas web | diseño web | desarrollo web | sitios web |
+|---|---:|---:|---:|---:|
+| solapada — *reproduce exactamente el apartado anterior* | 44,7 % | 22,9 % | 20,3 % | 4,8 % |
+| excluyente | 44,7 % | 12,1 % | 15,9 % | 3,5 % |
+
+Cuál usar depende de la pregunta. **Para decidir qué palabras tiene que contener la página, la
+solapada** — dice qué proporción del dinero viene de alguien que escribió esa palabra. **Para
+priorizar el titular, la excluyente** — dice cómo se reparte el dinero entre intenciones distintas.
+Ninguna conclusión de esta entrada cambia según cuál se elija; se verificaron con las dos.
+
+### Los seis lugares donde entra, sin reescribir la página
+
+| dónde | qué dice hoy | qué familia entra |
+|---|---|---|
+| `h1` | «Sitios web hechos en serio.» | **páginas web** + **Costa Rica** |
+| bajada del `h1` | «Sin plantillas, sin atajos, sin constructores genéricos.» | diseño y desarrollo |
+| los cinco `h2` | «Lo que hay detrás de cada sitio.» · «Así trabajamos un proyecto.» · … | que **dos de los cinco** los nombren |
+| preguntas frecuentes | «¿Cuánto tiempo tarda un sitio web?» | página web — una palabra |
+| formulario | opciones «software a medida / sitio web / e-commerce» | página web — una palabra |
+| `/en/web` | «Real websites. Real code.» | **web design** |
+| `title` | «Desarrollo web a medida \| Link Design Costa Rica» | ✔ ya está bien, no tocar |
+
+**Dosificación**: una vez en un encabezado y una en el cuerpo por familia. La página tiene 1.661
+palabras y no necesita más; repetir de más es el error contrario y se castiga igual.
+
+**Por qué el inglés está en la lista.** Search Console, Costa Rica, 16 meses: de las 20 consultas más
+vistas sin marca, **7 son en inglés** —«web design costa rica», «website design costa rica»— y suman
+~1.000 impresiones con **cero clics**, en posiciones 20 a 55. `/en/web` no dice «web design» ni una
+vez. Es demanda que ya nos ve.
+
+### Nolõ: el mismo texto, tres excepciones
+
+`nolo.ar/web` se midió igual y el mismo día. Es **el mismo texto**: mismo `h1`, los mismos cinco
+`h2`, y los mismos conteos exactos —«páginas web» 0, «sitios web» 4, «empresa» 20—. Sólo difieren el
+`title` (sin país) y la `description`.
+
+Lo que cambia es el **peso de las palabras**, no el diagnóstico:
+
+| | Costa Rica | Argentina |
+|---|---:|---:|
+| nombrar el país | 42,7 % | **9,3 %** |
+| «diseño» | 13,4 % | **33,4 %** (37,1 % de los clics) |
+| «empresa» | 7,4 % | 2,2 % |
+| «agencia» | 2,6 % | **7,0 %** |
+| precio / cotización | 2,3 % | **6,6 %** |
+| «sitios web» — lo que el `h1` dice hoy | 3,3 % | **1,0 %** |
+
+**Decisión: un solo documento para los dos sitios.** Las diferencias son de énfasis y se expresan en
+tres palabras —el país, «agencia» en vez de «empresa», y «diseño» adelantado en el titular—, no en
+otro diagnóstico. El artefacto «Por qué Google baja la nota» quedó con un bloque propio para esto.
+Alinea con el criterio de que los dos sitios se distingan **sólo cuando haga falta**.
+
+> **La ventana argentina es más chica y hay que decirlo.** "Búsqueda #2" tiene **75 días con
+> impresiones contra 414** de "Búsqueda", y 552 clics. Las tres diferencias se verificaron también
+> sobre los **últimos doce meses** de las dos —la única ventana en que ambas corrieron a la vez— y se
+> sostienen: geo 39,7 % contra 11,9 %, agencia 2,4 % contra 6,4 %, empresa 9,1 % contra 1,1 %.
+
+### Estado
+
+- **Artefacto actualizado** (mismo enlace): se quitaron las secciones «Un error en los anuncios de
+  Argentina» —ya corregido— y «Qué pasó en marzo de 2025», se reemplazó la lista de frases por la
+  tabla de familias y se agregaron los seis lugares y el bloque de Nolõ.
+- **Pendiente, sin cambios de código todavía**: escribir el copy. Lo que falta es la redacción, no el
+  diagnóstico ni la priorización.
