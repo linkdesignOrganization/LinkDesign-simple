@@ -38,7 +38,13 @@ El algoritmo de scoring NO cambia (paridad con el CRM intacta); solo cambia el m
 ## 23 jul 2026 — Fase 1b (decisión): revertir "Software" a concordancia amplia con USD 15/día
 
 ### Contexto
-La transición de junio fue doble — keyword a concordancia de frase (med-jun) + recorte de presupuesto 15 → 5 → 5.60 (30 jun / 2 jul) — y rompió la economía de la campaña: CPC 2.56 → 7.36, ratio 0.75 → 0.26, contactos ~10–18/mes → 2/mes, QS 3 pagando posición #1 absoluta el 82% de las veces (vs 38% en la era amplia). El presupuesto diario quedó por debajo de un clic promedio. Auction insights mar–may: mercado fragmentado (LinkDesign líder con 20.12%, nadie más >11.6%, sin plataformas DIY) → el headroom de la amplia era real y barato; budget lost ~37% incluso con 15/día.
+La transición de junio fue doble — keyword a concordancia de frase (med-jun) + recorte de presupuesto 15 → 5 → 5.60 (30 jun / 2 jul) — y rompió la economía de la campaña: CPC 2.56 → 7.36, ratio 0.75 → 0.26, contactos ~10–18/mes → 2/mes, QS 3 pagando posición #1 absoluta el 82% de las veces (vs 38% en la era amplia).
+
+> **Desambiguado el 13 ago 2026** (entrada al final del documento): la transición era doble y acá
+> quedó sin atribuir, pero **la frase corrió en dos tramos con presupuestos distintos** y el CPC alto
+> aparece igual en los dos — 6,13 con 15/día (15–29 jun) y 6,77 con 5,60/día (30 jun–22 jul). La
+> causa era la **concordancia**, no el recorte. La decisión de volver a amplia era correcta; el
+> razonamiento que la sostenía, incompleto. El presupuesto diario quedó por debajo de un clic promedio. Auction insights mar–may: mercado fragmentado (LinkDesign líder con 20.12%, nadie más >11.6%, sin plataformas DIY) → el headroom de la amplia era real y barato; budget lost ~37% incluso con 15/día.
 
 ### Decisión (se aplicó manualmente en la UI: entonces el acceso API era read-only)
 
@@ -64,7 +70,7 @@ Por presupuesto limitado se eligió la opción intermedia de la escalera (25/dí
 - **Software: 5.60 → 15/día** — el dólar marginal fue acá por mejor economía histórica y mayor necesidad de datos.
 
 Umbrales del 13 ago ajustados a estos montos:
-- Búsqueda: contactos esperados **~3/semana** (no 4–5). Extra: si budget lost >35% con mix sano, considerar volver a 15/día.
+- Búsqueda: contactos esperados **~3/semana** (no 4–5). Extra: si budget lost >35% con mix sano, considerar volver a 15/día. → **Evaluado dos veces el 13 ago y descartado ambas** (budget lost 22,6 %, y el histórico muestra que los 15/día casi nunca se gastaban enteros); ver la entrada de la segunda sesión al final.
 - Software: gates sin cambio (20/día solo con budget lost >35% y ratio ≥1.2; tROAS solo con ≥10 contactos/mes).
 
 ## 30 jul 2026 — Atribución del embudo: qué se descartó y por qué
@@ -238,33 +244,54 @@ así que no hay solape posible)— aparece la métrica que importa:
 
 **Costa Rica (Búsqueda + Software), leads serios = formulario, copiar correo o agendar:**
 
+> ⚠️ **Corregida en la sesión posterior del mismo día.** Mayo y junio sobrestiman los leads serios:
+> el reparto de las celdas con más de una conversión estaba mal resuelto. Las cifras buenas están en
+> la entrada del 13 ago (segunda sesión), al final del documento. El deterioro es real pero menor:
+> **×5,2**, no ×7,4.
+
 | Ventana | Costo | Leads serios | **USD por lead serio** | Serios/mes |
 |---|---:|---:|---:|---:|
-| 01–31 may | 616,27 | 18,0 | **34,24** | 17,7 |
-| 01–30 jun | 893,93 | 15,0 | **59,60** | 15,2 |
-| 01–22 jul | 445,04 | 5,0 | **89,01** | 6,9 |
-| 24 jul–12 ago | 509,94 | 2,0 | **254,97** | 3,0 |
+| 01–31 may | 616,27 | ~~18,0~~ → 12–13 | ~~**34,24**~~ → **49,30** | ~~17,7~~ → 12,5 |
+| 01–30 jun | 893,93 | ~~15,0~~ → 11 | ~~**59,60**~~ → **81,27** | ~~15,2~~ → 11,0 |
+| 01–22 jul | 445,04 | 5,0 ✓ | **89,01** → 91,29 | 6,9 |
+| 24 jul–12 ago | 509,94 | 2,0 ✓ | **254,97** ✓ | 3,0 |
 
-El costo por lead serio en Costa Rica se multiplicó por **7,4** desde mayo, y el volumen cayó de
-17,7 a 3,0 por mes. Nada de esto era visible en el criterio del plan, porque la acción `CONTACTO`
-suma WhatsApp y formulario bajo un mismo número.
+El costo por lead serio en Costa Rica se multiplicó por **5,2** desde mayo (no 7,4), y el volumen
+cayó de 12,5 a 3,0 por mes. Nada de esto era visible en el criterio del plan, porque la acción
+`CONTACTO` suma WhatsApp y formulario bajo un mismo número.
 
 ### "Búsqueda" dejó de producir cualquier contacto que no sea WhatsApp
 
+> ⚠️ **Dos correcciones de la sesión posterior del mismo día**, ambas detalladas al final del
+> documento. **(1)** En mayo y junio las columnas están intercambiadas y sobrestiman los serios: los
+> valores crudos son inequívocos (5,00 = WhatsApp en 224 casos; 25,00 = copiar correo en 47), y dicen
+> 6 serios en cada mes, no 10 y 9. **(2)** El "0,3 %" usa como base la tasa de 2026, que fue
+> anormalmente alta (34 % contra 16 % en 2025); con los dos años juntos la racha da **~4 %** —
+> improbable, pero lejos de imposible, y ya hubo dos rachas iguales o más largas sin que se tocara
+> nada.
+
 | Ventana | Contactos | Serios | WhatsApp |
 |---|---:|---:|---:|
-| 01–31 may | 16,33 | 10,00 (61,2 %) | 6,33 |
-| 01–30 jun | 20,00 | 9,00 (45,0 %) | 11,00 |
-| 01–22 jul | 9,00 | 4,00 (44,4 %) | 5,00 |
-| **24 jul–12 ago** | **10,00** | **0,00 (0 %)** | **10,00** |
+| 01–31 may | 16,33 | ~~10,00 (61,2 %)~~ → **6 (37 %)** | ~~6,33~~ → 10,3 |
+| 01–30 jun | 20,00 | ~~9,00 (45,0 %)~~ → **6 (30 %)** | ~~11,00~~ → 14,0 |
+| 01–22 jul | 9,00 | 4,00 (44,4 %) ✓ | 5,00 ✓ |
+| **24 jul–12 ago** | **10,00** | **0,00 (0 %)** ✓ | **10,00** ✓ |
 
 Los diez contactos del período valen entre 8,00 y 9,00: todos clics de WhatsApp, ninguna excepción
-en siete días distintos. Con una tasa base del 44–50 % sostenida durante tres meses, sacar 0 de 10
-tiene una probabilidad menor al 0,3 %. No es ruido.
+en siete días distintos. Con la tasa base corregida de los dos años (22 %), sacar 0 de 10 tiene una
+probabilidad del ~8 %; extendiendo la racha a los 13 contactos seguidos que lleva hasta el 12 de
+agosto, ~4 %. Es señal, pero no es la anomalía extrema que decía la primera lectura.
 
 **No es una falla de medición**, y tampoco es que la página convierta menos: la tasa de contacto por
 clic se mantuvo (12,5 % → 14,6 % → 9,7 % → 13,9 %). Lo que se derrumbó es sólo la **tasa de leads
-serios**: 7,6 % → 6,6 % → 4,3 % → **0,0 %**.
+serios**: ~~7,6 % → 6,6 % → 4,3 % → **0,0 %**~~ → corregida, **4,6 % → 4,4 % → 4,3 % → 0,0 %**.
+
+> ⚠️ La corrección cambia la forma de la caída, y **en contra** de la lectura tranquilizadora: no
+> hubo un declive gradual desde mayo —eso era el artefacto de la partición mal hecha— sino una
+> **meseta estable en ~4,4–4,6 % durante tres meses y un corte seco a cero**. El corte queda más
+> alineado con el 23 de julio de lo que parecía. Los argumentos que igual apuntan a que el recorte no
+> es la causa (el tráfico no bajó, "Software" subió el presupuesto y también cayó) están en la
+> entrada de la segunda sesión, al final.
 
 > **Corrección (misma sesión, tras cruzar con el CRM).** En una primera lectura se tomaron los
 > contactos de 45,00 (30 jul) y 48,00 (5 ago) de la campaña "Software" como formularios, porque
@@ -291,14 +318,21 @@ fino de puja optimiza sobre un supuesto sin evidencia.
 El régimen de puja de AR sólo es comparable desde el 19 jul, así que el período de aprendizaje es su
 primera ventana legible. Va en dirección **contraria** a Costa Rica:
 
+> ⚠️ **Corregida la misma tarde**, por el mismo error de partición que las tablas de Costa Rica: la
+> columna de 24 jul–12 ago sobrecontaba los serios. Los valores crudos de AR en esa ventana son
+> 8,00 (×9) y 9,00 (×2) —WhatsApp modulado— contra 48,00 (×2), 54,00 y una celda de 2 conversiones
+> por 63,00: **4–5 serios, no 11**. Detalle en la bitácora de Nolõ.
+
 | Campaña | USD/lead serio (1–22 jul) | USD/lead serio (24 jul–12 ago) | Serios en el período |
 |---|---:|---:|---:|
-| Búsqueda #2 | 91,09 | **24,85** | 11,00 de 16 contactos (68,8 %) |
-| Software #2 | 68,31 | **57,34** | 4,97 de 8,97 (55,4 %) |
+| Búsqueda #2 | 91,09 | ~~24,85~~ → **60,75** | ~~11,00~~ → **4–5** de 16 contactos (28 %) |
+| Software #2 | 68,31 | ~~57,34~~ → **95,88** | ~~4,97~~ → **3** de 9 (33 %) |
 
-AR consolidado: **34,98 USD** por lead serio contra **254,97** en CR — 7,3× más eficiente — y ~24
-leads serios al mes contra 3,0. Con ratio 1,42, "Búsqueda #2" es la única campaña de la cuenta que
-devuelve más valor del que cuesta. El mix de AR (81,2 %) sí cruza el umbral del 80 %, pero su
+AR consolidado: ~~34,98~~ → **74,73 USD** por lead serio contra **254,97** en CR — **3,4×** más
+eficiente, no 7,3× — y ~11 leads serios al mes contra 3,0. Sigue siendo el mercado que funciona, con
+un margen menor del que decía la primera lectura. Con ratio 1,42 —verificado y **no** afectado por la
+corrección, porque se calcula sobre el valor total—, "Búsqueda #2" es la única campaña de la cuenta
+que devuelve más valor del que cuesta (Software #2 0,75 · Búsqueda 0,59 · Software 0,42). El mix de AR (81,2 %) sí cruza el umbral del 80 %, pero su
 contrafactual aritmético es 80,3 %: también ahí el umbral mide sobre todo la escala nueva.
 
 ### Verificación cruzada con el CRM — y la pregunta abierta, respondida en parte
@@ -456,9 +490,14 @@ desde antes ("crear una conversion action DEDICADA para Form Submit"). Tests: 49
    más probable de este cambio, y silencioso.
 4. **La pregunta del valor relativo ya no está del todo abierta**: el CRM dice que los leads de
    WhatsApp se pierden 14 de 15 veces y que los de formulario/correo cierran mucho mejor. El mapa
-   vigente le da al formulario 3–6× el WhatsApp; la evidencia sugiere **más**. Con dos o tres
-   semanas de datos ya separados por canal se puede recalibrar la escala con números propios en vez
-   de con un supuesto. Ése es el momento de decidir si vale la pena la Data Manager API.
+   vigente le da al formulario 3–6× el WhatsApp; la evidencia sugiere **más**. Con los datos ya
+   separados por canal se puede recalibrar la escala con números propios en vez de con un supuesto.
+   Ése es el momento de decidir si vale la pena la Data Manager API.
+   > **Fecha fijada el 13 ago: 3 sep 2026, no antes.** La tentación es recalibrar apenas haya dos
+   > semanas de datos, pero hacerlo a mitad de la ventana la dejaría con **dos escalas de valor
+   > mezcladas** y el aprendizaje reiniciado por la mitad — exactamente lo que volvió irresoluble el
+   > episodio del 23 de julio. La ventana 13 ago – 3 sep queda con una sola escala; si ese día se
+   > decide recalibrar, el cambio abre su propia ventana.
 5. **La palanca estructural sigue sin tocarse**: `landing page = BELOW_AVERAGE` en las cuatro
    keywords, y 41 % de impresiones perdidas por ranking en "Búsqueda".
 
@@ -469,3 +508,365 @@ desde antes ("crear una conversion action DEDICADA para Form Submit"). Tests: 49
       diferencia que había motivado la nota). De julio en adelante el valor de Scroll iguala la
       cantidad de conversiones todos los días. No hay nada que corregir.
 - [x] **Análisis de "Búsqueda #2"**, pospuesto el 24 jul por datos insuficientes — hecho arriba.
+
+## 13 ago 2026 (segunda sesión) — ¿Búsqueda vuelve a 15/día? No; y sobre el recorte, hay empate
+
+Dos preguntas del usuario, en este orden: si conviene devolver "Búsqueda" a 15/día mirando el
+histórico del año pasado y un plan de palabras clave, y si es coincidencia que los leads serios se
+hayan caído justo cuando el presupuesto bajó de 15 a 10.
+
+Antes de la primera hay que registrar un razonamiento suyo, porque **es correcto y levanta el freno
+que la entrada anterior había puesto**: las ocho acciones nuevas se crearon dentro del mismo objetivo
+de conversión y con los mismos values, así que su efecto esperado sobre la puja es neutro — se hizo
+para *ver* el mix, no para mejorarlo. No habrá nunca un "antes y después" que evaluar. Congelar la
+cuenta esperando ese resultado no compra información. Lo que sí obliga a esperar es otra cosa, y es
+más chica: la verificación de que los ocho labels registran (pendiente 3 de la entrada anterior).
+
+### La estacionalidad no sostiene la subida: agosto es de los meses más altos
+
+Keyword Planner —habilitado con el Basic del 28 jul y usado acá por primera vez— sobre Costa Rica,
+español, 8 keywords del rubro, 24 meses (ago 2024 – jul 2026). Promedio por mes calendario,
+índice 100 = promedio del período:
+
+| mes | índice | | mes | índice |
+|---|---:|---|---|---:|
+| marzo | **130** | | octubre | 98 |
+| **agosto** | **115** | | noviembre | 95 |
+| septiembre | 111 | | junio | 93 |
+| mayo | 110 | | enero | 89 |
+| abril | 109 | | **julio** | **80** |
+| febrero | 100 | | diciembre | 70 |
+
+Agosto es el segundo mes más fuerte y julio el segundo más flojo; en 2025 la demanda pasó de 420 en
+julio a 520 en agosto (**+24 %**). La premisa de la consulta —que el mes en curso fuera bajo— queda
+**refutada, y en la dirección incómoda**: estamos en temporada favorable y la campaña igual no
+produce leads serios.
+
+Dos advertencias de lectura, para quien vuelva a esta tabla: el Planner redondea a decenas y por
+buckets, así que sirve para la forma de la curva y no para niveles; y **la demanda de 2026 corre
+~23 % por debajo de la de 2025** en todo el rubro (jul 2026: 280 contra 420 en jul 2025). Eso no es
+estacional, es del año. Search Console, como fuente independiente, coincide en que agosto 2025 fue el
+pico de impresiones orgánicas del año.
+
+### El dato que cambia la pregunta: los 15/día casi nunca se usaban enteros
+
+Con presupuesto de 15/día el tope mensual es 456 (30,4 × diario). La campaña nunca se acercó:
+
+| período | presup. | gasto real/mes | clics/mes | CPC | leads serios/mes |
+|---|---|---:|---:|---:|---:|
+| feb–may 2026 | 15/día | **308** | 127 | 2,43 | 6,6 |
+| jun–jul 2026 | 15/día | **424** | 135 | 3,13 | 5,0 |
+| ago 2026 (proyectado) | 10/día | **303** | ~105 | 2,81 | 0 en 12 días |
+
+Entre febrero y mayo gastaba 308 al mes con 456 disponibles: **no encontraba dónde poner el resto**.
+Hoy, con 10/día, gasta 303 — cinco dólares menos que cuando tenía 15. Y la única vez que sí usó el
+presupuesto grande (jun–jul), esos 116 dólares extra compraron **9 clics más y 1,6 leads serios
+menos**: se fueron en encarecer el clic (2,43 → 3,13), no en traer volumen.
+
+La correlación entre gasto mensual y leads serios en 2026 es **negativa** (r = −0,42, 7 meses). Con
+esa muestra no es concluyente por sí sola, pero no hay ninguna evidencia de rendimiento creciente al
+gasto, que es lo que haría falta para justificar la subida.
+
+El cuello de botella tampoco cambió: en agosto se pierde **20,2 %** de las impresiones por
+presupuesto y **43,4 %** por ranking. Dos de cada tres impresiones perdidas se pierden por calidad.
+La palanca estructural sigue siendo `landing page = BELOW_AVERAGE` en las cuatro keywords.
+
+**Decisión: no se sube. No se tocó nada.** Las cuatro campañas siguen en Maximizar valor de
+conversión sin target, Búsqueda 10/día, las otras tres 15/día.
+
+### ¿Fue el recorte del 23 jul? La evidencia está dividida
+
+La pregunta se analizó creyendo que la respuesta sería un "no" limpio. **No lo es**, y el dato que lo
+impide apareció al corregir el error de partición: la tasa de leads serios no venía cayendo, estaba
+en meseta (4,6 % → 4,4 % → 4,3 %) y se cortó de golpe en la ventana del cambio.
+
+**A favor de que el recorte tuvo que ver:**
+
+1. **No hay declive previo que explique el cero por inercia.** Tres meses planos y un corte seco.
+2. **11 de los 13 contactos de la racha son posteriores al recorte.**
+3. **Hay un mecanismo concreto y consistente con todo lo observado**: el CPC cayó 22 % (3,29 → 2,55),
+   y un clic más barato suele ser una búsqueda menos competida. El tráfico no bajaría de volumen pero
+   sí de intención — que es exactamente el cuadro.
+
+**En contra:**
+
+4. **El último lead serio fue el 14 de julio; el recorte fue el 23.** La racha arranca el 16, siete
+   días antes. Débil por sí solo: entre el 14 y el 23 hubo apenas **2 contactos**.
+5. **El recorte no redujo el tráfico.**
+
+   | período | presupuesto | clics/día hábil | CPC | gasto/día hábil |
+   |---|---|---:|---:|---:|
+   | 1–22 jul | 15/día | **5,8** | 3,29 | 19,13 |
+   | 23–31 jul | 10/día | **5,9** | 2,55 | 14,91 |
+   | 1–12 ago | 10/día | **5,1** | 2,81 | 14,42 |
+
+   Ojo con cómo se lee esto: **refuta la versión ingenua** de la hipótesis ("menos presupuesto =
+   menos visitas = menos leads"), pero **no la versión del punto 3**, que no necesita que caiga el
+   volumen sino que cambie la composición. Entraron los mismos visitantes por día; la pregunta
+   abierta es si eran *los mismos* visitantes.
+
+6. **"Software" movió el presupuesto en dirección contraria el mismo día y también cayó**: pasó de
+   5,60 a 15/día y sus leads serios por 100 clics fueron de 5,0 a 2,6. Orienta, pero no prueba — tuvo
+   2 y 3 contactos en cada ventana.
+7. **Una racha así ya ocurrió dos veces sin que nadie tocara nada**: 16 contactos seguidos sin lead
+   serio del 16 ene al 4 feb 2025, y 13 del 10 abr al 19 may 2025. La actual es de 13 (16 jul –
+   10 ago). No es un récord.
+8. **2026 venía anormalmente bien**: 34 % de los contactos eran serios contra 16 % en 2025, así que
+   parte de lo que se ve es regresión al nivel normal histórico, no caída bajo el piso.
+
+**Conclusión honesta: no se puede atribuir ni descartar.** El recorte, el ×2 de values y la
+composición del tráfico cambiaron todos el mismo día, y las muestras son de una decena de contactos.
+Lo que sí queda descartado es la explicación por volumen de visitas — y, tras el análisis de términos
+de la sección siguiente, también la de la calidad del clic.
+
+Esto **no cambia la decisión de no subir el presupuesto**: los 15/día casi nunca se gastaban enteros,
+así que devolverlos compra poco en cualquiera de los escenarios.
+
+### Descartado: el "hueco estacional" de mediados de julio a mediados de agosto
+
+Vale la pena dejarlo escrito **para que nadie lo redescubra y se lo crea**, porque parecía sólido.
+
+Recortando la ventana 14 jul – 12 ago, tanto 2025 como 2026 daban 6–7 % de leads serios contra 23 %
+del resto del año, con p = 1,8 %. La explicación era atractiva: vacaciones de medio año, la gente
+sigue consultando informal por WhatsApp pero nadie arranca un proceso formal.
+
+**Es un artefacto de haber elegido la ventana mirando los datos de 2026.** Al mover los bordes se
+desarma:
+
+| ventana | dentro | fuera | p |
+|---|---:|---:|---:|
+| 14/7 – 12/8 | 7 % | 23 % | 1,8 % |
+| 20/7 – 20/8 | 8 % | 23 % | 4,4 % |
+| 10/7 – 10/8 | 14 % | 23 % | 17 % |
+| 1/7 – 15/8 | 17 % | 22 % | 27 % |
+| 1/8 – 31/8 | 15 % | 22 % | 32 % |
+
+Y probado **sólo sobre 2025**, el año sin ningún cambio de presupuesto ni de values, no queda nada
+(p entre 26 % y 66 %). De hecho **agosto 2025 fue el segundo mejor mes del año en calidad de leads**
+(20 %, detrás de febrero con 33 %): sus tres leads serios llegaron el 13, 21 y 27 — justo después del
+corte que la ventana había puesto. No hay temporada baja de leads serios.
+
+### Descartado también: la calidad del clic no se degradó
+
+Era la hipótesis que quedaba viva —CPC −22 % con el mismo tráfico diario podía significar búsquedas
+menos comerciales— y **se midió el mismo día con `search_term_view`**. No se sostiene.
+
+**El mix de términos no empeoró; si acaso mejoró.** Después del recorte aparecen búsquedas con
+intención de compra explícita que antes no estaban: `mantenimiento de paginas web precios`,
+`costos de pagina web`, `website price`, `desarrolladores web costa rica`, `creadores de paginas web`,
+`paginas web para hoteles`. Lo que se fue era ruido: inglés genérico (`best web design 2026`,
+`mini websites`, `booking page design`, `modern design websites`) y marcas de terceros (`cognits`,
+`webstudios`, `beecommerce`, `pagepilo`). Once términos aparecen en ambas ventanas.
+
+**La posición tampoco empeoró** — el clic no se abarató por caer en el ranking:
+
+| ventana | impresiones en el tope | en el tope absoluto | cuota de impresiones |
+|---|---:|---:|---:|
+| A · 1 may–30 jun (15/día) | 78,6 % | 45,6 % | 34,7 % |
+| B · 1–22 jul (15/día) | 81,4 % | 62,4 % | 38,9 % |
+| C · 23 jul–12 ago (10/día) | **82,5 %** | 48,8 % | 35,9 % |
+
+**Cobertura del análisis**: Google oculta términos de bajo volumen, así que `search_term_view` explica
+142 de 268 clics en A, 51 de 93 en B y 43 de 82 en C — **~53 % en las tres**. Es parcial, pero la
+cobertura es pareja entre ventanas, así que la comparación vale.
+
+### Lo que queda abierto
+
+Descartados el volumen de tráfico, la estacionalidad y ahora la calidad del clic, **el problema no
+parece estar en Google Ads**: llega la misma cantidad de gente, buscando lo mismo, desde la misma
+posición. Lo que queda:
+
+- **El comportamiento en el sitio**, que ninguna de estas fuentes ve. Los leads serios de esta
+  campaña eran sobre todo clics de *copiar correo* (value 25 pre-×2), y el último identificable es
+  del **10 de julio**; el del 14 de julio ya es un 24,00 (agendar o formulario). Se verificó que el
+  código no explica nada: `ads.service.ts` no se tocó entre el 28 de junio y el 23 de julio,
+  `emailCopy()` sigue conectado en `contact-footer.component.ts` y `contact-page.ts`, y la modulación
+  tiene piso 0,7 y techo en el base (un copiar correo post-×2 nunca baja de 35, muy por encima del
+  umbral de 21 con que se clasifica). El único cambio funcional del sitio dentro de la ventana C es
+  Angular 22 (6 ago), posterior a los primeros seis contactos sin lead serio: no explica el inicio.
+- **El azar.** Con 11 contactos en la ventana no se distingue una muestra desafortunada de un cambio
+  real. Ninguna conclusión de esta sección aguanta sola.
+- **El 23 de julio cambiaron el presupuesto y los values a la vez.** Con estos datos son
+  inseparables.
+
+Queda anotado, sin más evidencia que la temporal, que **el sospechoso con mejor correlación sigue
+siendo el botón de WhatsApp fijo del 1 de julio** (`d484f10`) — es el único cambio del período que
+altera qué canal elige el visitante, y ahora es el último en pie tras descartar los demás. El
+contraargumento de la entrada anterior sigue valiendo: Nolõ recibió el mismo cambio el mismo día y
+siguió recibiendo formularios.
+
+### El criterio para volver a mirar (≈ 3 sep 2026)
+
+Con dos o tres semanas de acciones separadas ya no hará falta inferir el canal por el value unitario:
+
+- **Leads serios ≥ 4 por cada 100 clics** (el nivel de feb–jun) → subir a 15 tiene sentido: costaría
+  ~60 USD por lead serio adicional, dentro del rango histórico sano.
+- **0–1 por cada 100 clics con visitas normales** → el problema no es el presupuesto ni la fuente del
+  tráfico (ambos ya descartados) sino **el sitio**: ahí la palanca es la jerarquía de contacto de
+  `/web` —WhatsApp y copiar correo aparecen antes del formulario, que pide cinco campos— y no el
+  presupuesto. Subir a 15/día sería un experimento, no una corrección.
+- **Pérdida por presupuesto > 35 %** (hoy 20 %) → recién ahí hay demanda represada de verdad.
+
+Si los leads serios reaparecen con el presupuesto en 10, la hipótesis del recorte muere sola y gratis.
+
+### Nota al margen: dónde sí hay hambre de presupuesto → **ejecutado el mismo día**
+
+La consulta era sobre Costa Rica, pero quedó anotado que **"Búsqueda #2" (Argentina) es la única
+campaña con ratio > 1 (1,42)**, cuesta **60,75 USD por lead serio** (cifra corregida; ver arriba)
+contra los ~106 de Costa Rica, y toca el techo de presupuesto **31 de 40 días**.
+
+Más tarde ese mismo día se analizó a fondo y **se subió de 15 a 20 USD/día por API**. Lo que decidió
+la subida no fue la pérdida de impresiones —métrica poco confiable con Maximizar valor sin target—
+sino que **la correlación entre gasto semanal y leads serios en AR es +0,78, mientras que en "Búsqueda"
+(CR) es −0,42**: los dos mercados responden al dinero al revés. Derivación del número, tabla
+geográfica y la decisión de **no** pasar la keyword argentina a concordancia amplia (tiene QS 7 y el
+CPC más barato de la cuenta: la lógica de "Software" no se transfiere) están en
+`docs/bitacora-ads.md` del repo `Nolo/WEB`.
+
+### Las dos correcciones a la entrada anterior
+
+Ambas anotadas también arriba, junto a las tablas afectadas.
+
+**(1) La partición WhatsApp / leads serios estaba mal en mayo y junio.** Los valores crudos de la
+acción `Contacto` no dejan lugar a duda —5,00 aparece 224 veces (WhatsApp), 25,00 aparece 47 (copiar
+correo), 30,00 siete veces— y el error estaba en repartir las celdas *(día, hora)* con más de una
+conversión: una celda de 2 conversiones y valor 30 es un WhatsApp más un correo, no dos leads serios.
+Resuelto con cotas exactas: con `w` WhatsApps de valor `wa` y `s` serios en el rango `[lo, hi]`,
+`s ≥ (v − wa·c) / (hi − wa)` y `s ≤ (v − wa·c) / (lo − wa)`.
+
+| | serios según la entrada anterior | serios reales |
+|---|---:|---:|
+| mayo ("Búsqueda") | 10,00 | **6** |
+| junio ("Búsqueda") | 9,00 | **6** |
+| julio 1–22 ("Búsqueda") | 4,00 | 4 ✓ |
+| 24 jul–12 ago ("Búsqueda") | 0,00 | 0 ✓ |
+
+La conclusión de fondo **no cambia** —hay deterioro y la ventana final sigue en cero—, pero el nivel
+de leads serios siempre fue más bajo de lo reportado: el costo por lead serio de Costa Rica se
+multiplicó por **5,2**, no por 7,4.
+
+Y hay una consecuencia que **empeora** el cuadro en vez de suavizarlo, así que conviene no pasarla
+por alto: el declive gradual que la entrada anterior describía (7,6 % → 6,6 % → 4,3 % → 0 % de leads
+serios por clic) **no existió**. La serie real es **4,6 % → 4,4 % → 4,3 % → 0 %**: tres meses de
+meseta y un corte seco. El deterioro no venía anunciado desde mayo — empezó de golpe, y empezó cerca
+del 23 de julio. Es el argumento más fuerte que tiene la hipótesis del recorte, y es justo el que
+apareció al corregir el error.
+
+**(2) El "0,3 %" exageraba.** Se calculó contra la tasa base de 2026 (34 %), que fue el mejor año de
+la campaña. Con los dos años juntos (22 %) la racha de 13 contactos da **~4 %**, y con la tasa de
+2025 (16 %) da 11 %. Sigue siendo improbable; deja de ser extraordinario. La lección es general y
+aplica a cualquier cuenta: **antes de declarar que algo se rompió, comprobar contra qué tasa base se
+está midiendo y si esa base es representativa o una racha buena.**
+
+### Trampa metodológica, para no repetirla
+
+Las dos correcciones y el hueco descartado comparten origen: conclusiones sacadas de una ventana
+elegida después de ver los datos, o de una partición cuyo caso ambiguo nunca se miró de cerca. El
+antídoto que funcionó acá fue barato — mover los bordes de la ventana y repetir la prueba en un año
+de control — y debería correrse **siempre** que un patrón aparezca justo donde se lo estaba buscando.
+
+## 13 ago 2026 (segunda sesión, cont.) — "Software": la amplia se queda, y el presupuesto también
+
+Dos preguntas sobre la campaña "Software" (Costa Rica), a raíz de un costo que se siente a diario:
+desde que la keyword volvió a concordancia amplia el 23 de julio, el informe de términos se llena de
+nombres de empresas y de productos de software, que hay que ir negativizando todos los días.
+¿Conviene volver a frase? ¿Y tocar los 15/día?
+
+**Ninguna de las dos. Se dejó la campaña como estaba.**
+
+### El experimento ya se hizo, y ahora se puede aislar
+
+La frase corrió del 15 de junio al 22 de julio, y lo hizo en **dos tramos con presupuestos
+distintos**. Eso permite separar lo que la entrada del 23 jul había dejado confundido:
+
+| régimen de la keyword | presupuesto | clics | **CPC** | costo |
+|---|---|---:|---:|---:|
+| Amplia (1 feb – 14 jun) | 15/día | 516 | **2,65** | 1 365,69 |
+| Frase (15 – 29 jun) | 15/día | 35 | **6,13** | 214,52 |
+| Frase (30 jun – 22 jul) | 5,60/día | 27 | **6,77** | 182,90 |
+| Amplia (23 jul – 12 ago) | 15/día | 73 | **4,13** | 301,59 |
+
+**El CPC de la frase fue igual de alto con el presupuesto entero que con el recortado.** La causa era
+la concordancia, no el recorte — lo que valida la Fase 1b del 23 jul, aunque por una razón distinta
+de la que se anotó entonces. Volver a frase duplicaría el CPC otra vez.
+
+El desenlace apunta igual, con la reserva de que las muestras son mínimas (2 leads serios en cada
+régimen nuevo): **57 USD por lead serio** en la amplia vieja, **199** en la frase, **151** en la
+amplia actual. Lo robusto acá es el CPC, que se mide sobre cientos de clics; el USD/serio, no.
+
+### El ruido es real y está bien medido, pero cuesta menos que la cura
+
+Gasto en términos que no contienen **ninguna** palabra del rubro (software, desarrollo, empresa,
+sistema, aplicación, ERP, consultora…):
+
+| régimen | términos así | % del gasto |
+|---|---:|---:|
+| Amplia vieja | 83 | **35,3 %** |
+| Frase | 2 | **6,9 %** |
+| Amplia actual | 9 | **18,3 %** |
+
+Las negativas acumuladas ya cortaron el ruido a la mitad respecto de la era amplia anterior. Contando
+sólo las marcas inequívocas de la ventana actual —`customertimes`, `scalable systems`, `kinamic`,
+`navisite costa rica`, `4waystech`, `belltech`, `netweb`— son 23,70 USD en 21 días: **~60 USD/mes**
+proyectados sobre el tope de 456.
+
+El costo de eliminarlo, con esos mismos 456 USD/mes:
+
+- **Amplia** (CPC 4,13): 110 clics, menos 13 % de ruido → **96 clics útiles**
+- **Frase** (CPC 6,41): 71 clics, menos 7 % de ruido → **66 clics útiles**
+
+Pasar a frase ahorra 60 USD/mes de ruido y cuesta 39 clics/mes, que al CPC de la amplia valen
+~161 USD. **El remedio cuesta unas 2,7 veces la enfermedad.**
+
+**Lo que ningún número de Ads muestra es el tiempo**, y es el costo que de verdad se siente: la
+amplia genera **~12 términos nuevos por día** para revisar contra ~2 de la frase (245 términos con
+impresión en 21 días de amplia; 82 en 38 días de frase). Si ese trabajo llegara a pesar más que los
+~100 USD/mes de diferencia, cambiar sería legítimo — pero es una decisión sobre el tiempo propio, no
+sobre el rendimiento de la campaña, y conviene tomarla sabiendo cuál de las dos cosas se está
+comprando.
+
+### El presupuesto: "Software" es el caso inverso a "Búsqueda"
+
+Acá el cuello de botella **sí es la plata**: la campaña gasta todo lo que se le da (15,08/día
+calendario en agosto contra un tope de 15) y pierde **47,6 %** de las impresiones por presupuesto
+contra sólo **20,3 %** por ranking. Es exactamente al revés que en "Búsqueda" (20,2 % vs 43,4 %).
+
+Aun así se deja en 15, por tres razones:
+
+1. **La keyword se recreó el 23 de julio** — el cambio de concordancia es un borrar-y-crear interno,
+   así que QS e historial arrancaron de cero. Sigue en **QS 3**, y el CPC de la amplia nueva (4,13)
+   todavía no bajó al de la amplia vieja (2,65). Si va a bajar, subir ahora es pagar el aprendizaje
+   al precio caro.
+2. **Entrega 151 USD por lead serio contra 57 de su propio histórico**: poner más dinero en algo que
+   rinde 2,6× peor amplifica la pérdida.
+3. **El gate del 23 jul sigue sin cumplirse**: pedía pérdida por presupuesto >35 % **y** ratio ≥1,2.
+   Lo primero se cumple (47,6 %), lo segundo no (0,42 — y ese 0,42 ya viene inflado por el ×2 de
+   values, así que en la escala vieja es ~0,21).
+
+Bajarlo tampoco: cortaría el re-aprendizaje en curso.
+
+### El criterio para volver a mirar (≈ 3 sep 2026, junto con "Búsqueda")
+
+Cuando la amplia tenga seis semanas de rodaje:
+
+- **CPC ≤ 3** → el QS se está recuperando y subir a 20/día tiene sentido, porque la demanda represada
+  es real (47 % de impresiones perdidas por presupuesto).
+- **CPC 4+ con QS todavía en 3** → el problema es la calidad de la keyword y la palanca es la página
+  de destino, no el presupuesto. Es el mismo `landing page = BELOW_AVERAGE` que arrastran las cuatro.
+
+### Hallazgos laterales sobre las negativas
+
+Se revisaron de paso; **no requieren acción** y la decisión de dejarlas como están es del usuario.
+Quedan anotados para no volver a investigarlos:
+
+- **18 946 negativas activas a nivel de grupo** en la cuenta (17 833 amplias, 729 de frase, 384
+  exactas). Las de los últimos 30 días se aplican correctamente y en paralelo a los cuatro grupos
+  activos (237 · 235 · 235 · 235), así que **el trabajo diario no se está desperdiciando**. El límite
+  de Google es de 10 000 negativas por campaña; al ritmo actual (~235/mes por campaña) hay margen de
+  años, pero conviene saber que existe.
+- Las 1 551 negativas que cuelgan de `Software / Grupo de anuncios 1` **no filtran nada** — ese grupo
+  está ELIMINADO. Son históricas, no trabajo reciente.
+- En el grupo activo `Software / Software` hay negativas **amplias de una sola palabra**: `costo`,
+  `consultoria`, `crear`, `hacer`, `como`, `programa`, `algo`. Una negativa amplia de una palabra
+  bloquea toda búsqueda que la contenga, así que `costo` alcanza a "costo de desarrollo de software"
+  y `consultoria` a "consultoría de software". Anotado sin recomendación.
