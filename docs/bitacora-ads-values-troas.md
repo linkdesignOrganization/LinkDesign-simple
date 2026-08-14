@@ -1312,3 +1312,75 @@ alrededor del 4 de septiembre**, al lado de la revisión ya agendada del 3.
 **La nota de página de destino se va a poder leer limpia**, porque es lo único que este cambio toca.
 Lo que queda mezclado es el efecto en leads: ahí se superponen las conversiones separadas del 13 de
 agosto, las extensiones del 14 y este copy.
+
+## 14 ago 2026 (cierre) — Los videos están al límite, y los botones se arreglaron sin tocar el diseño
+
+Dos cabos del diagnóstico del 13 ago, cerrados con medición.
+
+### Recodificar los clips del portafolio: DESCARTADO, no hay margen
+
+Robert lo analizó y los números lo confirman. Medido con `ffprobe` sobre los archivos en producción:
+
+| clip | peso | resolución | bitrate |
+|---|---:|---|---:|
+| hesa-mobile / -web | 772 KB | 720×384 | **362 kbps** |
+| imperio-mobile / -web | 957 KB | 720×386 | **309 kbps** |
+| cefsa-mobile / -web | 701 KB | 720×384 | **356 kbps** |
+
+A 310–360 kbps ya está muy comprimido: bajar más se ve. **El pendiente se cierra.**
+
+> **Corrección de un dato que yo había dado mal.** Al decir que en 3G harían falta «diez pantallas de
+> anticipación» usé un promedio de todos los `.mp4`, inflado por los del encabezado. **Los del
+> portafolio pesan 700–960 KB**, o sea 3,5–4,8 s en 3G. Alcanzaría con subir el `rootMargin` de la
+> precarga de 1,5 a **~3,5 pantallas** — un cambio de una línea, no un trabajo de medios. Sin hacer:
+> el portafolio sigue a ocho pantallas del inicio, así que no afectaría a quien no baja.
+
+### Dónde quedó el peso: el encabezado, no el portafolio
+
+Son los únicos clips que se descargan siempre (6,4 MB), y **no tienen variante móvil**:
+
+| | peso | resolución | bitrate |
+|---|---:|---|---:|
+| hero/hesa | 2.950 KB | 1280×682 | **1.392 kbps** |
+| hero/faciosycanas | 2.031 KB | 1280×682 | 995 kbps |
+| hero/aaec | 1.567 KB | 1280×682 | 817 kbps |
+
+**No están mal comprimidos**: por bits/píxel tienen la misma calidad que los del portafolio. Su peso
+viene de tener 2,8 veces más píxeles. Por eso bajarles el bitrate se vería, y bajarles la resolución
+en móvil no debería:
+
+- en un Pixel 7 (DPR 3) el video se pinta a **1068×666 físicos** y el archivo trae 1280 → sobra 20 %
+- en un monitor de 1440 (DPR 1) se pinta a **689×430** → sobra 86 %
+- **ya se recorta por CSS**: `object-fit: cover` con caja 1,6:1 sobre un video 1,88:1
+
+> **El estándar que ya está aprobado**, y que hace pensar que una variante móvil se vería bien: los
+> clips del portafolio son **720×384 y se pintan a 1074×572** en ese mismo teléfono —estirados un
+> 49 %— y están aprobados. Un hero a 720–1024 se pinta al mismo tamaño en la misma pantalla.
+> **Decisión pendiente de Robert**: pasaría de 6,4 MB a ~2,3 MB. Se propuso resolverlo mirando una
+> comparación lado a lado, no por cálculo.
+
+**Hallazgo lateral:** los archivos `-mobile` y `-web` del portafolio son **idénticos** —mismo tamaño
+byte a byte, misma resolución, mismo bitrate— en los tres pares verificados. No cuesta rendimiento
+(sólo se descarga uno), pero la variante móvil no está haciendo nada.
+
+### Botones de menos de 44 px: 8 corregidos sin cambiar un píxel
+
+De 27 elementos tocables por debajo de 44 px se corrigieron **sólo los que no se ven crecer**: los
+que no tienen fondo ni borde propio y tienen hueco libre alrededor. La técnica es `padding` +
+`margin` negativo del mismo valor, bajo `@media (pointer: coarse)`: el área táctil crece, el elemento
+ocupa el mismo lugar y no hay fondo que delate el padding.
+
+`.brand` (26→44) · `.ind-card__title-link` ×5 (25→45) · `.cf-copy` (26→44×44) · `.cf-legal__link`
+(18→44). En producción los tocables chicos bajaron de 27 a **21** acá y a **20** en Nolõ.
+
+> **Verificado píxel a píxel** contra producción, móvil 390×844, con videos y animaciones congelados:
+> industrias **0** diferencias, pie **0**, encabezado **97 de 1.316.640 (0,007 %)** y esos 97 caen
+> dentro del video del portafolio, que es contenido en movimiento.
+
+**Queda fuera a propósito** todo lo que se vería: los 7 chips del formulario (27 px con fondo; llegar
+a 44 los engorda un 63 %), el selector ES/EN, los 4 campos, el botón «Enviar mensaje» —le faltan 3 px
+pero tiene fondo—, las pestañas de tipos de proyecto (comparten clase con la activa, que sí tiene
+fondo) y hasta la **separación** entre chips, que bastaría con el `gap`.
+
+> **La regla, y vale para lo que venga:** no hay autorización para cambiar el aspecto visual. Un
+> arreglo de accesibilidad o de SEO que altere el diseño se propone y se espera; no se aplica.
