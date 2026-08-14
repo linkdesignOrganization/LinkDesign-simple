@@ -870,3 +870,218 @@ Quedan anotados para no volver a investigarlos:
   `consultoria`, `crear`, `hacer`, `como`, `programa`, `algo`. Una negativa amplia de una palabra
   bloquea toda búsqueda que la contenga, así que `costo` alcanza a "costo de desarrollo de software"
   y `consultoria` a "consultoría de software". Anotado sin recomendación.
+
+## 14 ago 2026 — Las cuatro campañas anunciaban webs, y la página de destino no dice lo que se busca
+
+El origen es argentino: revisando por qué el clic de "Software #2" (Nolõ) está caro aparecieron dos
+cosas que **no son de Nolõ sino de esta cuenta entera**, y que afectan igual a Costa Rica. El detalle
+del análisis argentino está en `docs/bitacora-ads.md` del repo `nolo-simple`; acá va sólo lo de acá.
+
+### Las extensiones de las cuatro campañas eran de sitios web
+
+Los cinco textos destacados y el fragmento estructurado no eran copias parecidas: eran **los mismos
+assets**, compartidos por las cuatro campañas — IDs `183496529445`, `183496529448`, `183496529451`,
+`183496529454`, `196282085212` y `183496613409`. O sea que **"Software" venía anunciando**
+*«Expertos en servicios web»*, *«Sitios web inigualables»*, *«Últimas tecnologías web»*,
+*«Presencia digital»* y *«Servicios: Desarrollo de sitios web, Actualización digital…»* a gente que
+busca software empresarial.
+
+Se descubrió al ir a copiar de "Software" (CR) unas extensiones propias de software para Nolõ: no
+había nada que copiar, el error era el mismo en los dos mercados.
+
+Ejecutado sobre **"Software" (CR)** el 14 ago, por API, con `validate_only` previo y verificación
+posterior contra el servidor:
+
+| | |
+|---|---|
+| **Se quitó** | los 5 textos destacados de web · el fragmento «Servicios: Desarrollo de sitios web…» |
+| **Se agregó** | 5 textos destacados de software · fragmentos «Tipos» y «Servicios» propios |
+
+Los assets nuevos se crearon para Nolõ y se comparten con esta campaña: son sustantivos genéricos,
+sin país ni voseo, así que sirven en los dos mercados. **"Búsqueda" no se tocó** — ahí los textos de
+web son los correctos. Estado final de las cuatro:
+
+| campaña | textos destacados | fragmentos |
+|---|---|---|
+| Búsqueda · Búsqueda #2 | los 5 de web | **Servicios**: Desarrollo de sitios web, Actualización digital, Asesoría tecnológica, Desarrollo sin plantillas |
+| **Software** · Software #2 | Software a medida · CRM, ERP e inventario · Integraciones y APIs · Sistemas internos · Código propio | **Servicios**: Desarrollo a medida, Aplicaciones internas, Automatización con IA, Integración de sistemas, Software de gestión, Desarrollo backend · **Tipos**: CRM, ERP, Inventario, E-commerce, Ticketing, Reservas |
+
+Los **sitelinks no se tocaron**: ya eran propios de software y correctos («Sistemas a medida»,
+«Proceso de trabajo», «Casos y demos», «Desarrollo Corporativo», «Hable con un Ingeniero»).
+
+> **Por qué se le agregaron los de software y no se lo dejó pelado.** Quitar los de web dejaba a
+> "Software" (CR) **sin ningún texto destacado**, que es peor que tenerlos equivocados. Fue criterio
+> propio dentro de la orden de limpieza; se revierte quitando la asociación, que no borra el asset.
+
+Cada valor del fragmento «Servicios» está respaldado por la página `/software`, que es idéntica en
+los dos sitios — el criterio fue no listar servicios que no se prestan. Se descartó
+«Dashboards y reporting» justamente por eso: **está comentado en `app.routes.ts`** desde el
+15 jun 2026 y no se muestra.
+
+### El criterio del 3 sep decía «la palanca es la página de destino». Acá está, medido
+
+La entrada anterior anticipaba que si el CPC de "Software" seguía en 4+ con QS 3, el problema sería
+la landing y no el presupuesto. Esto lo vuelve concreto. Se descargó `linkdesign.cr/software` y se
+contaron apariciones en el texto real (1.511 palabras):
+
+| frase | apariciones |
+|---|---:|
+| «empresa de desarrollo de software» — **la keyword de "Software"** | **0** |
+| «desarrollo de software» | **0** |
+| «empresa de software» | **0** |
+| «software a medida» | 2 |
+
+El `h1` dice *«Software construido alrededor de tu operación.»* y el `title`, *«Software a medida para
+empresas | Link Design CR»*. **Alguien busca «empresa de desarrollo de software», hace clic, y
+aterriza en una página que nunca usa esa expresión.**
+
+Y el patrón es total: **`linkdesign.cr/web` no contiene «desarrollo de sitios web»** (0 apariciones),
+que es la keyword de "Búsqueda". Nolõ repite ambos casos idénticos, porque es la misma arquitectura.
+
+Esto explica de forma directa el `landing page = BELOW_AVERAGE` que arrastran las cuatro campañas, y
+que es **la única de las tres dimensiones que está floja**:
+
+| campaña | keyword | concordancia | QS | CTR esperado | anuncio | página destino |
+|---|---|---|---:|---|---|---|
+| Búsqueda #2 (AR) | desarrollo de sitios web | frase | 7 | Por encima | Por encima | **Por debajo** |
+| **Búsqueda (CR)** | desarrollo de sitios web | amplia | 5 | Promedio | Por encima | **Por debajo** |
+| Software #2 (AR) | empresa de desarrollo de software | frase | 5 | Promedio | Por encima | **Por debajo** |
+| **Software (CR)** | empresa de desarrollo de software | amplia | 3 | Por debajo | Por encima | **Por debajo** |
+
+No es *keyword stuffing* lo que falta: es que el texto habla en el idioma del estudio
+(«construido alrededor de tu operación») y no en el del cliente («empresa de desarrollo de
+software»). **Pendiente de decisión**: reescribir la apertura de `/software` —`h1`, `title` y los
+primeros párrafos— para que use el lenguaje de la búsqueda. Es lo único que toca la nota floja de las
+cuatro campañas a la vez, y hay que decidir si se hace en los dos sitios o sólo en uno.
+
+> **Sobre la velocidad — corrección del mismo día.** Primero se anotó que `/software` pesaba «361 KB
+> y no parece ser el problema». **Estaba mal**: ese script sólo seguía `<script src>` y
+> `<link rel=stylesheet>`, no los medios. Contando lo que el HTML referencia,
+> `linkdesign.cr/software` arrastra **16,8 MB en 9 vídeos** y `linkdesign.cr/web`, **37,9 MB en 18**.
+>
+> **El diagnóstico del 13 ago ya lo tenía bien medido** (artefacto «Por qué Google baja la nota»,
+> con carga real de navegador): **27,3 MB y 72 peticiones en `linkdesign.cr/web`**, de los cuales
+> 18,5 MB son vídeos del portafolio que se precargan siempre —`preloadVideos()` en
+> `portfolio-table.component.ts:652` inyecta un `<link rel="prefetch">` por proyecto— y 6,5 MB los
+> del encabezado. Referenciado no es descargado, así que las cifras de acá son un techo y aquéllas
+> el consumo real. **Vale la conclusión de aquel documento: el peso es un agravante real pero no la
+> causa raíz** — la nota ya estaba baja cuando la página era liviana.
+
+### Dos datos laterales de "Software" (CR), anotados sin acción
+
+- **El móvil no está roto acá.** 1 jun – 13 ago: escritorio CTR 8,70 % con CPC 5,62; móvil CTR 8,30 %
+  con CPC **3,42**. El móvil es más barato y convierte a clic casi igual. En "Software #2" pasa lo
+  contrario y con fuerza (5,71 % contra 3,32 %), así que no es un problema de la plantilla compartida.
+- **Ventana comparable 24 jul – 13 ago**, para tener las cuatro lado a lado: Búsqueda 214,30 USD ·
+  CPC 2,68 · ratio 0,61 || Software 328,79 · CPC 4,22 · ratio 0,40 || Software #2 307,28 · CPC 4,27 ·
+  ratio 0,70 || Búsqueda #2 288,87 · CPC 1,90 · ratio **1,35**.
+
+### Trampa de consulta que produjo un falso positivo
+
+Se reportó que "Búsqueda #2" tenía dos nombres de negocio activos, `LinkDesign AR` y `Nolõ`. **Era
+falso.** Hay dos campañas con ese nombre: `22111386447` está **REMOVED** y es la que tiene
+`LinkDesign AR`; la que corre es `23949699115` y siempre tuvo sólo `Nolõ`.
+
+La consulta filtraba por `campaign_asset.status` pero **no por `campaign.status`**. Regla para la
+próxima, y vale para cualquier consulta de `campaign_asset` en esta cuenta, que arrastra campañas
+eliminadas: **filtrar por los dos estados**, el de la asociación y el de la campaña. Verificado: las
+cuatro campañas activas firman correcto — `Link Design` en las de Costa Rica, `Nolõ` en las
+argentinas.
+
+### Una corrección de método que vale para las dos cuentas
+
+Las decisiones geográficas y de segmentación **no se pueden tomar con el ratio valor/costo**: los
+scrolls son la enorme mayoría de las conversiones y valen 1 punto cada uno, así que dominan el ratio
+y aplastan la señal de los contactos. En Nolõ esto invirtió la lectura de un bloque entero (detalle
+en la bitácora de `nolo-simple`). **Para ese tipo de decisión hay que contar contactos por clic**, y
+mirar aparte cuántos de esos contactos son leads serios.
+
+### Qué cubre de verdad cada keyword — y por qué NO se tocan
+
+Vino de una propuesta equivocada que conviene dejar escrita para no repetirla. Mirando el Keyword
+Planner se armó una tabla que decía que las campañas pujaban «por la palabra menos buscada de su
+familia»: `desarrollo de sitios web` tiene **10 búsquedas/mes en Costa Rica** contra **880** de
+`paginas web` y **590** de `sitios web`. La conclusión aparente era cambiar las keywords.
+
+**Robert la objetó y tenía razón.** Sus dos argumentos —que las genéricas traerían basura, y que la
+amplia ya debería estar cubriéndolas— se confirmaron los dos.
+
+> **La regla, para no volver a caer**: el volumen del Keyword Planner mide búsquedas **exactas** de
+> esa cadena. En amplia el texto de la keyword es apenas una semilla, no un límite. **Comparar
+> volúmenes nominales de keywords que no corren en concordancia exacta no significa nada sobre el
+> alcance real.**
+
+**1 · La amplia ya abarca esas búsquedas, y de forma dominante.** Repartiendo todos los términos de
+2026 por familia (1 ene – 13 ago):
+
+| Búsqueda (CR) · amplia `desarrollo de sitios web` | % impresiones | % gasto |
+|---|---:|---:|
+| **páginas web** | 23,3 % | **44,7 %** |
+| diseño web | 21,9 % | 22,9 % |
+| desarrollo web | 14,1 % | 20,3 % |
+| landing page | 7,5 % | 1,5 % |
+| sitios web | 4,2 % | 4,8 % |
+| e-commerce / tienda | 3,5 % | 2,7 % |
+| *la keyword literal* | *0,1 %* | *0,9 %* |
+| fuera de toda familia | 34,7 % | 20,0 % |
+
+| Software (CR) · amplia `empresa de desarrollo de software` | % impresiones | % gasto |
+|---|---:|---:|
+| empresa(s) de software | 7,4 % | **25,0 %** |
+| desarrollo de software | 6,1 % | 21,1 % |
+| **empresa tecnológica / informática / TI** | 13,9 % | **18,1 %** |
+| ERP / CRM / sistemas | 14,1 % | 7,2 % |
+| apps / aplicaciones | 2,9 % | 3,5 % |
+| *la keyword literal* | *0,2 %* | *0,5 %* |
+| fuera de toda familia | 59,2 % | **39,6 %** |
+
+**La keyword literal genera el 0,1 % de las impresiones de "Búsqueda".** Agregar `paginas web` sería
+agregar algo que ya llega —y que ya se lleva el 44,7 % del gasto—, compitiendo contra sí misma.
+
+**2 · Y las genéricas sí traerían basura.** El gasto fuera de cualquier familia relevante, en las
+cuatro campañas de la cuenta:
+
+| campaña | concordancia | gasto fuera de familia |
+|---|---|---:|
+| Búsqueda #2 (AR) | frase | 4,6 % |
+| **Búsqueda (CR)** | **amplia** | **20,0 %** |
+| Software #2 (AR) | frase | 20,9 % |
+| **Software (CR)** | **amplia** | **39,6 %** |
+
+En "Software" **cuatro de cada diez dólares** se van a términos fuera de familia — `scalable systems`,
+`ti recursos`, `navisite costa rica`, `drago's house`. Coincide en orden de magnitud con el 35,3 % que
+midió la entrada del 13 ago con otro criterio, y **abrir más la concordancia lo agravaría**.
+
+> **Dato lateral que refuerza lo decidido para Argentina**: en `/web` la frase filtra **cuatro veces
+> mejor** que la amplia (4,6 % contra 20,0 % de ruido) capturando exactamente las mismas familias.
+> Acá no cambia nada —el 13 ago ya se midió que volver a frase en "Software" cuesta 2,7 veces más de
+> lo que ahorra— pero es una vía independiente que llega a la misma conclusión de aquel día.
+
+**Lo que sí cambia: el insumo para reescribir el copy.** La lista de frases no debe salir del Keyword
+Planner sino de **lo que la gente escribió y por lo que ya se pagó**. Así el argumento del apartado
+anterior se vuelve mucho más filoso:
+
+> `linkdesign.cr/web` está escrita en el vocabulario de **«sitios web», que es el 4,8 % del gasto**.
+> El **44,7 %** se va en gente que escribió «páginas web» — palabra que la página no dice nunca.
+
+Orden real por gasto, para cuando se escriba el copy:
+
+- **`/web`**: páginas web (44,7 %) › diseño web (22,9 %) › desarrollo web (20,3 %) › sitios web (4,8 %)
+- **`/software`**: empresas de software (25,0 %) › desarrollo de software (21,1 %) ›
+  **empresa tecnológica / de informática / de TI (18,1 %)** › ERP-CRM-sistemas (7,2 %)
+
+Esa tercera familia de `/software` **es propia de Costa Rica**: en Argentina casi no aparece. Los dos
+mercados piden copy distinto, y allá además «diseño web» le gana a «páginas web», al revés que acá.
+
+**Cuota de impresiones** (1 jun – 13 ago, ponderada por impresiones), que ubica el cuello de botella
+de cada una:
+
+| campaña | cuota | perdida por presupuesto | perdida por ranking |
+|---|---:|---:|---:|
+| Búsqueda (CR) | 36,6 % | 27,1 % | **36,3 %** |
+| Software (CR) | 32,2 % | 36,7 % | 31,1 % |
+| Búsqueda #2 (AR) | 45,3 % | 37,4 % | 17,3 % |
+| Software #2 (AR) | 58,5 % | 32,3 % | 9,2 % |
+
+**"Búsqueda" es la que más impresiones pierde por ranking de las cuatro (36,3 %)**, y eso no se
+arregla con keywords nuevas: es calidad. Otra vez la página de destino.
