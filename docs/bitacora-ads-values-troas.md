@@ -1198,8 +1198,16 @@ Alinea con el criterio de que los dos sitios se distingan **sólo cuando haga fa
 
 ### Estado
 
-- **Artefacto actualizado** (mismo enlace): se quitaron las secciones «Un error en los anuncios de
-  Argentina» —ya corregido— y «Qué pasó en marzo de 2025», se reemplazó la lista de frases por la
-  tabla de familias y se agregaron los seis lugares y el bloque de Nolõ.
+- **Artefacto actualizado** (mismo enlace). Quedó reducido a diagnóstico puro, por decisión de
+  Robert para ordenar las ideas: el histórico de 20 meses y las tres causas, con **todo el material
+  de copy dentro de la primera causa** —la tabla de familias, los seis lugares y el bloque de Nolõ—.
+  Se quitaron «Un error en los anuncios de Argentina» (ya corregido), «Qué pasó en marzo de 2025»,
+  «Lo que está bien», «Por dónde empezaría» y **toda la comparación con el sitio viejo**
+  (`LinkDesign2.0` / `/corporate`).
+  > Lo que ya no vive en el documento y conviene no perder de vista: que arreglar el peso **por sí
+  > solo probablemente no mueva la nota**, que Google **tarda dos o tres semanas** en recalcularla y
+  > conviene no encimarla con el cambio de conversiones en curso, y que `/web` no tiene teléfono
+  > escrito ni cédula jurídica. La prueba histórica que daba el sitio viejo —mismo patrón de copy,
+  > misma nota, cuatro años antes— la cubre ahora, por otra vía, el sitio gemelo.
 - **Pendiente, sin cambios de código todavía**: escribir el copy. Lo que falta es la redacción, no el
   diagnóstico ni la priorización.
