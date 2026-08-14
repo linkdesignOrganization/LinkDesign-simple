@@ -8,15 +8,31 @@ declare var gtag: Function;
 
 /**
  * Conversion actions de Google Ads (cuenta AW-16767245191).
- * Mismos send_to que el sitio en producción (LinkDesign2.0).
  *
- * En la cuenta solo existen DOS acciones de conversión que vienen del sitio:
- *  - CONTACTO (qSMFCN2ek…): agrupa WhatsApp, copiar correo, agendar reunión y formulario (value variable).
- *  - SCROLL   (qZoeCOfls…): scroll al 50% de la página (value 1).
+ * Un canal, una acción. Hasta el 13 ago 2026 los cuatro canales de contacto
+ * compartían una sola acción ("Contacto", qSMFCN2ek…), así que ningún informe
+ * podía decir si un contacto era un WhatsApp o un formulario — ni Smart Bidding
+ * distinguirlos al pujar. La revisión de ese día encontró que la campaña
+ * "Búsqueda" llevaba veinte días produciendo WhatsApp y nada más, invisible bajo
+ * el número agregado. Ver docs/bitacora-ads-values-troas.md.
+ *
+ * Las cuatro nuevas son CONTACT/WEBSITE igual que la vieja, y eso NO es
+ * cosmético: "Búsqueda" y "Software" tienen campaign_conversion_goal =
+ * CONTACT/WEBSITE, así que otra categoría las habría dejado fuera de la puja sin
+ * ningún aviso.
+ *
+ * "Contacto" queda ENABLED en la cuenta pero ya no se dispara desde acá: conserva
+ * su histórico en los informes y deja de acumular.
  */
 export const ADS_CONVERSIONS = {
-  /** "Contacto" en Ads: WhatsApp, copiar correo, agendar reunión y formulario. */
-  CONTACTO: 'AW-16767245191/qSMFCN2ek-YZEIe3n7s-',
+  /** "Contacto WhatsApp": click en WhatsApp (value base 10, modulado). */
+  CONTACTO_WHATSAPP: 'AW-16767245191/PFEECM2UquEcEIe3n7s-',
+  /** "Contacto Correo": click en copiar el correo (value base 50, modulado). */
+  CONTACTO_CORREO: 'AW-16767245191/U_F7CMiVquEcEIe3n7s-',
+  /** "Contacto Reunión": click en agendar reunión (value base 60, modulado). */
+  CONTACTO_REUNION: 'AW-16767245191/WVgrCMuVquEcEIe3n7s-',
+  /** "Contacto Formulario": envío del formulario (value por scoring; lo dispara LeadFormService). */
+  CONTACTO_FORMULARIO: 'AW-16767245191/VGKrCL6XquEcEIe3n7s-',
   /** "Scroll" en Ads: scroll al 50% de la página. */
   SCROLL: 'AW-16767245191/qZoeCOfls-oZEIe3n7s-'
 } as const;
@@ -45,7 +61,7 @@ export const CONTACTO_BASE_VALUE = {
  * sesión que usa el lead scoring, normalizada a un factor 0.7–1.0. Así Smart
  * Bidding distingue un click de una sesión profunda de uno de un rebote.
  * (El form de leads dispara su conversión desde LeadFormService, con value por
- * scoring completo, también a CONTACTO.)
+ * scoring completo, a CONTACTO_FORMULARIO.)
  *
  * No-op seguro si gtag no está disponible (SSR, dev sin script, ad-blocker).
  */
@@ -80,19 +96,28 @@ export class AdsService {
   /** Click en WhatsApp (value base 10, modulado por calidad de sesión). */
   whatsapp(): void {
     this.clicks.record('WhatsApp');
-    this.fireConversion(ADS_CONVERSIONS.CONTACTO, this.modulatedValue(CONTACTO_BASE_VALUE.whatsapp));
+    this.fireConversion(
+      ADS_CONVERSIONS.CONTACTO_WHATSAPP,
+      this.modulatedValue(CONTACTO_BASE_VALUE.whatsapp)
+    );
   }
 
   /** Copiar el correo (value base 50, modulado por calidad de sesión). */
   emailCopy(): void {
     this.clicks.record('Copiar correo');
-    this.fireConversion(ADS_CONVERSIONS.CONTACTO, this.modulatedValue(CONTACTO_BASE_VALUE.emailCopy));
+    this.fireConversion(
+      ADS_CONVERSIONS.CONTACTO_CORREO,
+      this.modulatedValue(CONTACTO_BASE_VALUE.emailCopy)
+    );
   }
 
   /** Click en "Agendar reunión" (value base 60, modulado por calidad de sesión). */
   scheduleMeeting(): void {
     this.clicks.record('Agendar reunión');
-    this.fireConversion(ADS_CONVERSIONS.CONTACTO, this.modulatedValue(CONTACTO_BASE_VALUE.scheduleMeeting));
+    this.fireConversion(
+      ADS_CONVERSIONS.CONTACTO_REUNION,
+      this.modulatedValue(CONTACTO_BASE_VALUE.scheduleMeeting)
+    );
   }
 
   /**
