@@ -33,6 +33,7 @@ El algoritmo de scoring NO cambia (paridad con el CRM intacta); solo cambia el m
 - [x] **23 jul → 13 ago** — Aprendizaje. Presupuesto de Búsqueda en 10/día desde el 23 jul (ver "presupuestos del período" abajo); no tocar estrategia de puja. Vigilar el mix de valor.
 - [x] **13 ago 2026** (recordatorio en Calendar) — Revisar con datos del 24 jul–12 ago: contactos/semana, mix de valor, ratio nuevo. Si el mix está ≥80% y los contactos se mantuvieron (~3/semana con 10/día): **activar tROAS inicial ~70%** (≈ ratio esperado con values nuevos ~0.9 × 0.8 de margen). El presupuesto vigente actúa como techo. **El análisis y el cambio se pueden hacer por API** (acceso Basic desde el 28 jul); Keyword Planner también quedó disponible para esta revisión. Desde el 7 ago se suma la **Search Console API** (`import gsc`) para la cara orgánica — ver la entrada del 7 ago, que incluye una lectura anticipada del criterio y dos advertencias sobre cómo leerlo.
       → **Hecha: los cuatro gates dieron NO y el tROAS no se activó.** Ver la entrada del 13 ago al final.
+- [ ] **4 sep 2026** (recordatorio en Calendar, **movido del 3 al 4** el 14 ago) — Revisión de las cuatro campañas, y sobre todo la **primera lectura de la nota de página de destino** tras el copy publicado el 14 de agosto: son tres semanas exactas. La línea base contra la que comparar y cómo leerla sin engañarse están en la última entrada del documento.
 - [ ] **Cada 2 semanas post-tROAS** — Ajustar el target ±10–15% mirando la cantidad de contactos (no el ratio total). Si el volumen de contactos cae >30%, bajar el target. *(No aplica todavía: no hay tROAS activo.)*
 
 ## 23 jul 2026 — Fase 1b (decisión): revertir "Software" a concordancia amplia con USD 15/día
@@ -493,11 +494,12 @@ desde antes ("crear una conversion action DEDICADA para Form Submit"). Tests: 49
    vigente le da al formulario 3–6× el WhatsApp; la evidencia sugiere **más**. Con los datos ya
    separados por canal se puede recalibrar la escala con números propios en vez de con un supuesto.
    Ése es el momento de decidir si vale la pena la Data Manager API.
-   > **Fecha fijada el 13 ago: 3 sep 2026, no antes.** La tentación es recalibrar apenas haya dos
-   > semanas de datos, pero hacerlo a mitad de la ventana la dejaría con **dos escalas de valor
-   > mezcladas** y el aprendizaje reiniciado por la mitad — exactamente lo que volvió irresoluble el
-   > episodio del 23 de julio. La ventana 13 ago – 3 sep queda con una sola escala; si ese día se
-   > decide recalibrar, el cambio abre su propia ventana.
+   > **Fecha fijada el 13 ago: 3 sep 2026, no antes** — **movida al 4 sep el 14 ago**, para que
+   > coincida con las tres semanas del copy nuevo. La tentación es recalibrar apenas haya dos semanas
+   > de datos, pero hacerlo a mitad de la ventana la dejaría con **dos escalas de valor mezcladas** y
+   > el aprendizaje reiniciado por la mitad — exactamente lo que volvió irresoluble el episodio del
+   > 23 de julio. La ventana 13 ago – 4 sep queda con una sola escala; si ese día se decide
+   > recalibrar, el cambio abre su propia ventana.
 5. **La palanca estructural sigue sin tocarse**: `landing page = BELOW_AVERAGE` en las cuatro
    keywords, y 41 % de impresiones perdidas por ranking en "Búsqueda".
 
@@ -1384,3 +1386,45 @@ fondo) y hasta la **separación** entre chips, que bastaría con el `gap`.
 
 > **La regla, y vale para lo que venga:** no hay autorización para cambiar el aspecto visual. Un
 > arreglo de accesibilidad o de SEO que altere el diseño se propone y se espera; no se aplica.
+
+### La revisión se mueve del 3 al 4 de septiembre, y qué mirar ese día
+
+**Cambiada la fecha** —el evento del calendario ya está movido al 4 de septiembre, 9:00— para que
+sean **tres semanas exactas** desde que el copy salió a producción, que es lo que la nota de página
+de destino necesita para recalcularse.
+
+**LÍNEA BASE del 14 ago 2026**, tomada el día del cambio y antes de que acumulara datos. Es contra
+esto que hay que comparar:
+
+| campaña | keyword | QS | página de destino |
+|---|---|---|---|
+| Búsqueda (CR) | desarrollo de sitios web | **5** | BELOW_AVERAGE |
+| Software (CR) | empresa de desarrollo de software | **3** | BELOW_AVERAGE |
+| Búsqueda #2 (AR) | desarrollo de sitios web | **7** | BELOW_AVERAGE |
+| Software #2 (AR) | empresa de desarrollo de software | **5** | BELOW_AVERAGE |
+
+**Cómo se consulta.** El valor vigente sale de `ad_group_criterion.quality_info.post_click_quality_score`
+y se puede pedir **cualquier día**: no hay que esperar al cierre de mes. El histórico
+(`metrics.historical_landing_page_quality_score`) admite `segments.week`, así que se puede seguir la
+serie semana a semana.
+
+> **Trampa de consulta, hermana de la que ya está anotada.** `keyword_view` devuelve también las ~225
+> negativas y keywords `ENABLED` que viven en **grupos de anuncios REMOVED** — con QS 0 y
+> `UNSPECIFIED`. Hay que filtrar por `ad_group_criterion.negative = FALSE` y mirar el estado del
+> **grupo**, no sólo el de la campaña y el criterio. Verificado: cada campaña corre con **una sola**
+> keyword activa.
+
+**Cómo leerlo sin engañarse.** Esa nota es relativa y volátil —se calcula contra los otros
+anunciantes— y con una keyword por campaña es una muestra de tamaño uno; el histórico saltó
+7 → 8 → 5 → 2 → 5 con el sitio quieto.
+
+- **Que una sola campaña pase a «promedio» no prueba nada.** La señal es que varias de las cuatro se
+  muevan igual, o que una se sostenga varias semanas.
+- **«Software» (CR) es la más lenta**: ~936 impresiones/mes contra 2.934 de «Búsqueda #2». Si el 4 de
+  septiembre no se movió, todavía no significa nada — hay que volver a mirarla a mediados de mes.
+- Ritmo actual, para calibrar la espera: Búsqueda 1.200 impresiones/mes · Software 936 ·
+  Búsqueda #2 2.934 · Software #2 1.602.
+
+**Y la advertencia de atribución, otra vez:** la nota de página se lee limpia porque el copy es lo
+único que la toca. El efecto en **leads** no: ahí se superponen las conversiones separadas del 13, las
+extensiones del 14 y el copy del 14.
