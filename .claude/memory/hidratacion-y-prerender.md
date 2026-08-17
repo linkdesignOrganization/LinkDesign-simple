@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: cbc9235a-f031-4bfa-9db1-d7b2c2bec9d7
-  modified: 2026-08-17T17:59:48.896Z
+  modified: 2026-08-17T19:08:13.153Z
 ---
 
 **El sitio es SSG, no SSR en runtime**, y así corresponde: `angular.json` usa
@@ -42,5 +42,21 @@ Resultado medido en producción, antes → después:
 | Borrados del DOM | 1 por carga → **0** |  |
 
 Para verificar que la hidratación sigue activa: el HTML servido debe traer atributos `ngh=`
-(68 en `/software`). Cero `ngh` = no hidrata. Ojo: **una vez hidratada, Angular limpia esos
-atributos del DOM**, así que hay que mirarlos con `curl`, no en el inspector.
+(68 en `/software`, 93 en `/web`). Cero `ngh` = no hidrata. Ojo: **una vez hidratada, Angular limpia
+esos atributos del DOM**, así que hay que mirarlos con `curl`, no en el inspector.
+
+## La trampa: layout decidido por JS
+
+Hidratar destapó un segundo problema, y **es el patrón a vigilar si se toca cualquier componente**:
+todo layout que dependa de JS para armarse produce un salto, porque el prerender no lo puede
+anticipar. Antes no se notaba, porque el re-render destructivo lo absorbía.
+
+Pasó con `web-capabilities` (commit `7a71846`): aplicaba la clase `.wc-flat` —cards apiladas en
+móvil— desde `ngAfterViewInit`, que no corre en el prerender. El HTML servido a un móvil traía el
+layout de escritorio y al hidratar el `.wc-track` colapsaba de 600 px a 0: **0,71 de CLS**, que llevó
+`/web` en móvil de 0,226 a 0,845. Se arregló pasando el layout a `@media (max-width: 860px),
+(prefers-reduced-motion: reduce)` y dejando en la clase sólo el reveal, que sí necesita JS.
+
+Regla que queda: **si una condición se puede expresar en CSS (ancho, reduced-motion, orientación),
+va en CSS, no en `ngAfterViewInit`.** El breakpoint de ese componente está duplicado en el SCSS y en
+`MOBILE_MAX`; hay comentarios cruzados en ambos.
