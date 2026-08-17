@@ -11,6 +11,8 @@
 - [CRM repo y scoring compartido](crm-repo-y-scoring-compartido.md) — el CRM es un repo hermano; el lead scoring está duplicado a mano **y desde 2026-08-11 candado por 22 vectores compartidos (idénticos en los 3 repos)**; regla: ESTE sitio es la fuente de verdad (alimenta el value de Ads), si hay divergencia se alinea el CRM
 - [Imagen OG y el recorte de WhatsApp](og-image-recorte-whatsapp.md) — WhatsApp recorta al cuadrado central (630 de 1200), así que el logotipo no puede pasar de ~45% del ancho; desde 2026-08-11 la tarjeta muestra el logotipo «Link Design» y no el monograma; ojo: `SeoService.defaultImage` pisa el `og:image` del index.html
 - [Sitios gemelos LinkDesign y Nolõ](sitios-gemelos-linkdesign-nolo.md) — dos sitios fork con la misma arquitectura (CR y Argentina); un cambio en uno suele aplicar al otro
+- [SSG + hidratación](hidratacion-y-prerender.md) — es SSG sobre SWA y así corresponde (Azure no soporta SSR de Angular); desde 2026-08-17 sí hidrata: CLS 0,389 → 0,0006. Verificar con `ngh=` por curl
+- [El LCP lo fijan los videos](lcp-dominado-por-videos.md) — ~6 s en 4G móvil por el carrusel, no por el renderizado; pendiente, y el `preload="metadata"` NO se toca
 - [Archivo del caso Azure SWA](azure-swa-case-tracking-file.md) — el tracking del caso de soporte por sobrefacturación vive en `LinkDesign\webOld\LinkDesign2.0`, no en este repo
 - [Google Ads de Zacate Tierra Fertil](zacate-tierra-fertil-ads.md) — cuenta 6593270911: CPA ~1.1, presupuesto crónicamente corto (caso inverso a LinkDesign), keyword "cesped" QS 3 con 76% del gasto
 - [Deploy de LinkDesign-simple en Azure](project-linkdesign-azure-deploy.md) — SWA Standard en CEFSA-prod, CI/CD GitHub Actions; gotchas: .npmrc legacy-peer-deps y mime video/mp4
