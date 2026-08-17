@@ -5,7 +5,19 @@
   "routes": [
     { "route": "/corporate", "redirect": "/web", "statusCode": 301 },
     { "route": "/weblab", "redirect": "/web", "statusCode": 301 },
-    { "route": "/contact", "redirect": "/contacto", "statusCode": 301 }
+    { "route": "/contact", "redirect": "/contacto", "statusCode": 301 },
+    {
+      "route": "/*.{js,css}",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" }
+    },
+    {
+      "route": "/media/*",
+      "headers": { "cache-control": "public, max-age=86400, must-revalidate" }
+    },
+    {
+      "route": "/*.{png,jpg,jpeg,svg,ico,webp}",
+      "headers": { "cache-control": "public, max-age=604800, must-revalidate" }
+    }
   ],
   "responseOverrides": {
     "404": {
