@@ -489,6 +489,8 @@ desde antes ("crear una conversion action DEDICADA para Form Submit"). Tests: 49
 3. **Verificar en 24–48 h** que las cuatro acciones nuevas empiezan a registrar conversiones. Si
    alguna queda en cero cuando las otras se mueven, el label está mal copiado — es el modo de fallo
    más probable de este cambio, y silencioso.
+   > **Hecho el 17 ago: las ocho están bien**, y el modo de fallo quedó descartado sin depender del
+   > volumen (los labels de producción se compararon contra los del servidor). Entrada al final.
 4. **La pregunta del valor relativo ya no está del todo abierta**: el CRM dice que los leads de
    WhatsApp se pierden 14 de 15 veces y que los de formulario/correo cierran mucho mejor. El mapa
    vigente le da al formulario 3–6× el WhatsApp; la evidencia sugiere **más**. Con los datos ya
@@ -1428,3 +1430,165 @@ anunciantes— y con una keyword por campaña es una muestra de tamaño uno; el 
 **Y la advertencia de atribución, otra vez:** la nota de página se lee limpia porque el copy es lo
 único que la toca. El efecto en **leads** no: ahí se superponen las conversiones separadas del 13, las
 extensiones del 14 y el copy del 14.
+
+## 17 ago 2026 — Las ocho acciones nuevas miden bien, y además pujan
+
+Cierra el **pendiente 3 del 13 de agosto**: verificar que las acciones separadas por canal registran,
+porque un label mal copiado falla **en silencio** —la acción queda en cero para siempre y el informe
+se ve normal—. Se verificó por tres vías, y la primera no depende de que haya volumen.
+
+### La ventana real es de dos días hábiles, no de cuatro
+
+El deploy fue el **13 ago a las 19:34** (`c6eb0ee` acá, `a7a6b57` en Nolõ) y las campañas corren
+**L-V 8-17 en Costa Rica y 6-15 en Argentina**. Todo el tráfico pagado del 13 ocurrió con el código
+viejo, y el fin de semana las campañas están apagadas. Quedan **viernes 14 y lunes 17**.
+
+Eso explica el único dato que a primera vista parecía una falla: la acción vieja `Contacto` registró
+**una conversión el 13 con valor 8,00** —un WhatsApp— cuando el sitio supuestamente ya no la
+disparaba. Es anterior al deploy por seis horas. No hay nada que corregir.
+
+> **Trampa de consulta, anotada para no repetirla.** `metrics.all_conversions` con `segments.date`
+> se reporta por **fecha del clic**, no de la conversión. Para fechar un cambio hay que pedir
+> `metrics.all_conversions_by_conversion_date`. Acá las dos lecturas coincidieron —el rezago sigue
+> siendo de menos de un día, como el 13 ago—, pero la conclusión sobre *qué día empezó a registrar
+> cada acción* no se puede sacar de la primera.
+
+### Vía 1 — los labels de producción contra los del servidor: coinciden los diez
+
+Es la verificación que cierra el asunto, porque es determinista. Se bajaron los bundles de producción
+(`linkdesign.cr/main-FPAXDKO5.js` y `nolo.ar/main-NMV7BHXH.js`) y se compararon contra el
+`conversion_action.tag_snippets` que devuelve la API para cada acción:
+
+- **Los 10 labels nuevos coinciden byte a byte** — cinco de Costa Rica y cinco de Argentina.
+- **Los 2 viejos ya no aparecen en producción**: `qSMFCN2ek…` (Contacto) y `-7YECOqL7b8c…`
+  (Contacto Argentina) dan cero coincidencias en los bundles. Dejaron de acumular como se planeó, y
+  siguen ENABLED conservando su histórico.
+
+**El método es reutilizable y vale para cualquier cambio de etiquetas**: no hay que esperar a que
+alguien convierta para saber si el label está bien. Bajar el bundle y cruzarlo con `tag_snippets`
+responde la pregunta el mismo día.
+
+### Vía 2 — tres de las ocho ya registraron, y con el value correcto
+
+| acción | primera conversión | campaña | value | comprobación |
+|---|---|---|---:|---|
+| Contacto Correo | 17 ago | Software | 45,00 | 50 × 0,90 ✔ |
+| Contacto Correo Argentina | 17 ago | Software #2 | 40,00 | 50 × 0,80 ✔ |
+| Contacto WhatsApp Argentina | 14 ago | Software #2 | 8,00 | 10 × 0,80 ✔ |
+
+Que los tres lleguen **modulados** prueba de paso algo que el pendiente no pedía: no sólo viaja el
+label, también el `value` del evento. Si el value no llegara, se vería el `default_value` de 1,0 con
+que se crearon las ocho.
+
+### Las cinco en cero: no hubo oportunidad, y está medido
+
+Con la tasa base de contactos por clic del período anterior (24 jul – 12 ago) aplicada a los clics
+reales del 14 y el 17:
+
+| campaña | clics 14+17 | contactos esperados | observados |
+|---|---:|---:|---:|
+| Búsqueda (CR) | 6 | 0,83 | 0 |
+| Software (CR) | 7 | 0,28 | 1 |
+| Búsqueda #2 (AR) | 26 | **2,93** | **0** |
+| Software #2 (AR) | 11 | 1,50 | 2 |
+| **total** | **50** | **5,54** | **3** |
+
+Tres contra 5,5 esperados no es señal de nada (P ≈ 20 %). **El único punto con algo de tensión es
+"Búsqueda #2"**: 26 clics —la campaña de más tráfico— y ningún contacto, cuando se esperaban casi
+tres (P ≈ 5 %). No se puede concluir nada con dos días, y su `Scroll Argentina (2)` registró 17 veces
+en la misma ventana: las etiquetas de esa campaña llegan bien. Queda anotado para mirarlo el 4 de
+septiembre, no antes.
+
+**Reunión y Formulario siguen sin una sola conversión en los dos mercados**, que son justamente las
+de mayor value. No es sorpresa —en Costa Rica no hay un formulario desde el **7 de julio**— pero
+significaba que su corrección no estaba probada empíricamente, así que se probó en vivo (vía 4). Lo
+que además se verificó en el código es que los métodos están cableados: `scheduleMeeting()` cuelga de
+cuatro lugares (`contact-page`, `contact-footer`, `landing-page`, `web-hero`) y el formulario dispara
+por un camino propio (`GA_CONVERSION.SEND_TO` en `lead-form.service.ts`), cuyo label también está en
+el bundle.
+
+> **Ojo con esa columna «Estado» de la interfaz.** Muestra **actividad reciente**, no configuración:
+> una acción recién creada dice «Inactiva» hasta que le entra el primer evento, y cambia sola. El
+> único `status` que existe es ENABLED/PAUSED/REMOVED —y las ocho están ENABLED—; la API **no expone
+> ningún estado de etiqueta** (se verificaron los 31 campos de `conversion_action`). Para Reunión y
+> Formulario esa columna nunca va a servir de evidencia: pueden pasar meses en «Inactiva» sin que
+> signifique nada, porque dependen de que alguien los use.
+
+### Vía 3 — que registren no es que pujen, y eso nunca se había verificado
+
+Es la mitad de la pregunta que faltaba, y era el otro modo de fallo silencioso: una acción puede
+medir perfecto y quedar **fuera de Smart Bidding** si su categoría no coincide con el objetivo de la
+campaña. Verificado contra el servidor, las **doce** acciones del sitio caen dentro del objetivo
+*biddable* de su mercado:
+
+| mercado | objetivo biddable | acciones | resultado |
+|---|---|---|---|
+| Costa Rica — "Búsqueda" y "Software" | **CONTACT/WEBSITE**, y es el único | las 4 nuevas + Scroll + Contacto | **pujan** ✔ |
+| Argentina — "Búsqueda #2" y "Software #2" | **ninguno propio** → usa los de la cuenta, donde puja `DEFAULT/WEBSITE` | las 4 nuevas + Scroll Argentina (2) + Contacto Argentina | **pujan** ✔ |
+
+La decisión de categoría del 13 de agosto —CONTACT en Costa Rica, DEFAULT en Argentina, replicando la
+de la acción que reemplazaban— queda confirmada contra el servidor. Con `SUBMIT_LEAD_FORM` o
+`BOOK_APPOINTMENT`, que era lo semánticamente correcto, las cuatro de Costa Rica habrían quedado
+fuera de la puja.
+
+### Vía 4 — probado en vivo sobre producción: WhatsApp y Reunión disparan
+
+Las dos acciones de Costa Rica que seguían sin datos y sí dependen de un clic se probaron
+directamente en `linkdesign.cr/web`, con un interceptor que impedía la navegación a WhatsApp y al
+calendario y registraba lo que recibía `gtag`, sin tocar el código del sitio:
+
+| clic | `send_to` que recibió gtag | value | comprobación |
+|---|---|---:|---|
+| botón de WhatsApp (topbar) | `AW-16767245191/PFEECM2UquEc…` | 8 | 10 × 0,8 ✔ |
+| «Agendar reunión» (hero) | `AW-16767245191/WVgrCMuVquEc…` | 48 | 60 × 0,8 ✔ |
+
+**Antes de disparar nada se comprobó que el navegador no tenía cookie `_gcl_aw` ni `_gcl_dc`** —sólo
+`_gcl_au`, que no es un clic de anuncio—, así que las dos pruebas no se atribuyen a ninguna campaña.
+
+> **Anotado para el 4 de septiembre, para no confundirlo con un lead:** si en la cuenta aparece un
+> `Contacto WhatsApp` de value 8,00 y un `Contacto Reunión` de value 48,00 fechados el **17 ago** y
+> sin campaña asociada, son estas pruebas. Lo esperable es que no aparezcan —sin `gclid` no hay clic
+> al que atribuirlas— pero conviene tenerlo escrito.
+
+**El formulario no se probó en vivo a propósito**: enviarlo crearía un web-lead real en el CRM y su
+correo de aviso. Su label está verificado contra el servidor y su camino de código es el mismo
+`gtag('event','conversion', …)` que acaba de funcionar con dos labels distintos en la misma página.
+
+#### El 503 que aparece en la pestaña de red, y por qué no es un problema
+
+Cada conversión dispara **cinco peticiones en paralelo**, y conviene saber cuál es la que cuenta:
+
+| endpoint | qué es | resultado |
+|---|---|---|
+| `googleadservices.com/pagead/conversion/` | **el registro de la conversión** | **200** ✔ |
+| `googleadservices.com/ccm/conversion/` | medición con consent mode | **200** ✔ |
+| `googleads.g.doubleclick.net/…/viewthroughconversion/` | ping de conversión por visualización | **503** |
+| `google.com` y `google.co.cr` `/1p-conversion/` | medición first-party | en curso |
+
+El 503 es del camino de *view-through* (display), que además viaja con `ct_cookie_present=false`: no
+hay cookie de clic que lo justifique. **No toca el registro.** Si ese 503 impidiera contar, no habría
+ninguna conversión en la cuenta — y las hay todos los días.
+
+### Hallazgo lateral: el formulario manda datos que la cuenta no está usando
+
+`customer.conversion_tracking_setting.enhanced_conversions_for_leads_enabled` está en **False**,
+mientras el sitio ya envía en cada envío de formulario `gtag('set', 'user_data', …)` con correo,
+teléfono en E.164 y nombre (`lead-form.service.ts`). Ese dato viaja desde antes de este cambio.
+
+**Con la precisión que corresponde**: ese flag es el de *Enhanced Conversions for Leads*, que es
+justamente el camino que la entrada del 30 de julio dejó abierto para subir el desenlace comercial
+con identificadores hasheados. El "mejorar conversiones" de la variante **web** se configura por
+acción de conversión y **no es consultable por la API** —se comprobó: `conversion_action` no expone
+ningún campo de enhanced conversions—, así que hay que mirarlo en la UI antes de concluir que el
+`user_data` no sirve para nada hoy.
+
+### Estado
+
+**No se tocó nada** de la configuración. El pendiente 3 queda cerrado: de las ocho acciones, **cinco
+están probadas de punta a punta** —Correo CR, Correo AR y WhatsApp AR por conversiones reales;
+WhatsApp CR y Reunión CR por la prueba en vivo— y las tres restantes, por la coincidencia de labels
+contra el servidor. Los otros cuatro pendientes del 13 de agosto siguen abiertos y su cita es el
+**4 de septiembre**.
+
+Lo que falta ahora no es una verificación sino volumen: con dos días hábiles y tres contactos no se
+puede leer todavía el mix por canal, que es lo que este cambio se hizo para poder ver.
