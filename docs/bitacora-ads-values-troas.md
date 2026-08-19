@@ -155,7 +155,7 @@ deja rastro ni siquiera como conversión.
 
 ### Pendientes relacionados
 
-- [x] Réplica del ×2 en el sitio Nolõ (Argentina): **desplegada el 24 jul 2026** (commit `e860ca1` en `nolo-simple`). Timing deliberado: las campañas AR ya tenían el aprendizaje reseteado por el cambio de estrategia del 19 jul (**de Maximizar conversiones a Maximizar valor de conversión** — la estrategia vieja optimizaba por cantidad y explicaba el mix AR de 92% scrolls), así que ambos cambios se absorben en una sola ventana. OJO para el 13 ago: el historial AR previo al 19 jul NO es comparable en comportamiento de puja (otro régimen de optimización); sirven solo las métricas de mercado (CPCs, volumen, search terms, QS). El análisis de "Búsqueda #2" quedó pospuesto por datos insuficientes (~4 días hábiles post-cambio) y se suma a la revisión del 13 ago — **hecho el 13 ago**: es la campaña más eficiente de la cuenta (24,85 USD por lead serio contra 254,97 de Costa Rica).
+- [x] Réplica del ×2 en el sitio Nolõ: **desplegada el 24 jul 2026** (commit `e860ca1` en `nolo-simple`). La escala de values es de la cuenta, así que tenía que moverse en los dos sitios a la vez o el histórico quedaba en dos unidades distintas. Lo que se hizo con las campañas de ese mercado, y cómo se leyó su ventana, está en su bitácora.
 - Negativas sugeridas para "Búsqueda": `webstudios`, `bravebits`, `guatemala`; decidir política del tráfico en inglés global ("landing page", "best website design", …). **Medido el 13 ago**: los tres términos juntos costaron **8,85 USD en todo 2026** — higiene, no economía. Lo que sí pesa son las marcas de terceros en "Software" (32,78 USD en 20 días); ver la entrada del 13 ago. **Insumo nuevo (7 ago)**: Search Console confirma que el inglés genera impresiones sin retorno también en orgánico — "costa rica website design" 224 impresiones / 0 clics, "website design costa rica" 220/0, "web designer costa rica" 189/0, y EE.UU. aporta 516 impresiones y **0 clics** en 16 meses. No prueba qué hace ese tráfico al pagarlo, pero quita la hipótesis de que sea demanda desatendida que el orgánico ya estaría capturando.
 - [x] ~~Revisar anomalía de jun 2026: Scroll reportó valor 93 con 64 conversiones (hubo scrolls con value > 1 durante el despliegue de la modulación).~~ **Cerrada el 13 ago**: un único evento el 11 jun (exceso +29, que explica toda la diferencia). No se repite desde julio.
 
@@ -314,27 +314,17 @@ Esto además reordena la prioridad de las palancas: mientras el "valor" siga sie
 elegimos nosotros (10 para WhatsApp, 30–60 para el formulario) y no una medición, cualquier ajuste
 fino de puja optimiza sobre un supuesto sin evidencia.
 
-### Argentina: el análisis pospuesto del 30 jul, ahora con datos
+### El contraste que dimensiona el problema de acá
 
-El régimen de puja de AR sólo es comparable desde el 19 jul, así que el período de aprendizaje es su
-primera ventana legible. Va en dirección **contraria** a Costa Rica:
+Costa Rica está en **254,97 USD por lead serio y 3,0 al mes** (tabla de arriba). El otro mercado,
+gastando casi lo mismo en la misma ventana, va **3,4 veces más barato y a unas cuatro veces el
+volumen**, y es el único de la cuenta con ratio valor/costo mayor que 1 — contra **0,59** de
+"Búsqueda" y **0,42** de "Software".
 
-> ⚠️ **Corregida la misma tarde**, por el mismo error de partición que las tablas de Costa Rica: la
-> columna de 24 jul–12 ago sobrecontaba los serios. Los valores crudos de AR en esa ventana son
-> 8,00 (×9) y 9,00 (×2) —WhatsApp modulado— contra 48,00 (×2), 54,00 y una celda de 2 conversiones
-> por 63,00: **4–5 serios, no 11**. Detalle en la bitácora de Nolõ.
-
-| Campaña | USD/lead serio (1–22 jul) | USD/lead serio (24 jul–12 ago) | Serios en el período |
-|---|---:|---:|---:|
-| Búsqueda #2 | 91,09 | ~~24,85~~ → **60,75** | ~~11,00~~ → **4–5** de 16 contactos (28 %) |
-| Software #2 | 68,31 | ~~57,34~~ → **95,88** | ~~4,97~~ → **3** de 9 (33 %) |
-
-AR consolidado: ~~34,98~~ → **74,73 USD** por lead serio contra **254,97** en CR — **3,4×** más
-eficiente, no 7,3× — y ~11 leads serios al mes contra 3,0. Sigue siendo el mercado que funciona, con
-un margen menor del que decía la primera lectura. Con ratio 1,42 —verificado y **no** afectado por la
-corrección, porque se calcula sobre el valor total—, "Búsqueda #2" es la única campaña de la cuenta
-que devuelve más valor del que cuesta (Software #2 0,75 · Búsqueda 0,59 · Software 0,42). El mix de AR (81,2 %) sí cruza el umbral del 80 %, pero su
-contrafactual aritmético es 80,3 %: también ahí el umbral mide sobre todo la escala nueva.
+Ese contraste es lo que convierte el número de acá en un problema y no en un dato suelto: no es que
+el negocio no funcione, es que **no funciona en este mercado a este precio**. El análisis que produce
+esas cifras, con sus tablas y la corrección de esa misma tarde, está en `docs/bitacora-ads.md` del
+repo de Nolõ.
 
 ### Verificación cruzada con el CRM — y la pregunta abierta, respondida en parte
 
@@ -448,30 +438,31 @@ que peor cierra.
 ### Aplicado hoy: un canal, una acción
 
 Con el criterio del usuario ("los WhatsApp suelen ser consultas flojas" — confirma la lectura del
-CRM), se ejecutó la separación decidida el 30 jul. **Ocho acciones nuevas por API**, cuatro por
-mercado:
+CRM), se ejecutó la separación decidida el 30 jul. **Cuatro acciones nuevas por API**, una por canal
+(el otro mercado recibió las suyas el mismo día, con sus propios labels; están en su bitácora):
 
-| Canal | Costa Rica | Argentina |
-|---|---|---|
-| WhatsApp | `PFEECM2UquEc…` | `zxm7CMGXquEc…` |
-| Copiar correo | `U_F7CMiVquEc…` | `tU5ZCMSXquEc…` |
-| Agendar reunión | `WVgrCMuVquEc…` | `GPuTCMeXquEc…` |
-| Formulario | `VGKrCL6XquEc…` | `ZAj_CMqXquEc…` |
+| Canal | Label |
+|---|---|
+| WhatsApp | `PFEECM2UquEc…` |
+| Copiar correo | `U_F7CMiVquEc…` |
+| Agendar reunión | `WVgrCMuVquEc…` |
+| Formulario | `VGKrCL6XquEc…` |
 
 Todas `WEBPAGE`, `ONE_PER_CLICK`, primarias, lookback 30 días, `default_value` 1.0 sin forzar (el
 value sigue viajando en el evento). Los values no se tocaron.
 
 **La categoría fue la decisión delicada, y no es cosmética.** Se consultaron primero los objetivos de
 conversión: "Búsqueda" y "Software" tienen `campaign_conversion_goal = CONTACT/WEBSITE`, así que las
-cuatro de CR se crearon **CONTACT** — con `SUBMIT_LEAD_FORM` o `BOOK_APPOINTMENT`, que era lo
-semánticamente correcto, habrían quedado **fuera de la puja sin ningún aviso**. Las de AR se crearon
-**DEFAULT**, igual que "Contacto Argentina": sus campañas usan los objetivos de la cuenta, donde
-`DEFAULT/WEBSITE` sí puja. En ambos casos la regla fue *replicar la categoría de la acción que
-reemplazan*, para no mover qué optimiza Smart Bidding mientras se cambia lo que mide.
+cuatro de acá se crearon **CONTACT** — con `SUBMIT_LEAD_FORM` o `BOOK_APPOINTMENT`, que era lo
+semánticamente correcto, habrían quedado **fuera de la puja sin ningún aviso**. La regla fue
+*replicar la categoría de la acción que reemplazan*, para no mover qué optimiza Smart Bidding
+mientras se cambia lo que mide.
 
-Las viejas (`Contacto` y `Contacto Argentina`) quedan **ENABLED pero ya no se disparan**: conservan
-su histórico en los informes y dejan de acumular. Desactivarlas no aportaba nada y arriesgaba el
-histórico.
+> **Ese mismo criterio se aplicó al otro mercado y ahí falló**, por un motivo que no se vio hasta el
+> 18 de agosto: sus campañas no se rigen por la categoría. Está en la bitácora de Nolõ.
+
+La vieja `Contacto` queda **ENABLED pero ya no se dispara**: conserva su histórico en los informes y
+deja de acumular. Desactivarla no aportaba nada y arriesgaba el histórico.
 
 En el código, el cambio es simétrico en los dos sitios: `ADS_CONVERSIONS` pasa de dos entradas a
 cinco y cada método apunta a la suya, más `GA_CONVERSION.SEND_TO` del formulario en
@@ -511,7 +502,8 @@ desde antes ("crear una conversion action DEDICADA para Form Submit"). Tests: 49
       2026** (1 conversión de Scroll con value 30 en vez de 1; exceso exactamente +29, que es la
       diferencia que había motivado la nota). De julio en adelante el valor de Scroll iguala la
       cantidad de conversiones todos los días. No hay nada que corregir.
-- [x] **Análisis de "Búsqueda #2"**, pospuesto el 24 jul por datos insuficientes — hecho arriba.
+- [x] **Análisis del mercado argentino**, pospuesto el 24 jul por datos insuficientes — hecho el 13
+      ago en su propia bitácora. Lo que toca a este documento es el contraste, anotado arriba.
 
 ## 13 ago 2026 (segunda sesión) — ¿Búsqueda vuelve a 15/día? No; y sobre el recorte, hay empate
 
@@ -713,18 +705,15 @@ Con dos o tres semanas de acciones separadas ya no hará falta inferir el canal 
 
 Si los leads serios reaparecen con el presupuesto en 10, la hipótesis del recorte muere sola y gratis.
 
-### Nota al margen: dónde sí hay hambre de presupuesto → **ejecutado el mismo día**
+### Nota al margen: acá el dinero no compra leads serios
 
-La consulta era sobre Costa Rica, pero quedó anotado que **"Búsqueda #2" (Argentina) es la única
-campaña con ratio > 1 (1,42)**, cuesta **60,75 USD por lead serio** (cifra corregida; ver arriba)
-contra los ~106 de Costa Rica, y toca el techo de presupuesto **31 de 40 días**.
+La consulta era sobre Costa Rica, y el contraste que apareció es lo que la responde: **la correlación
+entre gasto semanal y leads serios en "Búsqueda" (CR) es −0,42**, mientras que en el otro mercado es
+**+0,78**. Los dos responden al dinero al revés — allá subir el presupuesto se justificaba con
+evidencia, y acá esa misma evidencia dice que no.
 
-Más tarde ese mismo día se analizó a fondo y **se subió de 15 a 20 USD/día por API**. Lo que decidió
-la subida no fue la pérdida de impresiones —métrica poco confiable con Maximizar valor sin target—
-sino que **la correlación entre gasto semanal y leads serios en AR es +0,78, mientras que en "Búsqueda"
-(CR) es −0,42**: los dos mercados responden al dinero al revés. Derivación del número, tabla
-geográfica y la decisión de **no** pasar la keyword argentina a concordancia amplia (tiene QS 7 y el
-CPC más barato de la cuenta: la lógica de "Software" no se transfiere) están en
+Es el argumento más fuerte contra la hipótesis del recorte al revés: el problema de "Búsqueda" no es
+que le falte presupuesto. Lo que se ejecutó con las campañas del otro mercado está en
 `docs/bitacora-ads.md` del repo `Nolo/WEB`.
 
 ### Las dos correcciones a la entrada anterior
@@ -901,14 +890,14 @@ posterior contra el servidor:
 | **Se quitó** | los 5 textos destacados de web · el fragmento «Servicios: Desarrollo de sitios web…» |
 | **Se agregó** | 5 textos destacados de software · fragmentos «Tipos» y «Servicios» propios |
 
-Los assets nuevos se crearon para Nolõ y se comparten con esta campaña: son sustantivos genéricos,
-sin país ni voseo, así que sirven en los dos mercados. **"Búsqueda" no se tocó** — ahí los textos de
-web son los correctos. Estado final de las cuatro:
+Los assets son **sustantivos genéricos, sin país ni voseo**, así que se comparten a nivel de cuenta y
+sirven en los dos mercados: se crearon una vez y se asociaron donde hacían falta. **"Búsqueda" no se
+tocó** — ahí los textos de web son los correctos. Estado final de las dos de acá:
 
 | campaña | textos destacados | fragmentos |
 |---|---|---|
-| Búsqueda · Búsqueda #2 | los 5 de web | **Servicios**: Desarrollo de sitios web, Actualización digital, Asesoría tecnológica, Desarrollo sin plantillas |
-| **Software** · Software #2 | Software a medida · CRM, ERP e inventario · Integraciones y APIs · Sistemas internos · Código propio | **Servicios**: Desarrollo a medida, Aplicaciones internas, Automatización con IA, Integración de sistemas, Software de gestión, Desarrollo backend · **Tipos**: CRM, ERP, Inventario, E-commerce, Ticketing, Reservas |
+| Búsqueda | los 5 de web | **Servicios**: Desarrollo de sitios web, Actualización digital, Asesoría tecnológica, Desarrollo sin plantillas |
+| **Software** | Software a medida · CRM, ERP e inventario · Integraciones y APIs · Sistemas internos · Código propio | **Servicios**: Desarrollo a medida, Aplicaciones internas, Automatización con IA, Integración de sistemas, Software de gestión, Desarrollo backend · **Tipos**: CRM, ERP, Inventario, E-commerce, Ticketing, Reservas |
 
 Los **sitelinks no se tocaron**: ya eran propios de software y correctos («Sistemas a medida»,
 «Proceso de trabajo», «Casos y demos», «Desarrollo Corporativo», «Hable con un Ingeniero»).
@@ -940,7 +929,7 @@ empresas | Link Design CR»*. **Alguien busca «empresa de desarrollo de softwar
 aterriza en una página que nunca usa esa expresión.**
 
 Y el patrón es total: **`linkdesign.cr/web` no contiene «desarrollo de sitios web»** (0 apariciones),
-que es la keyword de "Búsqueda". Nolõ repite ambos casos idénticos, porque es la misma arquitectura.
+que es la keyword de "Búsqueda".
 
 Esto explica de forma directa el `landing page = BELOW_AVERAGE` que arrastran las cuatro campañas, y
 que es **la única de las tres dimensiones que está floja**:
@@ -982,15 +971,14 @@ cuatro campañas a la vez, y hay que decidir si se hace en los dos sitios o sól
 
 ### Trampa de consulta que produjo un falso positivo
 
-Se reportó que "Búsqueda #2" tenía dos nombres de negocio activos, `LinkDesign AR` y `Nolõ`. **Era
-falso.** Hay dos campañas con ese nombre: `22111386447` está **REMOVED** y es la que tiene
-`LinkDesign AR`; la que corre es `23949699115` y siempre tuvo sólo `Nolõ`.
+Una consulta de `campaign_asset` reportó **dos nombres de negocio activos** en una campaña donde sólo
+había uno. **Era falso**, y el motivo es de la cuenta entera: arrastra campañas **REMOVED** que
+conservan sus assets, y la consulta filtraba por `campaign_asset.status` pero **no por
+`campaign.status`**.
 
-La consulta filtraba por `campaign_asset.status` pero **no por `campaign.status`**. Regla para la
-próxima, y vale para cualquier consulta de `campaign_asset` en esta cuenta, que arrastra campañas
-eliminadas: **filtrar por los dos estados**, el de la asociación y el de la campaña. Verificado: las
-cuatro campañas activas firman correcto — `Link Design` en las de Costa Rica, `Nolõ` en las
-argentinas.
+Regla para la próxima, y vale para cualquier consulta de `campaign_asset` acá: **filtrar por los dos
+estados**, el de la asociación y el de la campaña. Verificado con el filtro puesto, las campañas
+activas de Costa Rica firman correcto con `Link Design`.
 
 ### Una corrección de método que vale para las dos cuentas
 
@@ -1056,10 +1044,9 @@ En "Software" **cuatro de cada diez dólares** se van a términos fuera de famil
 `ti recursos`, `navisite costa rica`, `drago's house`. Coincide en orden de magnitud con el 35,3 % que
 midió la entrada del 13 ago con otro criterio, y **abrir más la concordancia lo agravaría**.
 
-> **Dato lateral que refuerza lo decidido para Argentina**: en `/web` la frase filtra **cuatro veces
-> mejor** que la amplia (4,6 % contra 20,0 % de ruido) capturando exactamente las mismas familias.
-> Acá no cambia nada —el 13 ago ya se midió que volver a frase en "Software" cuesta 2,7 veces más de
-> lo que ahorra— pero es una vía independiente que llega a la misma conclusión de aquel día.
+> **Acá esto no cambia nada, y conviene dejar escrito por qué.** El 13 ago ya se midió que volver a
+> concordancia de frase en "Software" cuesta 2,7 veces más de lo que ahorra. La medición de ruido por
+> tipo de concordancia llega, por una vía independiente, a la misma conclusión de aquel día.
 
 **Lo que sí cambia: el insumo para reescribir el copy.** La lista de frases no debe salir del Keyword
 Planner sino de **lo que la gente escribió y por lo que ya se pagó**. Así el argumento del apartado
@@ -1090,7 +1077,7 @@ de cada una:
 **"Búsqueda" es la que más impresiones pierde por ranking de las cuatro (36,3 %)**, y eso no se
 arregla con keywords nuevas: es calidad. Otra vez la página de destino.
 
-## 14 ago 2026 (cierre del día) — Qué palabra va en qué lugar de `/web`, y por qué sirve igual para Nolõ
+## 14 ago 2026 (cierre del día) — Qué palabra va en qué lugar de `/web`
 
 El apartado anterior dejó el orden por gasto anotado «para cuando se escriba el copy». Esto lo
 cierra: se midió **el otro lado** —cuántas veces dice la página cada una de esas palabras— y se
@@ -1173,32 +1160,16 @@ vistas sin marca, **7 son en inglés** —«web design costa rica», «website d
 ~1.000 impresiones con **cero clics**, en posiciones 20 a 55. `/en/web` no dice «web design» ni una
 vez. Es demanda que ya nos ve.
 
-### Nolõ: el mismo texto, tres excepciones
+### Un solo documento para los dos sitios
 
-`nolo.ar/web` se midió igual y el mismo día. Es **el mismo texto**: mismo `h1`, los mismos cinco
-`h2`, y los mismos conteos exactos —«páginas web» 0, «sitios web» 4, «empresa» 20—. Sólo difieren el
-`title` (sin país) y la `description`.
+`nolo.ar/web` se midió igual y el mismo día. Es **el mismo texto** —mismo `h1`, los mismos cinco
+`h2`, los mismos conteos exactos— y da **el mismo diagnóstico**. Lo que cambia es el peso de tres
+palabras, y eso se resuelve con excepciones dentro de un documento, no con otro análisis.
 
-Lo que cambia es el **peso de las palabras**, no el diagnóstico:
-
-| | Costa Rica | Argentina |
-|---|---:|---:|
-| nombrar el país | 42,7 % | **9,3 %** |
-| «diseño» | 13,4 % | **33,4 %** (37,1 % de los clics) |
-| «empresa» | 7,4 % | 2,2 % |
-| «agencia» | 2,6 % | **7,0 %** |
-| precio / cotización | 2,3 % | **6,6 %** |
-| «sitios web» — lo que el `h1` dice hoy | 3,3 % | **1,0 %** |
-
-**Decisión: un solo documento para los dos sitios.** Las diferencias son de énfasis y se expresan en
-tres palabras —el país, «agencia» en vez de «empresa», y «diseño» adelantado en el titular—, no en
-otro diagnóstico. El artefacto «Por qué Google baja la nota» quedó con un bloque propio para esto.
-Alinea con el criterio de que los dos sitios se distingan **sólo cuando haga falta**.
-
-> **La ventana argentina es más chica y hay que decirlo.** "Búsqueda #2" tiene **75 días con
-> impresiones contra 414** de "Búsqueda", y 552 clics. Las tres diferencias se verificaron también
-> sobre los **últimos doce meses** de las dos —la única ventana en que ambas corrieron a la vez— y se
-> sostienen: geo 39,7 % contra 11,9 %, agencia 2,4 % contra 6,4 %, empresa 9,1 % contra 1,1 %.
+**Decisión: un solo documento para los dos sitios**, alineado con el criterio de que se distingan
+**sólo cuando haga falta**. El artefacto «Por qué Google baja la nota» quedó con un bloque propio
+para las excepciones. Las cifras argentinas que sostienen esa comparación —y la advertencia de que
+su ventana es más chica— están en la bitácora de Nolõ.
 
 ### Estado
 
@@ -1431,7 +1402,7 @@ anunciantes— y con una keyword por campaña es una muestra de tamaño uno; el 
 único que la toca. El efecto en **leads** no: ahí se superponen las conversiones separadas del 13, las
 extensiones del 14 y el copy del 14.
 
-## 17 ago 2026 — Las ocho acciones nuevas miden bien, y además pujan
+## 17 ago 2026 — Las cuatro acciones nuevas miden bien, y además pujan
 
 Cierra el **pendiente 3 del 13 de agosto**: verificar que las acciones separadas por canal registran,
 porque un label mal copiado falla **en silencio** —la acción queda en cero para siempre y el informe
@@ -1439,9 +1410,9 @@ se ve normal—. Se verificó por tres vías, y la primera no depende de que hay
 
 ### La ventana real es de dos días hábiles, no de cuatro
 
-El deploy fue el **13 ago a las 19:34** (`c6eb0ee` acá, `a7a6b57` en Nolõ) y las campañas corren
-**L-V 8-17 en Costa Rica y 6-15 en Argentina**. Todo el tráfico pagado del 13 ocurrió con el código
-viejo, y el fin de semana las campañas están apagadas. Quedan **viernes 14 y lunes 17**.
+El deploy fue el **13 ago a las 19:34** (`c6eb0ee`) y las campañas corren **L-V 8-17**. Todo el
+tráfico pagado del 13 ocurrió con el código viejo, y el fin de semana están apagadas. Quedan
+**viernes 14 y lunes 17**.
 
 Eso explica el único dato que a primera vista parecía una falla: la acción vieja `Contacto` registró
 **una conversión el 13 con valor 8,00** —un WhatsApp— cuando el sitio supuestamente ya no la
@@ -1453,32 +1424,30 @@ disparaba. Es anterior al deploy por seis horas. No hay nada que corregir.
 > siendo de menos de un día, como el 13 ago—, pero la conclusión sobre *qué día empezó a registrar
 > cada acción* no se puede sacar de la primera.
 
-### Vía 1 — los labels de producción contra los del servidor: coinciden los diez
+### Vía 1 — los labels de producción contra los del servidor: coinciden los cinco
 
-Es la verificación que cierra el asunto, porque es determinista. Se bajaron los bundles de producción
-(`linkdesign.cr/main-FPAXDKO5.js` y `nolo.ar/main-NMV7BHXH.js`) y se compararon contra el
-`conversion_action.tag_snippets` que devuelve la API para cada acción:
+Es la verificación que cierra el asunto, porque es determinista. Se bajó el bundle de producción
+`linkdesign.cr/main-FPAXDKO5.js` y se comparó contra el `conversion_action.tag_snippets` que devuelve
+la API para cada acción:
 
-- **Los 10 labels nuevos coinciden byte a byte** — cinco de Costa Rica y cinco de Argentina.
-- **Los 2 viejos ya no aparecen en producción**: `qSMFCN2ek…` (Contacto) y `-7YECOqL7b8c…`
-  (Contacto Argentina) dan cero coincidencias en los bundles. Dejaron de acumular como se planeó, y
-  siguen ENABLED conservando su histórico.
+- **Los 5 labels nuevos coinciden byte a byte.**
+- **El viejo ya no aparece en producción**: `qSMFCN2ek…` (Contacto) da cero coincidencias en el
+  bundle. Dejó de acumular como se planeó, y sigue ENABLED conservando su histórico.
 
 **El método es reutilizable y vale para cualquier cambio de etiquetas**: no hay que esperar a que
 alguien convierta para saber si el label está bien. Bajar el bundle y cruzarlo con `tag_snippets`
 responde la pregunta el mismo día.
 
-### Vía 2 — tres de las ocho ya registraron, y con el value correcto
+### Vía 2 — una ya registró, y con el value correcto
 
 | acción | primera conversión | campaña | value | comprobación |
 |---|---|---|---:|---|
 | Contacto Correo | 17 ago | Software | 45,00 | 50 × 0,90 ✔ |
-| Contacto Correo Argentina | 17 ago | Software #2 | 40,00 | 50 × 0,80 ✔ |
-| Contacto WhatsApp Argentina | 14 ago | Software #2 | 8,00 | 10 × 0,80 ✔ |
 
-Que los tres lleguen **modulados** prueba de paso algo que el pendiente no pedía: no sólo viaja el
-label, también el `value` del evento. Si el value no llegara, se vería el `default_value` de 1,0 con
-que se crearon las ocho.
+Que llegue **modulado** prueba de paso algo que el pendiente no pedía: no sólo viaja el label,
+también el `value` del evento. Si el value no llegara, se vería el `default_value` de 1,0 con que se
+crearon. La misma comprobación se hizo el mismo día en el otro mercado, con dos acciones más, y está
+en su bitácora.
 
 ### Las cinco en cero: no hubo oportunidad, y está medido
 
@@ -1487,20 +1456,17 @@ reales del 14 y el 17:
 
 | campaña | clics 14+17 | contactos esperados | observados |
 |---|---:|---:|---:|
-| Búsqueda (CR) | 6 | 0,83 | 0 |
-| Software (CR) | 7 | 0,28 | 1 |
-| Búsqueda #2 (AR) | 26 | **2,93** | **0** |
-| Software #2 (AR) | 11 | 1,50 | 2 |
-| **total** | **50** | **5,54** | **3** |
+| Búsqueda | 6 | 0,83 | 0 |
+| Software | 7 | 0,28 | 1 |
+| **total** | **13** | **1,11** | **1** |
 
-Tres contra 5,5 esperados no es señal de nada (P ≈ 20 %). **El único punto con algo de tensión es
-"Búsqueda #2"**: 26 clics —la campaña de más tráfico— y ningún contacto, cuando se esperaban casi
-tres (P ≈ 5 %). No se puede concluir nada con dos días, y su `Scroll Argentina (2)` registró 17 veces
-en la misma ventana: las etiquetas de esa campaña llegan bien. Queda anotado para mirarlo el 4 de
-septiembre, no antes.
+Uno contra 1,1 esperados no es señal de nada: con trece clics no hay potencia para detectar nada, y
+por eso la Vía 1 es la que cierra el asunto. (El otro mercado, que tuvo casi tres veces más tráfico
+en la misma ventana, sí dejó un punto con algo de tensión; está anotado en su bitácora para el 4 de
+septiembre.)
 
-**Reunión y Formulario siguen sin una sola conversión en los dos mercados**, que son justamente las
-de mayor value. No es sorpresa —en Costa Rica no hay un formulario desde el **7 de julio**— pero
+**Reunión y Formulario siguen sin una sola conversión**, que son justamente las de mayor value. No es
+sorpresa —en Costa Rica no hay un formulario desde el **7 de julio**— pero
 significaba que su corrección no estaba probada empíricamente, así que se probó en vivo (vía 4). Lo
 que además se verificó en el código es que los métodos están cableados: `scheduleMeeting()` cuelga de
 cuatro lugares (`contact-page`, `contact-footer`, `landing-page`, `web-hero`) y el formulario dispara
@@ -1509,7 +1475,7 @@ el bundle.
 
 > **Ojo con esa columna «Estado» de la interfaz.** Muestra **actividad reciente**, no configuración:
 > una acción recién creada dice «Inactiva» hasta que le entra el primer evento, y cambia sola. El
-> único `status` que existe es ENABLED/PAUSED/REMOVED —y las ocho están ENABLED—; la API **no expone
+> único `status` que existe es ENABLED/PAUSED/REMOVED —y las cuatro están ENABLED—; la API **no expone
 > ningún estado de etiqueta** (se verificaron los 31 campos de `conversion_action`). Para Reunión y
 > Formulario esa columna nunca va a servir de evidencia: pueden pasar meses en «Inactiva» sin que
 > signifique nada, porque dependen de que alguien los use.
@@ -1518,18 +1484,21 @@ el bundle.
 
 Es la mitad de la pregunta que faltaba, y era el otro modo de fallo silencioso: una acción puede
 medir perfecto y quedar **fuera de Smart Bidding** si su categoría no coincide con el objetivo de la
-campaña. Verificado contra el servidor, las **doce** acciones del sitio caen dentro del objetivo
-*biddable* de su mercado:
+campaña. Verificado contra el servidor, las **seis** acciones de acá caen dentro del objetivo
+*biddable* de sus campañas:
 
-| mercado | objetivo biddable | acciones | resultado |
+| campañas | objetivo biddable | acciones | resultado |
 |---|---|---|---|
-| Costa Rica — "Búsqueda" y "Software" | **CONTACT/WEBSITE**, y es el único | las 4 nuevas + Scroll + Contacto | **pujan** ✔ |
-| Argentina — "Búsqueda #2" y "Software #2" | **ninguno propio** → usa los de la cuenta, donde puja `DEFAULT/WEBSITE` | las 4 nuevas + Scroll Argentina (2) + Contacto Argentina | **pujan** ✔ |
+| "Búsqueda" y "Software" | **CONTACT/WEBSITE**, y es el único | las 4 nuevas + Scroll + Contacto | **pujan** ✔ |
 
-La decisión de categoría del 13 de agosto —CONTACT en Costa Rica, DEFAULT en Argentina, replicando la
-de la acción que reemplazaban— queda confirmada contra el servidor. Con `SUBMIT_LEAD_FORM` o
-`BOOK_APPOINTMENT`, que era lo semánticamente correcto, las cuatro de Costa Rica habrían quedado
-fuera de la puja.
+La decisión de categoría del 13 de agosto —CONTACT, replicando la de la acción que reemplazaba—
+queda confirmada contra el servidor. Con `SUBMIT_LEAD_FORM` o `BOOK_APPOINTMENT`, que era lo
+semánticamente correcto, las cuatro habrían quedado fuera de la puja.
+
+> **⚠️ La misma verificación se hizo para el otro mercado y dio un falso OK**, descubierto el 18 ago
+> 2026: ahí no manda la categoría sino un objetivo personalizado, y sus cuatro acciones nuevas no
+> estaban dentro. **Lo de Costa Rica, que es lo que queda en esta tabla, sí era correcto.** El caso
+> está en la bitácora de Nolõ; la trampa de método, en la entrada del 18 de agosto de acá.
 
 ### Vía 4 — probado en vivo sobre producción: WhatsApp y Reunión disparan
 
@@ -1584,11 +1553,55 @@ ningún campo de enhanced conversions—, así que hay que mirarlo en la UI ante
 
 ### Estado
 
-**No se tocó nada** de la configuración. El pendiente 3 queda cerrado: de las ocho acciones, **cinco
-están probadas de punta a punta** —Correo CR, Correo AR y WhatsApp AR por conversiones reales;
-WhatsApp CR y Reunión CR por la prueba en vivo— y las tres restantes, por la coincidencia de labels
-contra el servidor. Los otros cuatro pendientes del 13 de agosto siguen abiertos y su cita es el
-**4 de septiembre**.
+**No se tocó nada** de la configuración. El pendiente 3 queda cerrado: de las cuatro acciones,
+**tres están probadas de punta a punta** —Correo por una conversión real; WhatsApp y Reunión por la
+prueba en vivo— y Formulario, por la coincidencia de labels contra el servidor. Los otros cuatro
+pendientes del 13 de agosto siguen abiertos y su cita es el **4 de septiembre**.
 
-Lo que falta ahora no es una verificación sino volumen: con dos días hábiles y tres contactos no se
+Lo que falta ahora no es una verificación sino volumen: con dos días hábiles y un contacto no se
 puede leer todavía el mix por canal, que es lo que este cambio se hizo para poder ver.
+
+## 18 ago 2026 — Las «Configuración incorrecta» no son un problema
+
+La pregunta era si esas acciones estaban rotas. No lo están: el estado es de **actividad, no de
+configuración**, y el tooltip de la propia interfaz lo dice sin ambigüedad: *«No se registraron
+conversiones en los últimos 7 días»* → **`Conversion has never received data`**.
+
+Son siete acá, en dos familias:
+
+- **Seis son basura heredada** de cuando la cuenta tuvo Campañas Inteligentes y perfil de empresa:
+  `Calls from Smart Campaign Ads`, `Clicks to call`, `Smart campaign ad clicks to call`, `Smart
+  campaign map clicks to call`, `Local actions - Directions`, `Smart campaign map directions`. **No
+  han recibido un solo dato desde noviembre de 2024** y no lo van a recibir: no hay campañas
+  inteligentes, ni extensión de llamada, ni perfil vinculado. Se pueden archivar cuando se quiera
+  limpiar el panel — no urge, porque ni miden ni pujan nada.
+- **`Contacto Formulario` todavía no tuvo oportunidad.** Su label está verificado byte a byte contra
+  el bundle de producción (Vía 1 de ayer), y en Costa Rica no hay un formulario desde el **7 de
+  julio**. El estado se corrige solo con el primer envío.
+
+Refuerza lo anotado ayer: **esa columna nunca va a servir de evidencia** para las acciones que
+dependen de que alguien las use.
+
+**Costa Rica está bien y no se tocó nada de su configuración.** Sus cuatro acciones nuevas están
+dentro del objetivo «Contacto», que es el que puja en "Búsqueda" y "Software", y las tres que ya
+registraron lo hicieron con el value correcto.
+
+### Lo que apareció verificando esto, y no es de este sitio
+
+Salió un problema real en las **campañas argentinas**, que comparten esta cuenta: no pujaban por sus
+acciones nuevas. Se corrigió el mismo día. **El caso completo está en `docs/bitacora-ads.md` del repo
+de Nolõ**, que es donde corresponde.
+
+Lo único que toca a este documento es que **invalida la fila de Argentina de la tabla de la Vía 3 de
+ayer**, ya marcada arriba. La de Costa Rica sigue siendo correcta.
+
+> **La trampa de método, que vale para cualquier cuenta y por eso queda acá.** Para saber qué puja
+> una campaña hay que consultar `conversion_goal_campaign_config` **primero**: si trae un
+> `custom_conversion_goal`, la puja la decide esa lista de acciones y `campaign_conversion_goal` /
+> `customer_conversion_goal` pasan a ser irrelevantes. Y «ninguna categoría biddable» en la segunda
+> **no** significa «hereda las de la cuenta»: es la firma de que hay un objetivo personalizado. Ayer
+> se leyó al revés.
+>
+> La prueba empírica, que no depende de interpretar nada: comparar `metrics.all_conversions` —todo lo
+> que entra— contra `metrics.conversions` —lo que alimenta Smart Bidding—. Si una acción tiene la
+> primera en positivo y la segunda en cero, está fuera de la puja de esa campaña.
