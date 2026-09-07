@@ -20,3 +20,4 @@
 - [Google Ads de Zacate Tierra Fertil](zacate-tierra-fertil-ads.md) — cuenta 6593270911: CPA ~1.1, presupuesto crónicamente corto (caso inverso a LinkDesign), keyword "cesped" QS 3 con 76% del gasto
 - [Deploy de LinkDesign-simple en Azure](project-linkdesign-azure-deploy.md) — SWA Standard en CEFSA-prod, CI/CD GitHub Actions; gotchas: .npmrc legacy-peer-deps y mime video/mp4
 - [Scroll de navegación global](scroll-de-navegacion.md) — nueva ruta arriba, back con reintentos; NUNCA parches de scrollTo por página (src/app/scroll-restoration.ts, idéntico en ambos sitios)
+- [Landing software CR sin indexar](landing-software-cr.md) — /desarrollo-de-software-costa-rica en prod desde 2026-09-07 solo para revisión (noindex, sin enlaces, sin sitemap); ajustes en local, no conectar hasta que Robert apruebe; valores PROVISIONAL pendientes
