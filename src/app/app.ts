@@ -72,6 +72,11 @@ export class App {
   // /software es la landing; /software/<slug> es el detalle (terminal, header back-only).
   protected readonly isSoftware = computed(() => this.pathNoLang() === '/software');
   protected readonly isSystemDetail = computed(() => /^\/software\/[^/]+$/.test(this.pathNoLang()));
+  // Landing «Desarrollo de software a la medida en Costa Rica»: hero sobre la grilla del shell y
+  // tema software, con su propio nav de anclas (en revisión, ver app.routes.ts).
+  protected readonly isSoftwareCr = computed(
+    () => this.pathNoLang() === '/desarrollo-de-software-costa-rica',
+  );
   protected readonly isContact = computed(() => this.pathNoLang().startsWith('/contacto'));
   protected readonly isPrivacy = computed(() =>
     this.pathNoLang().startsWith('/politicas-de-privacidad'),
@@ -95,7 +100,13 @@ export class App {
   // El href lleva la ruta completa porque con <base href="/"> un "#frag" suelto resolvería
   // contra la raíz (/#frag = home), no contra la página actual. El label se resuelve por idioma.
   protected readonly navLinks = computed<NavLink[]>(() =>
-    this.isIndustries() ? INDUSTRIES_NAV : this.isSoftware() ? SOFTWARE_NAV : WEB_NAV,
+    this.isIndustries()
+      ? INDUSTRIES_NAV
+      : this.isSoftwareCr()
+        ? SOFTWARE_CR_NAV
+        : this.isSoftware()
+          ? SOFTWARE_NAV
+          : WEB_NAV,
   );
 
   // Conversión de scroll (acción "Scroll" de Ads): una sola vez por página, se rearma al navegar.
@@ -183,6 +194,13 @@ const SOFTWARE_NAV: NavLink[] = [
   { label: { es: 'Sistemas', en: 'Systems' }, href: '/software#sistemas' },
   { label: { es: 'Proceso', en: 'Process' }, href: '/software#proceso' },
   { label: { es: 'Casos', en: 'Work' }, href: '/software#casos' },
+];
+
+// Landing /desarrollo-de-software-costa-rica: anclas a sus propias secciones.
+const SOFTWARE_CR_NAV: NavLink[] = [
+  { label: { es: 'Casos', en: 'Work' }, href: '/desarrollo-de-software-costa-rica#casos' },
+  { label: { es: 'Precios', en: 'Pricing' }, href: '/desarrollo-de-software-costa-rica#precios' },
+  { label: { es: 'Proceso', en: 'Process' }, href: '/desarrollo-de-software-costa-rica#proceso' },
 ];
 
 const WEB_NAV: NavLink[] = [

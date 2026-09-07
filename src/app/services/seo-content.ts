@@ -148,6 +148,32 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
       robots: 'noindex, follow'
     }
   },
+  // Landing «Desarrollo de software a la medida en Costa Rica» (/desarrollo-de-software-costa-rica).
+  // Primera versión en producción SOLO para revisión: `noindex, nofollow`, sin enlaces entrantes,
+  // fuera del sitemap y del llms.txt. `singleUrl`: solo ES, no existe /en/… Al aprobarse se
+  // decide indexación, EN y cómo se conecta al sitio.
+  '/desarrollo-de-software-costa-rica': {
+    es: {
+      title: 'Empresa de desarrollo de software a la medida en Costa Rica | Link Design',
+      description:
+        'Construimos software a la medida para empresas de Costa Rica. Copiamos tu operación, no al revés. Rangos de inversión reales, plazos reales y sistemas que puedes probar hoy.',
+      keywords:
+        'desarrollo de software costa rica, empresas de desarrollo de software costa rica, software a la medida costa rica, link design',
+      canonicalPath: '/desarrollo-de-software-costa-rica',
+      singleUrl: true,
+      robots: 'noindex, nofollow'
+    },
+    en: {
+      title: 'Custom software development company in Costa Rica | Link Design',
+      description:
+        'We build custom software for companies in Costa Rica around how their operation already works. Real investment ranges, real timelines and systems you can try today.',
+      keywords: 'custom software development costa rica, software company costa rica, link design',
+      canonicalPath: '/desarrollo-de-software-costa-rica',
+      locale: 'en_US',
+      singleUrl: true,
+      robots: 'noindex, nofollow'
+    }
+  },
   '/404': {
     es: {
       title: 'Página no encontrada | Link Design Costa Rica',

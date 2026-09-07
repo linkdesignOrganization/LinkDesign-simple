@@ -1107,6 +1107,13 @@ export const routes: Routes = [
     path: 'ads',
     loadComponent: () => import('./pages/ads-tool-page').then((m) => m.AdsToolPageComponent)
   },
+  // Landing «Desarrollo de software a la medida en Costa Rica»: primera versión en producción
+  // para revisión (2026-09-07). Solo ES, `noindex`, sin enlaces entrantes ni sitemap. Fuera de
+  // los árboles de idioma hasta decidir cómo se conecta al sitio (ver SEO_CONTENT).
+  {
+    path: 'desarrollo-de-software-costa-rica',
+    loadComponent: () => import('./pages/software-cr-page').then((m) => m.SoftwareCrPageComponent)
+  },
   { path: 'en', canActivate: [langGuard], data: { lang: 'en' }, children: contentRoutes() },
   { path: '', canActivate: [langGuard], data: { lang: 'es' }, children: contentRoutes() }
 ];
