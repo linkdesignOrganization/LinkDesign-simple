@@ -33,7 +33,9 @@ El algoritmo de scoring NO cambia (paridad con el CRM intacta); solo cambia el m
 - [x] **23 jul → 13 ago** — Aprendizaje. Presupuesto de Búsqueda en 10/día desde el 23 jul (ver "presupuestos del período" abajo); no tocar estrategia de puja. Vigilar el mix de valor.
 - [x] **13 ago 2026** (recordatorio en Calendar) — Revisar con datos del 24 jul–12 ago: contactos/semana, mix de valor, ratio nuevo. Si el mix está ≥80% y los contactos se mantuvieron (~3/semana con 10/día): **activar tROAS inicial ~70%** (≈ ratio esperado con values nuevos ~0.9 × 0.8 de margen). El presupuesto vigente actúa como techo. **El análisis y el cambio se pueden hacer por API** (acceso Basic desde el 28 jul); Keyword Planner también quedó disponible para esta revisión. Desde el 7 ago se suma la **Search Console API** (`import gsc`) para la cara orgánica — ver la entrada del 7 ago, que incluye una lectura anticipada del criterio y dos advertencias sobre cómo leerlo.
       → **Hecha: los cuatro gates dieron NO y el tROAS no se activó.** Ver la entrada del 13 ago al final.
-- [ ] **4 sep 2026** (recordatorio en Calendar, **movido del 3 al 4** el 14 ago) — Revisión de las cuatro campañas, y sobre todo la **primera lectura de la nota de página de destino** tras el copy publicado el 14 de agosto: son tres semanas exactas. La línea base contra la que comparar y cómo leerla sin engañarse están en la última entrada del documento.
+- [x] **4 sep 2026** (recordatorio en Calendar, **movido del 3 al 4** el 14 ago) — Revisión de las cuatro campañas, y sobre todo la **primera lectura de la nota de página de destino** tras el copy publicado el 14 de agosto: son tres semanas exactas. La línea base contra la que comparar y cómo leerla sin engañarse están en la última entrada del documento.
+      → **Hecha el 7 sep 2026, sólo Costa Rica** (Argentina va en su propia sesión y su bitácora). La nota no se movió en ninguna de las cuatro; los criterios de las dos campañas dieron NO; el CRM aportó una coincidencia que vale un cliente. Ver la entrada del 7 sep al final.
+- [ ] **5 oct 2026, lunes 9:00** (recordatorio en Calendar, con aviso por correo una hora antes) — Revisión de «Búsqueda» y «Software» (CR) con datos del 5 sep – 2 oct: **primera lectura de la nota de página de destino tras los cambios del 8 sep** (cédula, horario, videos móviles), criterios de presupuesto de las dos campañas, estadísticas de subasta (las saca Robert, idealmente segmentadas por semana) y tasa de cierre por canal en el CRM. En Ads no se toca nada hasta entonces, a propósito. El guion completo está en el cierre de la entrada del 7 sep (cont.).
 - [ ] **Cada 2 semanas post-tROAS** — Ajustar el target ±10–15% mirando la cantidad de contactos (no el ratio total). Si el volumen de contactos cae >30%, bajar el target. *(No aplica todavía: no hay tROAS activo.)*
 
 ## 23 jul 2026 — Fase 1b (decisión): revertir "Software" a concordancia amplia con USD 15/día
@@ -1605,3 +1607,424 @@ ayer**, ya marcada arriba. La de Costa Rica sigue siendo correcta.
 > La prueba empírica, que no depende de interpretar nada: comparar `metrics.all_conversions` —todo lo
 > que entra— contra `metrics.conversions` —lo que alimenta Smart Bidding—. Si una acción tiene la
 > primera en positivo y la segunda en cero, está fuera de la puja de esa campaña.
+
+## 7 sep 2026 — La revisión del 4 de septiembre: la nota no se movió, Google sí leyó el copy, y un correo que coincide con un cliente
+
+Datos del **14 ago – 4 sep** (16 días hábiles: tres semanas exactas desde que el copy salió a
+producción). El lunes 7 sep entra parcial sólo donde se indica. **Sólo Costa Rica**: por decisión de
+Robert, Argentina se revisa en una sesión aparte y queda en su bitácora; de allá se tomó únicamente
+la fila de la nota de página de destino, como control, porque el mismo copy salió en los dos sitios
+el mismo día.
+
+Tres verificaciones previas, todas limpias:
+
+- **Nada más cambió en las dos campañas desde el 13 ago** (`change_event`, 25 días): sólo las
+  extensiones de Software del 14 ago y las negativas diarias — ~211 por campaña en la ventana, las
+  mismas en las dos. Búsqueda sigue en 10/día y Software en 15/día, Maximizar valor sin target.
+- **Las cuatro acciones nuevas miden y pujan**: `conversions` = `all_conversions` en cada una. Y el
+  rezago sigue en cero: la lectura por fecha de conversión coincide acción por acción con la de
+  fecha de clic.
+- **Las pruebas en vivo del 17 ago no ensuciaron nada**: nivel cuenta y suma de campañas coinciden
+  para las seis acciones de CR (la única `Contacto` vieja del período es la del 13 ago, anterior al
+  deploy, ya explicada).
+
+### 1. La nota de página de destino: sin cambio en las cuatro, y no es falta de masa
+
+| campaña | keyword | QS 14 ago | QS 7 sep | anuncio | CTR esp. | **página** |
+|---|---|---:|---:|---|---|---|
+| Búsqueda (CR) | desarrollo de sitios web | 5 | **5** | Por encima | Promedio | **Por debajo** |
+| Software (CR) | empresa de desarrollo de software | 3 | **3** | Por encima | Por debajo | **Por debajo** |
+| Búsqueda #2 (AR) · control | desarrollo de sitios web | 7 | 6 | Promedio (era Por encima) | Por encima | **Por debajo** |
+| Software #2 (AR) · control | empresa de desarrollo de software | 5 | 4 | Promedio (era Por encima) | Promedio | **Por debajo** |
+
+`metrics.historical_landing_page_quality_score` por semana: **BELOW_AVERAGE todas las semanas desde
+junio, en las cuatro**, sin una sola semana distinta. Las dos argentinas perdieron un punto de QS
+pero por `creative_quality_score` (cambiaron sus anuncios el 14 ago), no por la página. Búsqueda #2
+juntó ~2.600 impresiones en la ventana y tampoco se movió: **el copy solo no movió la nota en tres
+semanas**, y la muestra ya no es chica. Queda en pie lo que decía la nota del 14 ago: «arreglar el
+peso por sí solo probablemente no mueva la nota».
+
+**Pero Google sí leyó el texto nuevo, y Search Console lo muestra.** `linkdesign.cr/web` tenía
+**0 impresiones orgánicas en Costa Rica en las seis semanas previas** y desde la semana del 10 ago
+aparece para «diseño web costa rica», «paginas web costa rica», «diseño de sitios web en costa
+rica», «paginas web en costa rica»:
+
+| semana | impresiones | posición media |
+|---|---:|---:|
+| 29 jun – 9 ago (seis semanas) | 0 | — |
+| 10 ago | 30 | 65 |
+| 17 ago | 66 | 60 |
+| 24 ago | 100 | 51 |
+| 31 ago | 75 | 49 |
+
+Un clic en total: es página 5 o 6, no tráfico. Pero prueba que la reclasificación de la página por
+contenido ya ocurrió, y que la nota de Ads mide otra cosa o tarda más. `/software` no cambió (2–16
+impresiones/semana antes y después; ya aparecía para «sistemas a medida» y «software a medida»).
+
+### 2. Los criterios del 13 ago, uno por uno
+
+**"Búsqueda"** (ventanas por fecha de clic; serios = correo + reunión + formulario; para mayo–12 ago
+la partición sale de la acción vieja con las cotas exactas de la segunda sesión del 13 ago):
+
+| ventana | háb. | clics | costo | CPC | CTR | IS | perd. presup. | perd. rank | WhatsApp | serios | serios/100 clics | USD/serio |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| may | 21 | 131 | 302,45 | 2,31 | 10,0 % | 34,5 % | 25,3 % | 40,2 % | 10 | 6 | 4,6 | 50 |
+| jun | 22 | 137 | 437,55 | 3,19 | 10,3 % | 36,6 % | 24,1 % | 39,3 % | 14 | 6 | 4,4 | 73 |
+| 1–22 jul | 16 | 93 | 306,03 | 3,29 | 11,7 % | 40,0 % | 22,8 % | 37,2 % | 5 | 4 | 4,3 | 77 |
+| 24 jul – 12 ago | 14 | 72 | 196,96 | 2,74 | 10,0 % | 36,9 % | 21,1 % | 42,0 % | 10 | 0 | 0,0 | — |
+| **14 ago – 4 sep** | 16 | 79 | 202,34 | 2,56 | 7,5 % | 41,3 % | **19,6 %** | 39,1 % | **4** | **1** | **1,3** | 202 |
+
+| criterio | umbral | medido | veredicto |
+|---|---|---|---|
+| subir a 15/día | ≥ 4 serios por 100 clics | **1,3** (1 en 79) | **NO** |
+| demanda represada | pérdida por presupuesto > 35 % | **19,6 %** (ranking 39,1 %) | **NO** |
+| «el problema es el sitio» | 0–1 serios/100 clics con visitas normales | 1,3 con 4,9 clics/día hábil (5,1 y 5,8 en las ventanas previas) | **SÍ: es esta rama** |
+
+El único lead serio de la campaña en siete semanas es un clic de «Agendar reunión» el 19 ago
+(value 48, término «creacion de pagina web») que **no dejó cita en el CRM**. Formulario y copiar
+correo siguen en cero: el último formulario de CR es del 7 jul (62 días). Dos cosas más, anotadas
+sin conclusión: **los WhatsApp bajaron de 10 a 4 con los mismos clics** (p ≈ 0,15 — no distingue
+azar de efecto, pero es lo primero que cambió en la dirección del copy) y el CTR bajó de 10 % a
+7,5 % mientras las impresiones diarias subían ~25 %, sin cambio de anuncio: la amplia está
+entrando a más subastas de menor afinidad, y se lee en `search_term_view` (ver §4).
+
+**"Software"**:
+
+| ventana | háb. | clics | costo | CPC | CTR | IS | perd. presup. | perd. rank | WhatsApp | serios | serios/100 | USD/serio |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| may (amplia vieja) | 21 | 110 | 313,82 | 2,85 | 6,1 % | 24,6 % | 30,1 % | 45,3 % | 11 | 6–7 | 5,9 | 48 |
+| jun (frase desde el 15) | 22 | 93 | 456,38 | 4,91 | 7,8 % | 29,7 % | 26,3 % | 43,9 % | 6 | 5 | 5,4 | 91 |
+| 24 jul – 12 ago (amplia nueva) | 14 | 76 | 312,98 | 4,12 | 8,4 % | 34,8 % | 44,1 % | 21,1 % | 1 | 2 | 2,6 | 156 |
+| **14 ago – 4 sep** | 16 | 84 | 330,87 | **3,94** | 10,1 % | 25,4 % | **41,9 %** | 32,7 % | 6 | **2** | 2,4 | 165 |
+
+| criterio | umbral | medido | veredicto |
+|---|---|---|---|
+| subir a 20/día porque el QS se recupera | CPC ≤ 3 | **3,94** (semanas: 3,57 · 3,65 · 4,06) con **QS 3** | **NO** |
+| «la palanca es la página, no el presupuesto» | CPC 4+ con QS todavía en 3 | 3,94 y QS 3, seis semanas de rodaje | **SÍ: es esta rama** |
+| gate del 23 jul (20/día) | pérdida por presupuesto > 35 % **y** ratio ≥ 1,2 | 41,9 % ✓ · **0,54** ✗ | **NO** |
+
+La amplia recreada lleva seis semanas y su CPC no bajó al 2,65 de la amplia vieja. El móvil sigue
+más barato (CPC 2,46 contra 4,92 en escritorio). Las extensiones nuevas del 14 ago sí se notan donde
+tenían que notarse: el CTR subió de 8,4 % a 10,1 %. Los dos leads serios llegaron los dos primeros
+días hábiles —copiar correo el 17 ago (value 45, término oculto) y agendar el 18 ago (54, «desarrollo
+de software costa rica»)— y después sólo WhatsApp.
+
+**tROAS en cualquiera de las dos: NO.** Tres leads serios en tres semanas y media no son señal para
+Smart Bidding; un target hoy seguiría siendo un tCPA de WhatsApp y scroll disfrazado (§ del 13 ago).
+De hecho en Búsqueda, de las 44 conversiones con que aprende la puja, **39 son scrolls**.
+
+### 3. El CRM: la coincidencia que importa, y la escala de values queda como está
+
+**Formularios**: `webleads` sigue en 13; ninguno nuevo en ningún sitio desde el 12 ago (AR) y
+ninguno de CR desde el 7 jul. `Contacto Formulario` = 0 en Ads es correcto, no un label roto.
+
+**Los leads del pipeline creados en la ventana, Costa Rica, con recorrido real** (descontados los 4
+clientes históricos cargados de golpe el 17 ago — We Drive CR, AMAG, La Caja Maestra, Link
+Design-Nolõ-CRM —, que se suman a los 11 del 13 ago):
+
+| fecha | empresa | canal | servicio | estado |
+|---|---|---|---|---|
+| 14 ago | Ecommerce marca paraguas | referido | e-commerce | en espera |
+| **17 ago** | **Expat Legal Advisors** | **Email** | sitio web corporativo | **ganado el 26 ago** |
+| 25 ago | Despacho contable | WhatsApp | sitio web corporativo | propuesta enviada |
+| 25 ago | Clínica dental | WhatsApp | sitio web corporativo | perdido (4 sep) |
+| 1 sep | Hojalatería Fuentes | WhatsApp | otro | propuesta enviada |
+| 3 sep | Quality Flooring | «Otro»: referido de Deluxe Surfaces | sitio web corporativo | propuesta enviada |
+| 4 sep | UTURN | «Otro»: sacó su propia cita en el sitio | sitio web corporativo | propuesta enviada |
+| 4 sep | Luis Adrián Vega | «Otro»: referido de Uga Comediante | sitio web creativo | propuesta enviada |
+
+**El único clic de «copiar correo» de Costa Rica en la ventana (17 ago, campaña Software, value 45)
+coincide en fecha y canal con Expat Legal Advisors**, que entró ese mismo día por Email y es cliente
+desde el 26 ago. Ads y CRM no se enlazan (sigue sin haber `convertedToLeadId` para nada que no sea
+formulario), así que es coincidencia fuerte, no prueba. Un detalle en contra: pidió sitio web y el
+clic fue en `/software`. Un detalle a favor: no hay otro correo entrante registrado ese día. Si es
+él, la inversión de CR de la ventana (533 USD) la pagó un solo contacto.
+
+**Los dos clics de «Agendar reunión» (18 y 19 ago) no dejaron cita.** La de UTURN es del 4 sep y no
+tiene clic de Ads que la explique: entró por orgánico o directo. Hallazgo de estructura del CRM,
+anotado en la memoria: el canal «Otro» son **citas del calendario del sitio y referidos**, no un
+cajón de sastre — el «Reunión» de Ads vive ahí, con el detalle en `sourceOtherText`.
+
+**Tasa de cierre por canal, descontados los 15 históricos** (al 7 sep):
+
+| | resueltos | ganados | cierre | | resueltos | ganados | cierre |
+|---|---:|---:|---:|---|---:|---:|---:|
+| WhatsApp · todos los países | 19 | 3 | **16 %** | WhatsApp · sólo CR | 10 | 3 | 30 % |
+| Email · todos los países | 11 | 4 | **36 %** | Email · sólo CR | 10 | 4 | 40 % |
+
+La brecha existe y va en la dirección conocida, pero es **menor que el «14 de 15» del 13 ago**: aquel
+número mezclaba países y era anterior a que Deluxe Surfaces (WhatsApp) cerrara. Lo que sí agranda la
+brecha es la selección de entrada: **de 11 clics de WhatsApp en CR entre el 14 ago y el 7 sep,
+entraron 3 al pipeline**; el correo entró 1 de 1. Clic a cliente queda en ~8 % WhatsApp contra ~40 % correo —
+**del orden de 1:5, que es exactamente la escala vigente (10 contra 50)**.
+
+**Decisión sobre el pendiente 4 (recalibrar values): no se recalibra.** Con tres leads serios de
+muestra no hay número propio que calcular, y la evidencia de cierre es consistente con la escala
+actual, no con una brecha mayor. La Data Manager API sigue sin justificarse: seguiría siendo
+medición para humanos, no señal para la puja. La ventana queda con una sola escala.
+
+### 4. Hallazgos laterales, sin acción
+
+- **Términos de búsqueda**: `search_term_view` explica el 58 % del gasto de Búsqueda y sólo el
+  **26 %** del de Software (Google oculta el resto). Lo visible está limpio en las dos: ruido fuera
+  del rubro 12,76 USD en Búsqueda (9,9 % de lo visible: `dabasystem`, `clonify`, «comercio
+  electrónico»…) y 6,09 en Software (`serkes1`, `cybernova`). Inglés en Búsqueda: 3,97 USD, 2 clics.
+  Las negativas diarias están haciendo su trabajo.
+- **Sesiones pagas en el CRM** (`sitesessions`, con `entryGclid`): 42 · 45 · 43 · 38 por semana en
+  CR, mitad `/web` y mitad `/software`, 0,8–1,0 min activos por sesión. Coincide con los clics de
+  Ads y no muestra un cambio de comportamiento tras el copy.
+- **Dispositivo, ventana POST**: Búsqueda escritorio CPC 2,92 / móvil 1,87; Software 4,92 / 2,46.
+- **Pacific Star Food Service** figura hoy como WhatsApp en el pipeline; llegó por formulario el
+  3 jun (es el único web-lead con `convertedToLeadId`). `sourceChannel` sigue sin ser confiable para
+  formularios.
+
+### 5. Decisiones — pendientes de Robert (7 sep 2026)
+
+Lo que los datos recomiendan, a falta de su decisión:
+
+1. **Presupuestos y pujas: sin cambios.** Los criterios de las dos campañas cayeron en la rama «no es
+   el presupuesto»; el tROAS sigue sin señal que lo alimente.
+2. **Values: sin cambios.** Ver §3.
+3. **Nota de página de destino**: el copy ya está leído por Google y no la movió. Lo que queda es
+   (a) darle tres o cuatro semanas más sin encimar cambios, porque la nota es lenta y relativa, y
+   (b) la única palanca documentada que sigue pendiente y es medible: **la velocidad en móvil** —
+   LCP ~6 s por los tres videos del encabezado, sin variante móvil (6,4 MB → ~2,3 MB), decisión
+   ya propuesta el 14 ago con comparación lado a lado. Una palanca menor y barata: `/web` no tiene
+   teléfono escrito ni cédula jurídica; es texto, no diseño, pero se propone y se espera.
+   > **Decidido el mismo 7 sep.** Robert aprobó tres acciones: cédula jurídica y razón social en el
+   > pie y en el JSON-LD; horario en el pie (en el JSON-LD ya estaba); y videos diferenciados para
+   > móvil en el hero de `/web` y las pestañas de `/software`, sujetos a una comparación lado a lado.
+   > **El teléfono quedó descartado**: las llamadas no son un canal del estudio. Verificado en
+   > producción que ni `/web` ni `/software` ni `/contacto` muestran teléfono ni cédula (comparten
+   > el pie). El plan con rutas, comandos y orden del día está en
+   > [plan-nota-pagina-destino.md](./plan-nota-pagina-destino.md); se ejecuta el 8 sep.
+4. **A vigilar, no a actuar**: los WhatsApp de Búsqueda bajaron a la mitad con los mismos clics.
+5. **Próxima revisión sugerida: ~5 oct 2026** — siete semanas de copy y siete de acciones separadas,
+   suficiente para leer la nota otra vez y para tener ~25 contactos por canal.
+
+## 7 sep 2026 (cont.) — Las estadísticas de subasta de «Búsqueda», leídas contra las conclusiones de la mañana
+
+Robert notó que la revisión del 4 sep se hizo sin las estadísticas de subasta y pasó las dos tablas de
+«Búsqueda» (CR) por captura: **24 jul – 12 ago** y **19 ago – 4 sep**. Esta entrada registra qué
+dicen y si mueven algo de lo concluido arriba. **No mueven ninguna decisión: refuerzan tres
+conclusiones y cambian la lectura de una.** Las de Software las pasa aparte.
+
+### Por qué no estaban: la API las tiene, pero no para nosotros
+
+Las métricas `metrics.auction_insight_*` existen en v24 (seleccionables en `campaign`, `ad_group` y
+`keyword_view`, segmentadas por `segments.auction_insight_domain`), pero la consulta devuelve
+`authorization_error 26: The developer doesn't have access to metrics`. Son de lista blanca y la
+lista está cerrada; el único camino es la UI (Estadísticas de subasta) o su descarga. Anotado en la
+memoria del proyecto.
+
+Lo que sí sale por API es la fila «Usted», y cuadra al decimal si se usan las métricas correctas:
+
+| ventana | fuente | cuota de impresiones | parte superior | superior absoluta |
+|---|---|---:|---:|---:|
+| 24 jul – 12 ago | UI | 36,92 % | 82,65 % | 47,41 % |
+| | API | 36,35 % | 82,59 % | 47,40 % |
+| 19 ago – 4 sep | UI | 42,73 % | 82,91 % | 50,00 % |
+| | API | 42,30 % | 82,91 % | 50,00 % |
+
+Trampa: «parte superior» es `top_impression_percentage` (sobre impresiones propias), **no**
+`search_top_impression_share` (sobre impresiones elegibles), que da 30 % y 35 % para las mismas
+ventanas. El medio punto de diferencia en la cuota es normal: la UI de subasta la calcula sobre su
+propio conjunto de subastas.
+
+### Lo que dicen las tablas
+
+Competidores con más del 10 % de cuota en nuestras subastas: **atomsoluciones.com 14,7 %,
+shopify.com 11,3 % y squarespace.com 10,5 %** en la primera ventana; **sólo shopify.com 12,9 %** en la
+segunda. El resto (masdigital, bitcode-enterprise, pixelcr, sitiowebcr, wix, base44, y en la primera
+ventana también zewsweb, bitsaturno, ticma.cr, fiverr y enseriocr) queda bajo el 10 %. Nosotros:
+36,9 % y 42,7 %.
+
+1. **Somos el participante más grande de la subasta, por más del doble.** Nadie nos saca: el solape
+   más alto es el de atom, presente en el 28 % de nuestras impresiones; el resto coincide con
+   nosotros en el 7–19 %. Sumando las cuotas de todos los listados, en una subasta típica aparece
+   además de nosotros **un** competidor de la lista; en la segunda ventana, menos de uno. Es un
+   mercado ralo.
+2. **La columna «ranking superior» no es información nueva.** Es ≈ cuota propia × (1 − solape ×
+   posición superior): atom 36,92 × (1 − 0,2826 × 0,3734) = 33,0 %; shopify 35,4 %; squarespace
+   34,4 %, exactamente lo que muestra la tabla. Por eso da casi lo mismo contra todos (33–36 % y
+   40–42 %): es la cuota de impresiones vista desde el otro lado, no una medida de debilidad frente
+   a cada uno.
+3. **Quién nos gana la posición cuando coincidimos**: las plataformas (squarespace 54 % / 48 %,
+   shopify 36 % / 57 %, base44 43 % / 32 %, wix 36 % / 33 %) y **pixelcr.com (50 % / 46 %)**, el
+   único competidor local que nos disputa el primer lugar. Las agencias locales restantes están
+   debajo nuestro el 80–96 % de las veces. Con 47–50 % de superior absoluta propia, que alguien esté
+   arriba la mitad de las veces que coincide es lo esperable.
+
+Entre las dos ventanas **atomsoluciones.com desapareció de nuestras subastas** (era el primero) y con
+él cinco menores: la tabla pasó de 14 o más filas a 8. La segunda ventana se juega contra menos
+competidores.
+
+### Contra las conclusiones del §2
+
+| conclusión | qué agrega la subasta |
+|---|---|
+| «No es el presupuesto» | **Refuerza.** El mayor participante somos nosotros; la pérdida por presupuesto (19–23 %) no se la lleva nadie en particular. |
+| «Perdemos ~40 % por ranking» | **Cambia la lectura, no el número.** Con competidores de ≤ 15 % de cuota, ese 40 % no se pierde contra un rival más fuerte: es nuestro Ad Rank sin llegar al mínimo que Google exige para mostrar (QS 5, página Por debajo del promedio), o la puja automática decidiendo no pujar en subastas que predice sin valor. La palanca sigue siendo la página, no la puja. |
+| «La amplia entra a subastas de menor afinidad» (CTR 10 % → 7,5 %) | **Consistente, y aparece una segunda causa posible**: con atom afuera la subasta se aflojó (cuota 36 → 42 %, CPC 2,74 → 2,45, superior absoluta 47 → 50 %) y las impresiones nuevas son las marginales. Por semana el CTR cae de golpe en la del 17 ago (10,8 / 11,9 / 8,6 / 11,4 → 8,0 / 7,1 / 7,3) y las subastas elegibles suben de ~640–760 a 730–1.000 semanales. Esa semana coincide con el copy y las acciones nuevas del 14 ago, así que las dos causas **no se separan con estos datos**; la segmentación semanal de la UI de subasta (Segmentar → Semana, 20 jul – 6 sep) las separaría. |
+| «El problema es el sitio» | **Refuerza con un argumento que no teníamos**: en la segunda ventana la subasta se puso más fácil y más barata sin que hiciéramos nada, y la campaña siguió en 1 lead serio en 65 clics. |
+
+**La presencia de Shopify, Wix, Squarespace y Base44 no significa tráfico «hágalo usted mismo».** Se
+revisó `search_term_view` en las dos ventanas: los términos con señal de plataforma o DIY (crear,
+gratis, plantilla, tienda, ecommerce, app, nombres de plataformas) son el **5 % y el 7 % de las
+impresiones visibles**, 0 y 2 clics, 0 y 4,99 USD. Ninguna de las 163 negativas de la campaña es de
+ese tipo, así que no es que se filtren: no entran. Las plataformas pujan por los mismos genéricos
+que nosotros («diseño web», «paginas web», «landing page», «sitio web»). **No se agregan negativas
+DIY por esto.** Cobertura de lo visible: 59 % y 57 % del costo.
+
+Serie semanal, para quien vuelva (la del 20 jul lleva tres días a 15/día):
+
+| semana | impr | clics | CTR | CPC | costo | cuota | superior | sup. abs. | perd. presup. | perd. rank |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 20 jul | 372 | 40 | 10,8 % | 2,20 | 87,84 | 45,7 % | 81,2 % | 60,8 % | 13,9 % | 40,4 % |
+| 27 jul | 219 | 26 | 11,9 % | 2,83 | 73,47 | 34,4 % | 81,3 % | 50,9 % | 32,0 % | 33,6 % |
+| 3 ago | 244 | 21 | 8,6 % | 2,71 | 56,92 | 31,9 % | 82,7 % | 37,2 % | 24,9 % | 43,1 % |
+| 10 ago | 255 | 29 | 11,4 % | 3,08 | 89,26 | 39,6 % | 76,2 % | 51,0 % | 30,8 % | 29,6 % |
+| 17 ago | 351 | 28 | 8,0 % | 2,61 | 73,10 | 35,1 % | 84,7 % | 54,0 % | 28,2 % | 36,7 % |
+| 24 ago | 309 | 22 | 7,1 % | 2,24 | 49,19 | 42,5 % | 83,7 % | 46,4 % | 29,0 % | 28,5 % |
+| 31 ago | 384 | 28 | 7,3 % | 2,38 | 66,55 | 48,3 % | 80,0 % | 49,0 % | 3,0 % | 48,7 % |
+
+Hallazgo lateral, **sin acción**: «landing page» es el término con más impresiones en las dos
+ventanas (33 y 55) y tiene 1 clic entre las dos; con «web designers near me» (19 y 12, 0 clics) y
+«diseño de paginas web» (17, 0 clics) explica buena parte del CTR bajo sin costar dinero. **No toca
+el QS**: la nota de calidad se calcula sobre búsquedas exactas de la keyword, no sobre las
+expansiones de la amplia, así que estas impresiones sin clic sólo bajan el CTR que se ve en el
+informe. Corregido el mismo 7 sep: una primera versión de este párrafo decía que erosionaban el CTR
+esperado, y no es así. Negarlo no compraría nada medible.
+
+### «Software»: la subasta se puso más dura, y eso explica la caída de cuota que el §2 dejó sin causa
+
+Fila «Usted» contra la API, con las mismas métricas:
+
+| ventana | fuente | cuota de impresiones | parte superior | superior absoluta |
+|---|---|---:|---:|---:|
+| 24 jul – 12 ago | UI | 33,70 % | 80,67 % | 50,39 % |
+| | API | 33,80 % | 80,67 % | 50,39 % |
+| 19 ago – 4 sep | UI | 25,39 % | 79,67 % | 49,91 % |
+| | API | 25,47 % | 79,59 % | 49,72 % |
+
+**Quién compite.** Cuatro por encima del 10 % en cada ventana, contra tres y luego uno en «Búsqueda»:
+
+| dominio | cuota P1 → P2 | solape P1 → P2 | arriba nuestro P1 → P2 | sup. abs. P1 → P2 |
+|---|---|---|---|---|
+| softland.com (ERP) | 14,6 → 14,3 % | 12 → 6 % | 55 → **62 %** | 36 → 23 % |
+| atomsoluciones.com | 13,8 → < 10 % | 22 → 6 % | 21 → 29 % | 15 → 29 % |
+| softdialcr.com | 13,2 → 11,4 % | 13 → 5 % | 44 → **59 %** | 27 → **61 %** |
+| novussoftware.la | 10,6 → < 10 % | 16 → 11 % | 19 → 32 % | 9 → 13 % |
+| bitcode-enterprise.com | < 10 → 12,8 % | 14 → **29 %** | 25 → 18 % | 20 → 12 % |
+| accesscorp.com | < 10 → 11,1 % | 12 → 14 % | 61 → **69 %** | 43 → 49 % |
+| alegra.com (contable) | < 10 → < 10 % | 5 → 4 % | 38 → 57 % | 13 → 13 % |
+| aplicomcr.com | < 10 → < 10 % | 15 → 13 % | 26 → 36 % | 18 → 26 % |
+| qupos.com (POS) · daytonasoft.com | sólo P1 | 5 % · 4 % | 29 % · 41 % | 4 % · 21 % |
+| sea.co.cr | sólo P2 | 13 % | 14 % | 2 % |
+
+Tres diferencias con «Búsqueda»:
+
+1. **Los rivales son más fuertes y se pusieron más agresivos.** En «Búsqueda» las agencias locales
+   quedaban debajo nuestro el 80–96 % de las veces; acá **tres o cuatro nos ganan la posición más de
+   la mitad de las veces que coincidimos** (Softland, Access Corp, Softdial, y Alegra en la segunda
+   ventana), y todas subieron entre ventanas. Softdial pasó de 27 % a 61 % de superior absoluta. Atom
+   se desinfló igual que en «Búsqueda», pero acá lo reemplazaron Bitcode (ahora coincide con nosotros
+   en el 29 % de las impresiones, aunque casi siempre debajo), Access Corp y un participante nuevo,
+   sea.co.cr.
+2. **Seguimos siendo el mayor participante, pero por menos margen**: 2,3× el segundo en la primera
+   ventana y 1,8× en la segunda. La densidad es parecida a la de «Búsqueda» (sumando cuotas, ~1
+   competidor por subasta además de nosotros); lo que cambia es quién y cuánto puja.
+3. **El contraste entre las dos campañas es el del QS.** Con QS 5 y CTR esperado «Promedio»
+   («Búsqueda») nadie local nos pasa; con QS 3, CTR esperado y página «Por debajo» («Software») nos
+   pasan varios y pagamos 3,7–4,1 por clic contra 2,5–2,7. La subasta muestra desde afuera lo que el
+   QS dice desde adentro. Es consistente con «la palanca es la página», no una prueba: Softland y
+   Access Corp también pueden simplemente pujar más.
+
+**La caída de cuota (33,8 → 25,5 %) tiene causa, y no es nuestra.** El §2 la registró sin explicarla.
+Se juntan tres cosas:
+
+- **Más demanda con el mismo dinero.** Subastas elegibles por día hábil: ~191 → ~213 (+12 %). El
+  presupuesto siguió en 15/día y se gastó entero (22,4 → 20,1 USD por día hábil).
+- **Rivales pujando más alto en las subastas disputadas** (tabla de arriba).
+- **La puja automática cedió esas subastas en vez de pelearlas**: pérdida por ranking 18 → 31 %, CPC
+  4,12 → 3,74, y la posición donde sí salimos no se movió (80 % superior, 50 % absoluta). Con
+  presupuesto topado, el reparto entre «perdido por presupuesto» y «perdido por ranking» lo decide
+  la puja, no el mercado: la semana del 10 ago fue 71 % / 2 % con CPC 5,85 y la del 31 ago
+  38 % / 38 % con CPC 4,06, con el mismo tope. Es la circularidad ya anotada en la skill: en
+  «Software» la pérdida por presupuesto **no** mide demanda represada.
+
+Serie semanal (la del 20 jul mezcla tres días de la frase a 5,60):
+
+| semana | impr | clics | CTR | CPC | costo | cuota | superior | sup. abs. | perd. presup. | perd. rank | eleg. |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 20 jul | 83 | 8 | 9,6 % | 4,55 | 36,38 | 50,8 % | 82,1 % | 67,2 % | 11,4 % | 37,9 % | ~160 |
+| 27 jul | 295 | 28 | 9,5 % | 4,31 | 120,68 | 35,4 % | 81,4 % | 52,7 % | 54,6 % | 9,9 % | ~830 |
+| 3 ago | 410 | 29 | 7,1 % | 3,61 | 104,70 | 33,7 % | 80,7 % | 47,6 % | 37,0 % | 29,3 % | ~1.220 |
+| 10 ago | 187 | 20 | 10,7 % | 5,85 | 116,92 | 26,7 % | 79,9 % | 50,3 % | 71,3 % | 1,9 % | ~700 |
+| 17 ago | 358 | 30 | 8,4 % | 3,57 | 107,18 | 28,8 % | 80,6 % | 52,4 % | 39,8 % | 31,4 % | ~1.240 |
+| 24 ago | 237 | 30 | 12,7 % | 3,65 | 109,51 | 23,9 % | 83,0 % | 51,5 % | 51,6 % | 24,6 % | ~990 |
+| 31 ago | 225 | 22 | 9,8 % | 4,06 | 89,28 | 23,7 % | 75,8 % | 44,0 % | 38,4 % | 37,8 % | ~950 |
+
+**Softland, Alegra y Qupos están porque la amplia trae búsquedas de software empaquetado**, la familia
+«ERP / CRM / sistemas» que el 14 ago midió en 14,1 % de las impresiones y 7,2 % del gasto. En estas
+ventanas: **16 % de las impresiones visibles y 10 % del costo visible en la primera** («erp» 25
+impresiones, «erp costa rica» 2 clics, «optimus erp» 1 clic), **7 % y 0 clics en la segunda**. Las
+negativas ya cubren las marcas (softland, alegra, sap, odoo, quickbooks, monica) y no las genéricas
+«erp» y «crm»; el 13 ago se decidió que ese ruido cuesta menos que la cura, y con 0 clics en la
+segunda ventana no hay motivo para reabrirlo. Cobertura de lo visible: 56 % y 25 % del costo (Google
+oculta más en esta campaña que en «Búsqueda»).
+
+**Contra las conclusiones del §2:**
+
+| conclusión | qué agrega la subasta |
+|---|---|
+| «subir a 20/día porque el QS se recupera: NO» | **Refuerza.** QS sigue en 3 y ahora se ve que las subastas que compraría el presupuesto extra son justamente las disputadas por Softland, Access Corp y Softdial, donde nos ganan la posición el 60–70 % de las veces: el clic marginal sería más caro que el promedio, no más barato. |
+| «la palanca es la página, no el presupuesto» | **Refuerza**, por el contraste con «Búsqueda» (punto 3). |
+| gate del 23 jul (20/día): presupuesto > 35 % ✓ y ratio ≥ 1,2 ✗ | **Sin cambio en el veredicto, con una advertencia**: el 43 % de pérdida por presupuesto no es demanda represada medible, porque la puja lo intercambia con la pérdida por ranking semana a semana. Ese criterio pesa menos de lo que parece; el que manda es el ratio. |
+| la cuota bajó a 25 % | **Ya no queda sin causa**: más demanda, rivales más agresivos y la puja cediendo. No es efecto del copy ni de las acciones nuevas. |
+
+Sin acción. Lo único que estas tablas sugieren vigilar es **Access Corp y Softdial**: si en la
+próxima revisión siguen subiendo la superior absoluta, la subasta de «Software» se está encareciendo
+por el lado de los rivales, y eso baja aún más el rendimiento de cualquier presupuesto extra.
+
+### Cierre del 7 sep: qué se toca y qué no
+
+Robert preguntó si, con las dos subastas leídas, la única modificación recomendada era la de la
+página. **Sí, y lo confirmó: en Google Ads no se toca nada en ninguna de las dos campañas.** La única
+acción es el plan de página de destino ([plan-nota-pagina-destino.md](./plan-nota-pagina-destino.md)),
+que se ejecuta el 8 sep. Para que la próxima sesión no lo redescubra, lo que se consideró y por qué
+cada cosa es un no:
+
+| palanca | por qué no |
+|---|---|
+| Presupuesto de «Búsqueda» (10/día) | No está limitada por plata y somos el mayor participante de la subasta; subir compra más clics de la calidad que hoy da 1 lead serio en 79. |
+| Presupuesto de «Software» (15/día) | El gate (ratio ≥ 1,2) sigue en 0,54, y los clics que compraría el dinero extra son los disputados por Softland, Access Corp y Softdial: los más caros. La pérdida por presupuesto no mide demanda represada (ver arriba). |
+| tROAS en cualquiera | Tres leads serios en tres semanas y media no son señal; sería un tCPA de WhatsApp disfrazado. |
+| Values | La escala 10 / 50 coincide con la tasa de cierre real por canal del CRM (§3). |
+| Concordancia y keywords | Frase cuesta 2,7× lo que ahorra (13 ago); la keyword literal genera el 0,1 % de las impresiones (14 ago). |
+| Negativas nuevas | Plataformas/DIY en «Búsqueda»: 5–7 % de lo visible, 2 clics. ERP/CRM en «Software»: 0 clics en la segunda ventana. «landing page»: no cuesta dinero ni toca el QS. |
+| Scroll como conversión de puja | Es la mayoría de las conversiones pero vale 1: pesa ~⅓ del valor con que aprende la puja. Quitarlo dejaría a la puja con ~5 conversiones en tres semanas, que es peor. El ×2 de julio fue el remedio elegido para esto. |
+| Ajustes por dispositivo | El móvil es más barato en las dos, pero Maximizar valor de conversión ignora los ajustes de puja por dispositivo (salvo −100 %). |
+
+Y una razón que vale para todas aunque alguna pareciera inofensiva: **en octubre hay que poder leer el
+efecto de los cambios de página** sobre la nota de destino y sobre los leads serios. Cualquier cambio
+en Ads en el medio contamina esa lectura.
+
+**Próxima revisión: lunes 5 oct 2026** (recordatorio en Calendar con aviso por correo). Siete semanas
+de copy, siete de acciones separadas, cuatro de los cambios de página del 8 sep. Qué leer ese día:
+
+1. **La nota de página de destino** en las cuatro keywords (`historical_landing_page_quality_score`
+   por semana): es la primera lectura después de cédula, horario y videos móviles. Si sigue
+   BELOW_AVERAGE en todas, la palanca de la nota se agotó por este camino y hay que decirlo.
+2. **«Búsqueda»**: serios por 100 clics (≥ 4 → volver a 15/día; 0–1 → sigue siendo el sitio);
+   pérdida por presupuesto (> 35 % recién sería demanda represada); WhatsApp por 100 clics (bajaron
+   de 10 a 4 con el copy, sin conclusión).
+3. **«Software»**: CPC y QS (CPC ≤ 3 con el QS recuperándose → 20/día); ratio del gate; y si Access
+   Corp y Softdial siguen subiendo su superior absoluta.
+4. **Las estadísticas de subasta de las dos campañas**, que sólo Robert puede sacar: las dos tablas
+   de la ventana nueva y, si se puede, segmentadas por semana desde el 20 jul, que es lo que
+   separaría «atom se fue» de «cambió el copy».
+5. **El CRM**: leads del pipeline creados desde el 4 sep, con canal y desenlace; ~25 contactos por
+   canal ya permiten recalcular la tasa de cierre WhatsApp / correo.
+6. **Search Console**: impresiones y posición de `/web` en Costa Rica, semana a semana, como control
+   de que Google sigue leyendo la página.
