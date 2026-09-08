@@ -4,6 +4,7 @@
   [appTechnicalGridDisabled]="
     !isSoftware() &&
     !isSoftwareCr() &&
+    !isSoftwareCrCase() &&
     !isContact() &&
     !isSystemDetail() &&
     !isIndustries() &&
@@ -12,12 +13,18 @@
   [appTechnicalGridViewport]="true"
   [appTechnicalGridMode]="null"
   [appTechnicalGridCellSize]="
-    isSoftware() || isSoftwareCr() || isContact() || isSystemDetail() || isIndustries() || isIndustryDetail()
+    isSoftware() ||
+    isSoftwareCr() ||
+    isSoftwareCrCase() ||
+    isContact() ||
+    isSystemDetail() ||
+    isIndustries() ||
+    isIndustryDetail()
       ? 18
       : null
   "
   [class.shell--plain]="isHome()"
-  [class.shell--software]="isSoftware() || isSoftwareCr() || isSystemDetail()"
+  [class.shell--software]="isSoftware() || isSoftwareCr() || isSoftwareCrCase() || isSystemDetail()"
   [class.shell--contact]="isContact()"
 >
   <header
@@ -126,7 +133,10 @@
     }
   </header>
 
-  <main class="content" [class.content--software]="isSoftware() || isSoftwareCr() || isSystemDetail()">
+  <main
+    class="content"
+    [class.content--software]="isSoftware() || isSoftwareCr() || isSoftwareCrCase() || isSystemDetail()"
+  >
     <router-outlet />
   </main>
 </div>

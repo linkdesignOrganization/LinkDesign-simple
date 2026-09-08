@@ -77,6 +77,10 @@ export class App {
   protected readonly isSoftwareCr = computed(
     () => this.pathNoLang() === '/desarrollo-de-software-costa-rica',
   );
+  // Ficha de un demo de esa landing: página terminal (back-only), misma grilla y tema.
+  protected readonly isSoftwareCrCase = computed(() =>
+    /^\/desarrollo-de-software-costa-rica\/[^/]+$/.test(this.pathNoLang()),
+  );
   protected readonly isContact = computed(() => this.pathNoLang().startsWith('/contacto'));
   protected readonly isPrivacy = computed(() =>
     this.pathNoLang().startsWith('/politicas-de-privacidad'),
@@ -91,7 +95,12 @@ export class App {
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver (contacto, privacidad, detalle).
   protected readonly backOnly = computed(
-    () => this.isContact() || this.isPrivacy() || this.isSystemDetail() || this.isIndustryDetail(),
+    () =>
+      this.isContact() ||
+      this.isPrivacy() ||
+      this.isSystemDetail() ||
+      this.isIndustryDetail() ||
+      this.isSoftwareCrCase(),
   );
 
   // Opciones del nav por landing: cada una apunta a una sección real de esa página.
@@ -178,11 +187,14 @@ export class App {
       this.location.back();
       return;
     }
+    // La ficha de un demo vuelve al hub de software CR; i18n.link() antepone /en en inglés.
     const fallback = this.isIndustryDetail()
       ? '/industrias'
       : this.isSystemDetail()
         ? '/software'
-        : '/';
+        : this.isSoftwareCrCase()
+          ? '/desarrollo-de-software-costa-rica'
+          : '/';
     this.router.navigateByUrl(this.i18n.link(fallback));
   }
 }
@@ -196,8 +208,10 @@ const SOFTWARE_NAV: NavLink[] = [
   { label: { es: 'Casos', en: 'Work' }, href: '/software#casos' },
 ];
 
-// Landing /desarrollo-de-software-costa-rica: anclas a sus propias secciones.
+// Landing /desarrollo-de-software-costa-rica: «Inicio» vuelve al landing de software y el resto
+// son anclas a sus propias secciones.
 const SOFTWARE_CR_NAV: NavLink[] = [
+  { label: { es: 'Inicio', en: 'Home' }, href: '/software' },
   { label: { es: 'Casos', en: 'Work' }, href: '/desarrollo-de-software-costa-rica#casos' },
   { label: { es: 'Precios', en: 'Pricing' }, href: '/desarrollo-de-software-costa-rica#precios' },
   { label: { es: 'Proceso', en: 'Process' }, href: '/desarrollo-de-software-costa-rica#proceso' },

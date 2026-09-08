@@ -75,6 +75,45 @@ describe('App', () => {
     expect(hrefs).toEqual(['/web#capacidades', '/web#servicios', '/web#portfolio']);
   });
 
+  it('should render the software CR hub navigation in the language of the URL', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/en/desarrollo-de-software-costa-rica');
+
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const labels = () =>
+      Array.from(compiled.querySelectorAll('.nav a')).map((link) => link.textContent?.trim());
+    const hrefs = () =>
+      Array.from(compiled.querySelectorAll('.nav a')).map((link) => link.getAttribute('href'));
+
+    // En inglés: rótulos EN y todos los enlaces dentro del árbol /en.
+    expect(labels()).toEqual(['Home', 'Work', 'Pricing', 'Process']);
+    expect(hrefs()).toEqual([
+      '/en/software',
+      '/en/desarrollo-de-software-costa-rica#casos',
+      '/en/desarrollo-de-software-costa-rica#precios',
+      '/en/desarrollo-de-software-costa-rica#proceso'
+    ]);
+
+    // La misma página en español: rótulos ES y enlaces sin prefijo.
+    await router.navigateByUrl('/desarrollo-de-software-costa-rica');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(labels()).toEqual(['Inicio', 'Casos', 'Precios', 'Proceso']);
+    expect(hrefs()).toEqual([
+      '/software',
+      '/desarrollo-de-software-costa-rica#casos',
+      '/desarrollo-de-software-costa-rica#precios',
+      '/desarrollo-de-software-costa-rica#proceso'
+    ]);
+  });
+
   it('should render a WhatsApp action button next to the talk CTA', async () => {
     const router = TestBed.inject(Router);
     await router.navigateByUrl('/software');

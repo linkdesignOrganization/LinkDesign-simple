@@ -32,7 +32,9 @@
   <meta property="og:title" content="Link Design | Desarrollo web y software a medida en Costa Rica">
   <meta property="og:description" content="Software y sitios web a medida en Costa Rica. Desarrollo web, software empresarial y soluciones digitales para empresas que buscan resultados.">
   <meta property="og:image" content="https://linkdesign.cr/og-image.png">
-  <meta property="og:image:alt" content="Link Design — Desarrollo web y software en Costa Rica">
+  <!-- og:image:alt/width/height, como og:title y og:image, son valores por defecto del shell:
+       SeoService los reescribe por ruta e idioma (updateTag, sin duplicar). -->
+  <meta property="og:image:alt" content="Link Design: desarrollo web y software en Costa Rica">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://linkdesign.cr/">
@@ -43,6 +45,7 @@
   <meta name="twitter:title" content="Link Design | Desarrollo web y software a medida en Costa Rica">
   <meta name="twitter:description" content="Software y sitios web a medida en Costa Rica.">
   <meta name="twitter:image" content="https://linkdesign.cr/og-image.png">
+  <meta name="twitter:image:alt" content="Link Design: desarrollo web y software en Costa Rica">
 
   <!-- Favicon de Link Design -->
   <link rel="icon" type="image/png" href="favicon.png">
@@ -86,7 +89,7 @@
           "addressLocality": "San José",
           "addressCountry": "CR"
         },
-        "areaServed": "CR",
+        "areaServed": { "@type": "Country", "name": "Costa Rica" },
         "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+50672325943",

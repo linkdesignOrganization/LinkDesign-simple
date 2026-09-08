@@ -2,6 +2,11 @@ import { Lang } from './language.service';
 import { SeoData } from './seo.service';
 import { getSystemDetail, SystemDetail } from '../pages/systems-content';
 import { getIndustryDetail, IndustryDetail } from '../pages/industries-content';
+import { getSoftwareCrCase, SoftwareCrCase } from '../pages/software-cr-cases-content';
+import { environment } from '../../environments/environment';
+
+/** Origen del sitio para las imágenes OG propias (el póster de cada ficha); igual que viewcases. */
+const SITE_ORIGIN = (environment.siteUrl || 'https://linkdesign.cr').replace(/\/+$/, '');
 
 /**
  * Contenido SEO por ruta e idioma (ES/EN). Textos reales del sitio en producción
@@ -148,29 +153,31 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
       robots: 'noindex, follow'
     }
   },
-  // Landing «Desarrollo de software a la medida en Costa Rica» (/desarrollo-de-software-costa-rica).
-  // Primera versión en producción SOLO para revisión: `noindex, nofollow`, sin enlaces entrantes,
-  // fuera del sitemap y del llms.txt. `singleUrl`: solo ES, no existe /en/… Al aprobarse se
-  // decide indexación, EN y cómo se conecta al sitio.
+  // Landing «Desarrollo de software a la medida en Costa Rica» (/desarrollo-de-software-costa-rica),
+  // en ES y EN (/en/…): sin `singleUrl`, `withCanonical` antepone /en al canonical en inglés y
+  // SeoService declara el par hreflang recíproco. Sigue en revisión: `noindex, nofollow` (meta +
+  // cabecera X-Robots-Tag en staticwebapp.config.json), fuera del sitemap y del llms.txt hasta
+  // que Robert autorice indexar. Las fichas (/…/:slug) se resuelven en seoForUrl (rama caseMatch).
   '/desarrollo-de-software-costa-rica': {
     es: {
       title: 'Empresa de desarrollo de software a la medida en Costa Rica | Link Design',
+      // 160 caracteres: rango de la tabla de precios y llamada a la acción dentro del recorte de Google.
       description:
-        'Construimos software a la medida para empresas de Costa Rica. Copiamos tu operación, no al revés. Rangos de inversión reales, plazos reales y sistemas que puedes probar hoy.',
+        'Empresa de desarrollo de software a la medida en Costa Rica. Rangos reales de USD 1.500 a 15.000, plazos por tipo de sistema y seis demos que puedes probar hoy.',
       keywords:
         'desarrollo de software costa rica, empresas de desarrollo de software costa rica, software a la medida costa rica, link design',
       canonicalPath: '/desarrollo-de-software-costa-rica',
-      singleUrl: true,
+      dateModified: '2026-09-08',
       robots: 'noindex, nofollow'
     },
     en: {
       title: 'Custom software development company in Costa Rica | Link Design',
       description:
-        'We build custom software for companies in Costa Rica around how their operation already works. Real investment ranges, real timelines and systems you can try today.',
+        'Custom software development company in Costa Rica. Real ranges from USD 1,500 to 15,000, timelines by system type and six demos you can try today.',
       keywords: 'custom software development costa rica, software company costa rica, link design',
       canonicalPath: '/desarrollo-de-software-costa-rica',
       locale: 'en_US',
-      singleUrl: true,
+      dateModified: '2026-09-08',
       robots: 'noindex, nofollow'
     }
   },
@@ -226,6 +233,31 @@ function metaDescription(text: string, max = 158): string {
   const cut = para.slice(0, max);
   const lastSpace = cut.lastIndexOf(' ');
   return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd() + '…';
+}
+
+// Baja la inicial de la categoría para meterla dentro de una frase, salvo si la primera palabra es
+// una sigla (ERP, HR, CRM): la misma regla que demoIntro en system-detail-page.ts.
+function lowerFirst(text: string): string {
+  const first = text.split(' ')[0];
+  if (first.length > 1 && first === first.toUpperCase()) return text;
+  return text.charAt(0).toLowerCase() + text.slice(1);
+}
+
+// Description de una ficha, entre 120 y 160 caracteres: categoría, país, rango, plazo y llamada a la
+// acción. En EN la llamada lleva el nombre del demo; si con él se pasa de 160 (Estudio Dental
+// Mendieta, Punto Cero y Vértice Seguridad Industrial) va sin nombre, porque recortarla con
+// metaDescription() dejaría a Dental en 119 y sin llamada. El helper queda como último resguardo.
+function caseDescription(c: SoftwareCrCase, lang: Lang): string {
+  const category = lowerFirst(c.category);
+  if (lang !== 'en') {
+    return metaDescription(
+      `Demo de un ${category} hecho a la medida en Costa Rica: cuesta ${c.range} y toma ${c.timeline}. Navégalo completo.`,
+      160
+    );
+  }
+  const lead = `Demo of a custom ${category} built in Costa Rica: it costs ${c.range} and takes ${c.timeline}.`;
+  const named = `${lead} Browse the full ${c.name} demo.`;
+  return metaDescription(named.length <= 160 ? named : `${lead} Browse the full demo.`, 160);
 }
 
 // SEO derivado del contenido aprobado de cada sistema (no es copy nuevo: el title usa el nombre
@@ -293,6 +325,35 @@ export function seoForUrl(url: string, lang: Lang): SeoData {
   if (industryMatch) {
     const detail = getIndustryDetail(industryMatch[1], lang);
     if (detail) return withCanonical(industrySeo(detail, lang));
+  }
+
+  // Ficha de un demo de la landing de software CR: /desarrollo-de-software-costa-rica/<slug>, en ES
+  // y EN (/en/…). Sin `singleUrl`: withCanonical antepone /en al canonical en inglés y SeoService
+  // declara el par hreflang recíproco. Sigue en revisión como el hub: `noindex, nofollow` (meta +
+  // cabecera X-Robots-Tag en staticwebapp.config.json), fuera del sitemap y del llms.txt.
+  const caseMatch = base.match(/^\/desarrollo-de-software-costa-rica\/([^/]+)$/);
+  if (caseMatch) {
+    const c = getSoftwareCrCase(caseMatch[1], lang);
+    if (c) {
+      return withCanonical({
+        // Sufijo corto: la categoría ya es la keyword de la ficha y el país va en la description.
+        title: `${c.name}: ${c.category} | Link Design`,
+        description: caseDescription(c, lang),
+        keywords:
+          lang === 'en'
+            ? `${c.category.toLowerCase()}, custom software costa rica, link design`
+            : `${c.category.toLowerCase()}, software a la medida costa rica, link design`,
+        canonicalPath: `/desarrollo-de-software-costa-rica/${c.slug}`,
+        // Póster propio del demo (1280×682) en vez de la imagen genérica del sitio.
+        image: SITE_ORIGIN + c.poster,
+        imageWidth: 1280,
+        imageHeight: 682,
+        imageAlt: `${c.name}: ${c.category}`,
+        dateModified: '2026-09-08',
+        robots: 'noindex, nofollow',
+        ...(lang === 'en' ? { locale: 'en_US' } : {})
+      });
+    }
   }
 
   const entry = SEO_CONTENT[base] ?? SEO_FALLBACK;

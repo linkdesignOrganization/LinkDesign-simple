@@ -1,15 +1,26 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   OnDestroy,
   PLATFORM_ID,
+  afterNextRender,
+  computed,
   inject
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LucideCheck, LucideCircleCheck, LucideCircleOff } from '@lucide/angular';
+import {
+  LucideCalculator,
+  LucideCalendarDays,
+  LucideCheck,
+  LucideCircleCheck,
+  LucideCircleOff,
+  LucideCreditCard,
+  LucideKeyRound,
+  LucideMessageCircle,
+  LucideReceiptText
+} from '@lucide/angular';
 
 import { ContactFooterComponent, ContactInfo, SystemContext } from '../components/contact-footer.component';
 import { FaqAccordionComponent } from '../components/faq-accordion.component';
@@ -17,19 +28,30 @@ import { IndustriesSectionComponent } from '../components/industries-section.com
 import { ProjectStagesComponent } from '../components/project-stages.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { TrackSectionDirective } from '../directives/track-section.directive';
+import { LanguageService } from '../services/language.service';
+import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { INDUSTRY_CARDS } from './industries-content';
-import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
+import { getSoftwareCrCases } from './software-cr-cases-content';
+import {
+  SoftwareCrLink,
+  SoftwareCrParagraph,
+  getSoftwareCrContent,
+  getSoftwareCrLabels
+} from './software-cr-content';
 
 /**
- * Landing «Desarrollo de software a la medida en Costa Rica» (/desarrollo-de-software-costa-rica).
+ * Landing «Desarrollo de software a la medida en Costa Rica» (/desarrollo-de-software-costa-rica),
+ * con su par en inglés en /en/desarrollo-de-software-costa-rica (mismo slug, conectado al toggle).
  *
- * Primera versión en producción para revisión (2026-09-07): `noindex`, sin enlaces entrantes, fuera
- * del sitemap y del llms.txt, solo en español (ruta fuera de los árboles de idioma, como /ads).
- * Cuando se apruebe, se decide cómo conectarla al sitio (nav, sitemap, SEO, versión EN).
+ * En producción para revisión (2026-09-07): `noindex, nofollow` en ambos idiomas (meta y cabecera),
+ * fuera del sitemap y del llms.txt; enlazada solo desde la sección de demos de /software y /en/software.
+ * Cuando se apruebe, se decide cómo conectarla al sitio (nav, sitemap, indexación).
  *
  * Misma anatomía que las páginas de detalle: hero sobre el artefacto del shell, secciones con
  * número mono «01», zona oscura al centro (precios, proceso, qué incluye), FAQ y footer del sitio.
- * Contenido en software-cr-content.ts.
+ * Contenido por idioma en software-cr-content.ts (hub) y software-cr-cases-content.ts (fichas),
+ * resuelto con `computed` sobre `LanguageService.lang`. Los `appTrackSection` no se traducen: son
+ * identificadores de telemetría que viajan al CRM.
  */
 @Component({
   selector: 'app-software-cr-page',
@@ -37,6 +59,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
+    LocalizeUrlPipe,
     ContactFooterComponent,
     FaqAccordionComponent,
     IndustriesSectionComponent,
@@ -45,50 +68,48 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     TrackSectionDirective,
     LucideCheck,
     LucideCircleCheck,
-    LucideCircleOff
+    LucideCircleOff,
+    LucideCalculator,
+    LucideCalendarDays,
+    LucideCreditCard,
+    LucideKeyRound,
+    LucideMessageCircle,
+    LucideReceiptText
   ],
   template: `
     <article class="sc">
       <!-- HERO: sobre el artefacto de grilla del shell -->
       <header class="sc-hero" appTrackSection="hero">
-        <p class="sc-hero__eyebrow">{{ c.hero.eyebrow }}</p>
-        <h1 class="sc-hero__title">
-          {{ c.hero.title }}<img class="sc-hero__flag" src="/flag.svg" alt="Costa Rica" />
-        </h1>
-        <div class="sc-hero__grid">
-          <div class="sc-hero__copy">
-            <p class="sc-hero__lead">{{ c.hero.lead }}</p>
-            <div class="sc-hero__actions">
-              <a
-                class="button"
-                [href]="info.calendarLink"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>{{ c.hero.ctaPrimary }}</span>
-                <span class="button-arrow" aria-hidden="true">→</span>
-              </a>
-              <a
-                class="button"
-                [href]="info.whatsappLink"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>{{ c.hero.ctaSecondary }}</span>
-                <span class="button-arrow" aria-hidden="true">→</span>
-              </a>
-            </div>
-            <p class="sc-hero__promise">{{ c.hero.promise }}</p>
+        <p class="sc-hero__eyebrow">{{ c().hero.eyebrow }}</p>
+        <div class="sc-hero__main">
+          <h1 class="sc-hero__title">
+            {{ c().hero.title }}<img class="sc-hero__flag" src="/flag.svg" alt="" />
+          </h1>
+          <p class="sc-hero__lead">{{ c().hero.lead }}</p>
+          <div class="sc-hero__actions">
+            <a class="button" [href]="calendarLink()" target="_blank" rel="noopener noreferrer">
+              <span>{{ c().hero.ctaPrimary }}</span>
+              <span class="button-arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="button" [href]="info.whatsappLink" target="_blank" rel="noopener noreferrer">
+              <span>{{ c().hero.ctaSecondary }}</span>
+              <span class="button-arrow" aria-hidden="true">→</span>
+            </a>
           </div>
-          <dl class="sc-hero__stats">
-            @for (s of c.hero.stats; track s.label) {
+          <p class="sc-hero__promise">{{ c().hero.promise }}</p>
+        </div>
+        <!-- Datos destacados: a la altura del título, en la columna derecha. La fecha va fuera del
+             <dl> (solo admite dt, dd y div); el contenedor conserva la posición y el estilo. -->
+        <div class="sc-hero__stats">
+          <dl class="sc-hero__list">
+            @for (s of c().hero.stats; track s.label) {
               <div class="sc-stat">
                 <dt class="sc-stat__label">{{ s.label }}</dt>
                 <dd class="sc-stat__value">{{ s.value }}</dd>
               </div>
             }
-            <p class="sc-hero__updated">{{ c.hero.updated }}</p>
           </dl>
+          <p class="sc-hero__updated"><time datetime="2026-09">{{ c().hero.updated }}</time></p>
         </div>
       </header>
 
@@ -97,17 +118,17 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
         <header class="sc-section__head">
           <span class="sc-num">01</span>
           <div>
-            <h2 class="sc-label">{{ l.forWhom }}</h2>
-            <p class="sc-section__intro">{{ c.forWhom.intro }}</p>
+            <h2 class="sc-label">{{ l().forWhom }}</h2>
+            <p class="sc-section__intro">{{ c().forWhom.intro }}</p>
           </div>
         </header>
         <div class="sc-fit__grid">
-          @for (f of c.forWhom.fits; track $index) {
+          @for (f of c().forWhom.fits; track $index) {
             <article class="sc-card">
               <span class="sc-card__icon sc-icon--accent" aria-hidden="true">
                 <svg lucideCircleCheck [size]="28" [strokeWidth]="1"></svg>
               </span>
-              <span class="sc-card__tag">{{ l.fitsTag }}</span>
+              <span class="sc-card__tag">{{ l().fitsTag }}</span>
               <p>{{ f }}</p>
             </article>
           }
@@ -115,8 +136,8 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
             <span class="sc-card__icon sc-icon--muted" aria-hidden="true">
               <svg lucideCircleOff [size]="28" [strokeWidth]="1"></svg>
             </span>
-            <span class="sc-card__tag">{{ l.notForTag }}</span>
-            <p>{{ c.forWhom.notFor }}</p>
+            <span class="sc-card__tag">{{ l().notForTag }}</span>
+            <p>{{ c().forWhom.notFor }}</p>
           </article>
         </div>
       </section>
@@ -125,16 +146,16 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       <section class="sc-section sc-how" appTrackSection="como-trabajamos">
         <header class="sc-section__head">
           <span class="sc-num">02</span>
-          <h2 class="sc-label">{{ l.how }}</h2>
+          <h2 class="sc-label">{{ l().how }}</h2>
         </header>
         <div class="sc-how__body">
-          @for (p of c.how.statement; track $index) {
+          @for (p of c().how.statement; track $index) {
             <p class="sc-statement">{{ p }}</p>
           }
         </div>
-        <h3 class="sc-sublabel">{{ c.how.examplesTitle }}</h3>
+        <h3 class="sc-sublabel">{{ c().how.examplesTitle }}</h3>
         <ol class="sc-examples">
-          @for (e of c.how.examples; track $index) {
+          @for (e of c().how.examples; track $index) {
             <li class="sc-example sc-reveal">
               <span class="sc-example__n">{{ pad($index + 1) }}</span>
               <p class="sc-example__text">
@@ -145,123 +166,94 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
           }
         </ol>
         <div class="sc-how__closing">
-          @for (p of c.how.closing; track $index) {
+          @for (p of c().how.closing; track $index) {
             <p>{{ p }}</p>
           }
         </div>
       </section>
 
-      <!-- 03 — Qué construimos + integraciones -->
-      <section class="sc-section sc-systems" appTrackSection="que-construimos">
+      <!-- 03 — Qué construimos: los sistemas de demostración, por categoría, cada uno con su ficha -->
+      <section class="sc-section sc-systems" id="casos" appTrackSection="que-construimos">
         <header class="sc-section__head">
           <span class="sc-num">03</span>
           <div>
-            <h2 class="sc-label">{{ l.systems }}</h2>
-            <p class="sc-section__intro">{{ c.systems.intro }}</p>
+            <h2 class="sc-label">{{ l().systems }}</h2>
+            <p class="sc-section__intro">{{ c().systems.intro }}</p>
           </div>
         </header>
         <div class="sc-systems__grid">
-          @for (s of c.systems.items; track s.slug) {
-            <a class="sc-system sc-reveal" [routerLink]="'/software/' + s.slug">
-              <h3 class="sc-system__title">{{ s.title }}</h3>
-              <p class="sc-system__body">{{ s.body }}</p>
-              <p class="sc-system__for">{{ s.forWhom }}</p>
-              <span class="sc-system__link">{{ l.systemLink }} →</span>
+          @for (k of cases(); track k.slug) {
+            <a class="sc-system sc-reveal" [routerLink]="('/desarrollo-de-software-costa-rica/' + k.slug) | localizeUrl">
+              <span class="sc-system__tag">{{ k.kind }}</span>
+              <h3 class="sc-system__title">{{ k.category }}</h3>
+              <p class="sc-system__body">{{ k.summary }}</p>
+              <p class="sc-system__for">{{ k.forWhom }}</p>
+              <span class="sc-system__link">{{ l().systemLink }} →</span>
             </a>
           }
         </div>
         <div class="sc-integrations">
-          <h3 class="sc-sublabel">{{ c.systems.integrationsTitle }}</h3>
-          <p class="sc-integrations__intro">{{ c.systems.integrationsIntro }}</p>
-          <ul class="sc-checklist">
-            @for (i of c.systems.integrations; track $index) {
-              <li class="sc-checklist__item">
-                <span class="sc-checklist__icon sc-icon--accent" aria-hidden="true">
-                  <svg lucideCheck [size]="18" [strokeWidth]="1.5"></svg>
+          <h3 class="sc-sublabel sc-integrations__title">{{ c().systems.integrationsTitle }}</h3>
+          <p class="sc-integrations__intro">{{ c().systems.integrationsIntro }}</p>
+          <ul class="sc-integrations__grid">
+            @for (i of c().systems.integrations; track i.icon) {
+              <li class="sc-integration sc-reveal">
+                <span class="sc-integration__icon" aria-hidden="true">
+                  @switch (i.icon) {
+                    @case ('receipt') {
+                      <svg lucideReceiptText [size]="30" [strokeWidth]="1"></svg>
+                    }
+                    @case ('credit-card') {
+                      <svg lucideCreditCard [size]="30" [strokeWidth]="1"></svg>
+                    }
+                    @case ('message-circle') {
+                      <svg lucideMessageCircle [size]="30" [strokeWidth]="1"></svg>
+                    }
+                    @case ('calculator') {
+                      <svg lucideCalculator [size]="30" [strokeWidth]="1"></svg>
+                    }
+                    @case ('calendar-days') {
+                      <svg lucideCalendarDays [size]="30" [strokeWidth]="1"></svg>
+                    }
+                    @case ('key-round') {
+                      <svg lucideKeyRound [size]="30" [strokeWidth]="1"></svg>
+                    }
+                  }
                 </span>
-                <span>{{ i }}</span>
+                <p class="sc-integration__text">{{ i.text }}</p>
               </li>
             }
           </ul>
         </div>
       </section>
 
-      <!-- 04 — Casos: demos + clientes reales -->
-      <section class="sc-section sc-cases" id="casos" appTrackSection="casos">
-        <header class="sc-section__head">
-          <span class="sc-num">04</span>
-          <div>
-            <h2 class="sc-label">{{ l.cases }}</h2>
-            <p class="sc-section__intro">{{ c.cases.intro }}</p>
-          </div>
-        </header>
-        <div class="sc-demos">
-          @for (d of c.cases.demos; track d.name) {
-            <article class="sc-demo sc-reveal">
-              <a class="sc-demo__media" [href]="d.link" target="_blank" rel="noopener noreferrer">
-                <img [src]="d.poster" [alt]="d.name + ' · ' + d.category" loading="lazy" />
-              </a>
-              <div class="sc-demo__body">
-                <p class="sc-demo__category">{{ d.category }}</p>
-                <h3 class="sc-demo__name">{{ d.name }}</h3>
-                <dl class="sc-demo__facts">
-                  <dt>{{ l.demoBefore }}</dt>
-                  <dd>{{ d.before }}</dd>
-                  <dt>{{ l.demoAfter }}</dt>
-                  <dd>{{ d.after }}</dd>
-                  <dt>{{ l.demoCopied }}</dt>
-                  <dd>{{ d.copied }}</dd>
-                </dl>
-                <p class="sc-demo__range">
-                  <span class="sc-demo__range-label">{{ l.demoRange }}</span>
-                  <span class="sc-demo__range-value">{{ d.range }}</span>
-                </p>
-                <a class="button sc-demo__cta" [href]="d.link" target="_blank" rel="noopener noreferrer">
-                  <span>{{ l.demoTry }}</span>
-                  <span class="button-arrow" aria-hidden="true">→</span>
-                </a>
-              </div>
-            </article>
-          }
-        </div>
-        <div class="sc-real">
-          <h3 class="sc-sublabel">{{ c.cases.realTitle }}</h3>
-          <ul class="sc-real__list">
-            @for (r of c.cases.real; track r.name) {
-              <li class="sc-real__item">
-                <div class="sc-real__head">
-                  <span class="sc-real__name">{{ r.name }}</span>
-                  <span class="sc-real__what">{{ r.what }}</span>
-                </div>
-                <p class="sc-real__desc">{{ r.description }}</p>
-                <span class="sc-real__range">{{ r.range }}</span>
-              </li>
-            }
-          </ul>
-        </div>
-      </section>
-
-      <!-- 05 + 06 + 07 — Zona oscura: precios, proceso, qué incluye -->
+      <!-- 04 + proceso + 05 — Zona oscura: precios, proceso, qué incluye -->
       <div class="sc-dark" appDarkZone>
         <section class="sc-section sc-pricing" id="precios" appTrackSection="precios">
           <header class="sc-section__head">
-            <span class="sc-num">05</span>
-            <h2 class="sc-label">{{ l.pricing }}</h2>
+            <span class="sc-num">04</span>
+            <h2 class="sc-label">{{ l().pricing }}</h2>
           </header>
-          <p class="sc-pricing__lead">{{ c.pricing.lead }}</p>
+          <p class="sc-pricing__lead">{{ c().pricing.lead }}</p>
           <div class="sc-table-wrap">
             <table class="sc-table">
               <thead>
                 <tr>
-                  @for (col of c.pricing.columns; track col) {
+                  @for (col of c().pricing.columns; track $index) {
                     <th scope="col">{{ col }}</th>
                   }
                 </tr>
               </thead>
               <tbody>
-                @for (r of c.pricing.rows; track r.type) {
+                @for (r of c().pricing.rows; track r.type) {
                   <tr>
-                    <td>{{ r.type }}</td>
+                    <td>
+                      @if (r.system) {
+                        <a class="sc-table__link" [routerLink]="('/software/' + r.system) | localizeUrl">{{ r.type }}</a>
+                      } @else {
+                        {{ r.type }}
+                      }
+                    </td>
                     <td class="sc-table__num">{{ r.range }}</td>
                     <td class="sc-table__num">{{ r.timeline }}</td>
                   </tr>
@@ -269,11 +261,12 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
               </tbody>
             </table>
           </div>
+          <p class="sc-table__note">{{ c().pricing.note }}</p>
           <div class="sc-pricing__grid">
             <div class="sc-pricing__col sc-pricing__col--wide">
-              <h3 class="sc-sublabel">{{ c.pricing.factorsTitle }}</h3>
+              <h3 class="sc-sublabel">{{ c().pricing.factorsTitle }}</h3>
               <ul class="sc-checklist">
-                @for (f of c.pricing.factors; track $index) {
+                @for (f of c().pricing.factors; track $index) {
                   <li class="sc-checklist__item">
                     <span class="sc-checklist__icon" aria-hidden="true">
                       <svg lucideCheck [size]="18" [strokeWidth]="1.5"></svg>
@@ -284,10 +277,10 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
               </ul>
             </div>
             <div class="sc-pricing__col">
-              <h3 class="sc-sublabel">{{ c.pricing.paymentTitle }}</h3>
-              <p>{{ c.pricing.payment }}</p>
-              <h3 class="sc-sublabel">{{ c.pricing.afterTitle }}</h3>
-              <p>{{ c.pricing.after }}</p>
+              <h3 class="sc-sublabel">{{ c().pricing.paymentTitle }}</h3>
+              <p>{{ c().pricing.payment }}</p>
+              <h3 class="sc-sublabel">{{ c().pricing.afterTitle }}</h3>
+              <p>{{ c().pricing.after }}</p>
             </div>
           </div>
         </section>
@@ -296,20 +289,20 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
         <section class="sc-process" id="proceso">
           <app-project-stages
             appTrackSection="proceso"
-            [title]="c.process.title"
-            [intro]="c.process.intro"
-            [stages]="c.process.stages"
+            [title]="c().process.title"
+            [intro]="c().process.intro"
+            [stages]="c().process.stages"
           />
-          <p class="sc-process__closing">{{ c.process.closing }}</p>
+          <p class="sc-process__closing">{{ c().process.closing }}</p>
         </section>
 
         <section class="sc-section sc-included sc-reveal" appTrackSection="incluye">
           <header class="sc-section__head">
-            <span class="sc-num">06</span>
-            <h2 class="sc-label">{{ l.included }}</h2>
+            <span class="sc-num">05</span>
+            <h2 class="sc-label">{{ l().included }}</h2>
           </header>
           <div class="sc-included__grid">
-            @for (i of c.included.items; track i.title) {
+            @for (i of c().included.items; track i.title) {
               <article class="sc-panel">
                 <h3 class="sc-panel__title">{{ i.title }}</h3>
                 <p>{{ i.body }}</p>
@@ -319,17 +312,17 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
         </section>
       </div>
 
-      <!-- 08 — Cómo elegir -->
+      <!-- 06 — Cómo elegir -->
       <section class="sc-section sc-choose" appTrackSection="como-elegir">
         <header class="sc-section__head">
-          <span class="sc-num">07</span>
+          <span class="sc-num">06</span>
           <div>
-            <h2 class="sc-label">{{ l.choose }}</h2>
-            <p class="sc-section__intro">{{ c.choose.intro }}</p>
+            <h2 class="sc-label">{{ l().choose }}</h2>
+            <p class="sc-section__intro">{{ c().choose.intro }}</p>
           </div>
         </header>
         <ol class="sc-choose__list">
-          @for (i of c.choose.items; track i.title) {
+          @for (i of c().choose.items; track i.title) {
             <li class="sc-choose__item sc-reveal">
               <span class="sc-choose__n">{{ pad($index + 1) }}</span>
               <div class="sc-choose__text">
@@ -343,8 +336,8 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
           <span class="sc-card__icon sc-icon--muted" aria-hidden="true">
             <svg lucideCircleOff [size]="28" [strokeWidth]="1"></svg>
           </span>
-          <span class="sc-card__tag">{{ c.choose.honestTitle }}</span>
-          <p>{{ c.choose.honest }}</p>
+          <span class="sc-card__tag">{{ c().choose.honestTitle }}</span>
+          <p>{{ c().choose.honest }}</p>
         </article>
       </section>
 
@@ -352,29 +345,37 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       <app-industries
         id="industrias"
         appTrackSection="industrias"
-        [heading]="c.industries.heading"
-        [intro]="c.industries.intro"
-        [items]="industryCards"
+        [heading]="c().industries.heading"
+        [intro]="c().industries.intro"
+        [items]="industryCards()"
       />
 
-      <!-- 08 — Quiénes somos + dónde trabajamos -->
+      <!-- 07 — Quiénes somos + dónde trabajamos -->
       <section class="sc-section sc-about" appTrackSection="quienes-somos">
         <header class="sc-section__head">
-          <span class="sc-num">08</span>
-          <h2 class="sc-label">{{ l.about }}</h2>
+          <span class="sc-num">07</span>
+          <h2 class="sc-label">{{ l().about }}</h2>
         </header>
         <div class="sc-about__body">
-          @for (p of c.about.paragraphs; track $index) {
-            <p class="sc-about__text">{{ p }}</p>
+          @for (p of c().about.paragraphs; track $index) {
+            <p class="sc-about__text">
+              @for (part of parts(p); track $index) {
+                @if (isLink(part)) {
+                  <a class="sc-about__link" [href]="part.href" target="_blank" rel="noopener noreferrer">{{ part.text }}</a>
+                } @else {
+                  <span>{{ part }}</span>
+                }
+              }
+            </p>
           }
-          <h3 class="sc-sublabel sc-about__sublabel">{{ c.industries.zonesTitle }}</h3>
-          <p class="sc-about__text">{{ c.industries.zones }}</p>
-          <p class="sc-about__contact">{{ c.about.contact }}</p>
+          <h3 class="sc-sublabel sc-about__sublabel">{{ c().industries.zonesTitle }}</h3>
+          <p class="sc-about__text">{{ c().industries.zones }}</p>
+          <p class="sc-about__contact">{{ c().about.contact }}</p>
         </div>
       </section>
 
       <!-- 11 — Preguntas frecuentes -->
-      <app-faq-accordion id="faq" appTrackSection="faq" [heading]="l.faq" [items]="c.faq" />
+      <app-faq-accordion id="faq" appTrackSection="faq" [heading]="l().faq" [items]="c().faq" />
     </article>
 
     <app-contact-footer
@@ -414,13 +415,20 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     }
 
     /* ── HERO ─────────────────────────────────────────────────────────────── */
+    /* Dos columnas: título, lead y acciones a la izquierda; los datos destacados a la derecha,
+       arrancando a la altura del título (align-items: start). El bloque completo se asienta al
+       pie del hero (align-content: end), como en las páginas de detalle. */
     .sc-hero {
       position: relative;
       z-index: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      gap: clamp(1.6rem, 3vw, 2.6rem);
+      display: grid;
+      /* La columna del título toma el ancho que sobra; la de datos es fija, para que el
+         título parta en tres líneas como en el resto de los heros. */
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 26rem);
+      column-gap: clamp(2rem, 5vw, 5rem);
+      row-gap: clamp(1.2rem, 2.5vw, 2rem);
+      align-items: start;
+      align-content: end;
       min-height: clamp(22rem, 48vh, 34rem);
       padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 5vw, 4rem);
     }
@@ -438,13 +446,20 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     }
 
     .sc-hero__eyebrow {
+      grid-column: 1 / -1;
       margin: 0;
-      color: var(--muted);
+      color: var(--ink);
       font-family: var(--font-mono);
       font-size: 0.8rem;
       font-weight: 500;
       letter-spacing: 0.14em;
       text-transform: uppercase;
+    }
+
+    .sc-hero__main {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
     }
 
     .sc-hero__title {
@@ -467,22 +482,9 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       transform: translateY(0.02em);
     }
 
-    .sc-hero__grid {
-      display: grid;
-      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-      gap: clamp(2rem, 5vw, 5rem);
-      align-items: end;
-    }
-
-    .sc-hero__copy {
-      display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
-      max-width: 62ch;
-    }
-
     .sc-hero__lead {
       margin: 0;
+      max-width: 62ch;
       color: var(--ink);
       font-size: var(--hero-lead-size);
       line-height: var(--hero-lead-leading);
@@ -497,14 +499,21 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
 
     .sc-hero__promise {
       margin: 0;
-      color: var(--muted);
-      font-size: 0.98rem;
+      max-width: 62ch;
+      color: var(--ink);
+      font-size: 0.95rem;
       line-height: 1.5;
     }
 
     .sc-hero__stats {
       display: flex;
       flex-direction: column;
+      margin: 0;
+      /* La primera línea del bloque queda a la altura de la parte alta del título. */
+      padding-top: 0.15em;
+    }
+
+    .sc-hero__list {
       margin: 0;
     }
 
@@ -518,7 +527,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
 
     .sc-stat__label {
       order: 2;
-      color: var(--muted);
+      color: var(--ink);
       font-size: 0.92rem;
       line-height: 1.4;
     }
@@ -537,7 +546,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       margin: 0;
       padding-top: 1rem;
       border-top: 1px solid var(--line);
-      color: var(--muted);
+      color: var(--ink);
       font-family: var(--font-mono);
       font-size: 0.72rem;
       letter-spacing: 0.06em;
@@ -547,7 +556,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     /* ── Rótulos / números de sección ─────────────────────────────────────── */
     .sc-num {
       display: block;
-      color: var(--muted);
+      color: var(--ink);
       font-family: var(--font-mono);
       font-size: 0.8rem;
       letter-spacing: 0.04em;
@@ -585,8 +594,8 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     .sc-section__intro {
       margin: 1rem 0 0;
       max-width: 60ch;
-      color: var(--muted);
-      font-size: 1.08rem;
+      color: var(--ink);
+      font-size: 1.05rem;
       line-height: 1.6;
       text-wrap: pretty;
     }
@@ -621,7 +630,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     }
 
     .sc-card__tag {
-      color: var(--muted);
+      color: var(--ink);
       font-family: var(--font-mono);
       font-size: 0.7rem;
       font-weight: 500;
@@ -638,7 +647,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     }
 
     .sc-card--muted p {
-      color: var(--muted);
+      color: var(--ink);
     }
 
     /* ── 02 Cómo trabajamos ───────────────────────────────────────────────── */
@@ -681,7 +690,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     }
 
     .sc-example__n {
-      color: var(--muted);
+      color: var(--ink);
       font-family: var(--font-mono);
       font-size: 0.8rem;
       line-height: 1.6;
@@ -696,7 +705,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     }
 
     .sc-example__if {
-      color: var(--muted);
+      color: var(--ink);
       font-size: 1.05rem;
       line-height: 1.5;
     }
@@ -704,7 +713,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     .sc-example__then {
       color: var(--ink);
       font-size: 1.12rem;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: -0.01em;
       line-height: 1.4;
     }
@@ -718,7 +727,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
 
     .sc-how__closing p {
       margin: 0;
-      color: var(--muted);
+      color: var(--ink);
       font-size: 1.08rem;
       line-height: 1.6;
       text-wrap: pretty;
@@ -752,6 +761,14 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       outline: none;
     }
 
+    .sc-system__tag {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
     .sc-system__title {
       margin: 0;
       color: var(--ink);
@@ -770,8 +787,8 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
 
     .sc-system__for {
       margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
+      color: var(--ink);
+      font-size: 0.9rem;
       line-height: 1.5;
     }
 
@@ -784,12 +801,58 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       letter-spacing: 0.04em;
     }
 
+    /* Bloque centrado: título, intro y grilla de integraciones con icono. */
+    .sc-integrations {
+      max-width: 60rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .sc-integrations__title {
+      margin-bottom: 0.8rem;
+      font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+    }
+
     .sc-integrations__intro {
-      margin: 0 0 1.2rem;
-      max-width: 60ch;
-      color: var(--muted);
+      margin: 0 auto clamp(1.8rem, 3vw, 2.6rem);
+      max-width: 56ch;
+      color: var(--ink);
       font-size: 1.05rem;
       line-height: 1.6;
+      text-wrap: pretty;
+    }
+
+    .sc-integrations__grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(1rem, 2vw, 1.5rem);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sc-integration {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+      padding: clamp(1.4rem, 2.2vw, 2rem) clamp(1rem, 1.8vw, 1.5rem);
+      border: 1px solid var(--line);
+      border-radius: 0.9rem;
+      background: #fafafa;
+    }
+
+    .sc-integration__icon {
+      display: inline-flex;
+      color: var(--accent);
+    }
+
+    .sc-integration__text {
+      margin: 0;
+      color: var(--ink);
+      font-size: 0.98rem;
+      line-height: 1.5;
+      text-wrap: pretty;
     }
 
     .sc-checklist {
@@ -821,176 +884,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       padding-top: 0.2rem;
     }
 
-    /* ── 04 Casos ─────────────────────────────────────────────────────────── */
-    .sc-demos {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: clamp(1.2rem, 2.5vw, 2rem);
-      margin-bottom: clamp(2.5rem, 5vw, 4rem);
-    }
-
-    .sc-demo {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 0.9rem;
-      background: #fafafa;
-    }
-
-    .sc-demo__media {
-      display: block;
-      aspect-ratio: 16 / 10;
-      overflow: hidden;
-      background: #e9e9e9;
-    }
-
-    .sc-demo__media img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top;
-      transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .sc-demo__media:hover img {
-      transform: scale(1.02);
-    }
-
-    .sc-demo__body {
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
-      padding: clamp(1.3rem, 2.2vw, 1.8rem);
-    }
-
-    .sc-demo__category {
-      margin: 0;
-      color: var(--muted);
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .sc-demo__name {
-      margin: 0;
-      color: var(--ink);
-      font-size: 1.35rem;
-      font-weight: 500;
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-    }
-
-    .sc-demo__facts {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      margin: 0;
-    }
-
-    .sc-demo__facts dt {
-      margin-top: 0.5rem;
-      color: var(--muted);
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .sc-demo__facts dd {
-      margin: 0;
-      color: var(--ink);
-      font-size: 0.98rem;
-      line-height: 1.5;
-    }
-
-    .sc-demo__range {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      margin: 0.4rem 0 0;
-      padding-top: 0.9rem;
-      border-top: 1px solid var(--line);
-    }
-
-    .sc-demo__range-label {
-      color: var(--muted);
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .sc-demo__range-value {
-      color: var(--ink);
-      font-family: var(--font-mono);
-      font-size: 0.95rem;
-    }
-
-    .sc-demo__cta {
-      align-self: flex-start;
-      margin-top: 0.4rem;
-    }
-
-    .sc-real__list {
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .sc-real__item {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 2fr);
-      gap: 1.5rem;
-      padding: 1.1rem 0;
-      border-top: 1px solid var(--line);
-      align-items: start;
-    }
-
-    .sc-real__item:last-child {
-      border-bottom: 1px solid var(--line);
-    }
-
-    .sc-real__head {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .sc-real__name {
-      color: var(--ink);
-      font-size: 1.08rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-    }
-
-    .sc-real__what {
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.4;
-    }
-
-    .sc-real__desc {
-      margin: 0;
-      color: var(--ink);
-      font-size: 0.98rem;
-      line-height: 1.5;
-    }
-
-    .sc-real__range {
-      color: var(--ink);
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    /* ── Zona oscura: 05 precios, proceso, 06 incluye ─────────────────────── */
+    /* ── Zona oscura: 04 precios, proceso, 05 incluye ─────────────────────── */
     .sc-dark .sc-label,
     .sc-dark .sc-sublabel,
     .sc-dark .sc-panel__title {
@@ -999,7 +893,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
 
     .sc-dark .sc-num,
     .sc-dark .sc-checklist__icon {
-      color: rgba(255, 255, 255, 0.55);
+      color: #f4f4f4;
     }
 
     .sc-dark p,
@@ -1046,7 +940,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     }
 
     .sc-table th {
-      color: rgba(255, 255, 255, 0.55);
+      color: #f4f4f4;
       font-family: var(--font-mono);
       font-size: 0.7rem;
       font-weight: 500;
@@ -1058,6 +952,27 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       font-family: var(--font-mono);
       font-size: 0.9rem;
       white-space: nowrap;
+    }
+
+    /* Tipo de sistema enlazado a su página: mismo color del texto de la tabla, subrayado fino. */
+    .sc-table__link {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+      padding-bottom: 0.1rem;
+      transition: border-color 180ms ease;
+    }
+
+    .sc-table__link:hover,
+    .sc-table__link:focus-visible {
+      border-bottom-color: #f4f4f4;
+    }
+
+    .sc-table__note {
+      margin: -1rem 0 clamp(2rem, 4vw, 3rem);
+      max-width: 70ch;
+      font-size: 0.95rem;
+      line-height: 1.55;
     }
 
     .sc-pricing__grid {
@@ -1119,7 +1034,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       text-wrap: pretty;
     }
 
-    /* ── 07 Cómo elegir ───────────────────────────────────────────────────── */
+    /* ── 06 Cómo elegir ───────────────────────────────────────────────────── */
     .sc-choose__list {
       display: flex;
       flex-direction: column;
@@ -1141,7 +1056,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     }
 
     .sc-choose__n {
-      color: var(--muted);
+      color: var(--ink);
       font-family: var(--font-mono);
       font-size: 0.8rem;
       line-height: 1.6;
@@ -1157,14 +1072,14 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     .sc-choose__title {
       color: var(--ink);
       font-size: 1.12rem;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: -0.01em;
       line-height: 1.35;
     }
 
     .sc-choose__body {
-      color: var(--muted);
-      font-size: 1rem;
+      color: var(--ink);
+      font-size: 0.98rem;
       line-height: 1.5;
     }
 
@@ -1172,7 +1087,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       max-width: 48rem;
     }
 
-    /* ── 08 Quiénes somos ─────────────────────────────────────────────────── */
+    /* ── 07 Quiénes somos ─────────────────────────────────────────────────── */
     .sc-about__body {
       display: grid;
       grid-template-columns: 2.6rem minmax(0, 1fr);
@@ -1192,6 +1107,22 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
       text-wrap: pretty;
     }
 
+    /* Enlace dentro del texto de «Quiénes somos» (la marca Nolõ hacia nolo.ar). */
+    .sc-about__link {
+      color: var(--ink);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid var(--line-strong);
+      transition: border-color 180ms ease, color 180ms ease;
+    }
+
+    .sc-about__link:hover,
+    .sc-about__link:focus-visible {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      outline: none;
+    }
+
     .sc-about__sublabel {
       margin: 0.6rem 0 0.8rem;
     }
@@ -1199,7 +1130,7 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     .sc-about__contact {
       margin: 0;
       max-width: 62ch;
-      color: var(--muted);
+      color: var(--ink);
       font-size: 1.02rem;
       line-height: 1.6;
     }
@@ -1226,13 +1157,13 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
 
     /* ── Responsive ───────────────────────────────────────────────────────── */
     @media (max-width: 1024px) {
-      .sc-hero__grid {
+      .sc-hero {
         grid-template-columns: 1fr;
-        gap: 2rem;
       }
 
       .sc-fit__grid,
       .sc-systems__grid,
+      .sc-integrations__grid,
       .sc-included__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -1241,8 +1172,8 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     @media (max-width: 760px) {
       .sc-fit__grid,
       .sc-systems__grid,
+      .sc-integrations__grid,
       .sc-included__grid,
-      .sc-demos,
       .sc-pricing__grid {
         grid-template-columns: 1fr;
       }
@@ -1259,15 +1190,6 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
         gap: 0.8rem;
       }
 
-      .sc-real__item {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-      }
-
-      .sc-real__range {
-        text-align: left;
-      }
-
       .sc-hero__title {
         max-width: none;
       }
@@ -1280,13 +1202,27 @@ import { SOFTWARE_CR, SOFTWARE_CR_LABELS } from './software-cr-content';
     }
   `
 })
-export class SoftwareCrPageComponent implements AfterViewInit, OnDestroy {
+export class SoftwareCrPageComponent implements OnDestroy {
+  /** Un párrafo de «Quiénes somos» puede traer enlaces intercalados; se normaliza a trozos. */
+  protected parts(p: SoftwareCrParagraph): ReadonlyArray<string | SoftwareCrLink> {
+    return typeof p === 'string' ? [p] : p;
+  }
+
+  protected isLink(part: string | SoftwareCrLink): part is SoftwareCrLink {
+    return typeof part !== 'string';
+  }
+
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly i18n = inject(LanguageService);
+  protected readonly lang = this.i18n.lang;
 
-  protected readonly c = SOFTWARE_CR;
-  protected readonly l = SOFTWARE_CR_LABELS;
-  protected readonly industryCards = INDUSTRY_CARDS('es');
+  // Contenido, rótulos, mazo de industrias y fichas en el idioma activo. El toggle navega al otro
+  // árbol de rutas y recrea la página; los `computed` cubren además cualquier cambio de idioma en vivo.
+  protected readonly c = computed(() => getSoftwareCrContent(this.lang()));
+  protected readonly l = computed(() => getSoftwareCrLabels(this.lang()));
+  protected readonly industryCards = computed(() => INDUSTRY_CARDS(this.lang()));
+  protected readonly cases = computed(() => getSoftwareCrCases(this.lang()));
 
   // Footer del sitio (mismos datos que las páginas de detalle de Link Design).
   protected readonly info: ContactInfo = {
@@ -1297,41 +1233,59 @@ export class SoftwareCrPageComponent implements AfterViewInit, OnDestroy {
     location: 'San José, Costa Rica'
   };
 
-  // Etiqueta el lead en el CRM con la página de origen (misma vía que el detalle de sistema).
+  // CTA del hero: reunión de cal.com por idioma, con la misma regla que el footer.
+  protected readonly calendarLink = computed(() =>
+    this.lang() === 'en' && this.info.calendarLinkEn ? this.info.calendarLinkEn : this.info.calendarLink
+  );
+
+  // Etiqueta el lead en el CRM con la página de origen (misma vía que el detalle de sistema). El
+  // nombre queda en español en ambos idiomas: es una etiqueta interna y el footer antepone su prefijo.
   protected readonly context: SystemContext = {
     name: 'Landing desarrollo de software Costa Rica',
     slug: 'desarrollo-de-software-costa-rica'
   };
 
-  private observer: IntersectionObserver | null = null;
+  constructor() {
+    afterNextRender(() => this.setupReveal());
+  }
 
   // Índice con cero a la izquierda (01, 02, …).
   protected pad(n: number): string {
     return String(n).padStart(2, '0');
   }
 
-  ngAfterViewInit(): void {
-    if (!isPlatformBrowser(this.platformId) || typeof IntersectionObserver === 'undefined') {
-      return;
-    }
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-in');
-            this.observer?.unobserve(entry.target);
-          }
-        }
-      },
-      { threshold: 0.12 }
-    );
-    this.host.nativeElement
-      .querySelectorAll('.sc-reveal')
-      .forEach((el: Element) => this.observer?.observe(el));
+  // Reveal on scroll sin observer: en cada scroll (coalescido por frame) se consultan los nodos
+  // vivos y se marca lo que ya entró al viewport. Un observer armado una vez quedaba mudo cuando
+  // la vista se recreaba (recarga en caliente del dev server): miraba nodos que ya no estaban en
+  // el DOM y las secciones no aparecían nunca. Esto no depende de eso.
+  private revealRaf = 0;
+  private readonly onReveal = (): void => {
+    if (this.revealRaf) return;
+    this.revealRaf = requestAnimationFrame(() => {
+      this.revealRaf = 0;
+      const vh = window.innerHeight;
+      this.host.nativeElement
+        .querySelectorAll('.sc-reveal:not(.is-in)')
+        .forEach((el: Element) => {
+          const r = el.getBoundingClientRect();
+          if (r.top < vh * 0.9 && r.bottom > 0) el.classList.add('is-in');
+        });
+    });
+  };
+
+  private setupReveal(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    window.addEventListener('scroll', this.onReveal, { passive: true });
+    window.addEventListener('resize', this.onReveal, { passive: true });
+    this.onReveal();
+    // Segunda pasada corta: la altura del layout se asienta tarde (fuentes, video, hidratación).
+    setTimeout(this.onReveal, 600);
   }
 
   ngOnDestroy(): void {
-    this.observer?.disconnect();
-    this.observer = null;
+    if (!isPlatformBrowser(this.platformId)) return;
+    window.removeEventListener('scroll', this.onReveal);
+    window.removeEventListener('resize', this.onReveal);
+    if (this.revealRaf) cancelAnimationFrame(this.revealRaf);
   }
 }

@@ -279,15 +279,18 @@ const softwarePageEs: LandingData = {
   },
   viewcases: {
     title: 'Prueba un software a medida.',
-    intro:
-      'Cada demo es una versión funcional de un software a medida que construimos en Costa Rica, pensada para que recorras la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajas.',
+    intro: [
+      'Cada demo es una versión funcional del ',
+      { text: 'software a medida que construimos en Costa Rica', href: '/desarrollo-de-software-costa-rica' },
+      '. Recorre la operación completa de una industria distinta.'
+    ],
     items: [
-      { label: 'Pulso', category: 'Sistema de gestión para gimnasios y wellness', videoSrc: '/media/software/pulso.mp4', poster: '/media/software/pulso.jpg', link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net' },
-      { label: 'Cumbre', category: 'Sistema de gestión de RRHH', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
-      { label: 'Estudio Dental Mendieta', category: 'Software de gestión clínica', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
-      { label: 'Tornos del Sur', category: 'ERP industrial', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
-      { label: 'Punto Cero', category: 'Sistema de mantenimiento por suscripción', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/' },
-      { label: 'Vértice Seguridad Industrial', category: 'ERP comercial y de inventario', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
+      { label: 'Pulso', detail: '/desarrollo-de-software-costa-rica/pulso', category: 'Sistema de gestión para gimnasios y wellness', videoSrc: '/media/software/pulso.mp4', poster: '/media/software/pulso.jpg', link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net' },
+      { label: 'Cumbre', detail: '/desarrollo-de-software-costa-rica/cumbre', category: 'Sistema de gestión de recursos humanos', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
+      { label: 'Estudio Dental Mendieta', detail: '/desarrollo-de-software-costa-rica/estudio-dental-mendieta', category: 'Software de gestión clínica', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
+      { label: 'Tornos del Sur', detail: '/desarrollo-de-software-costa-rica/tornos-del-sur', category: 'ERP industrial', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
+      { label: 'Punto Cero', detail: '/desarrollo-de-software-costa-rica/punto-cero', category: 'Sistema de mantenimiento por suscripción', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/acceso' },
+      { label: 'Vértice Seguridad Industrial', detail: '/desarrollo-de-software-costa-rica/vertice-seguridad-industrial', category: 'ERP comercial y de inventario', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
     ]
   },
   faq: {
@@ -516,15 +519,18 @@ const softwarePageEn: LandingData = {
   },
   viewcases: {
     title: 'Try a custom-built system.',
-    intro:
-      "Each demo is a working version of a custom system, built for you to walk through the full operation of a different industry. You'll feel how simple and fast software designed specifically for the way you work can be.",
+    intro: [
+      'Each demo is a working version of the ',
+      { text: 'custom software we build in Costa Rica', href: '/desarrollo-de-software-costa-rica' },
+      '. Walk through the full operation of a different industry.'
+    ],
     items: [
-      { label: 'Pulso', category: 'Gym & wellness management system', videoSrc: '/media/software/pulso.mp4', poster: '/media/software/pulso.jpg', link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net' },
-      { label: 'Cumbre', category: 'HR management system', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
-      { label: 'Estudio Dental Mendieta', category: 'Clinic management software', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
-      { label: 'Tornos del Sur', category: 'Industrial ERP', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
-      { label: 'Punto Cero', category: 'Subscription-based maintenance system', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/' },
-      { label: 'Vértice Seguridad Industrial', category: 'Commercial & inventory ERP', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
+      { label: 'Pulso', detail: '/desarrollo-de-software-costa-rica/pulso', category: 'Gym & wellness management system', videoSrc: '/media/software/pulso.mp4', poster: '/media/software/pulso.jpg', link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net' },
+      { label: 'Cumbre', detail: '/desarrollo-de-software-costa-rica/cumbre', category: 'HR management system', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
+      { label: 'Estudio Dental Mendieta', detail: '/desarrollo-de-software-costa-rica/estudio-dental-mendieta', category: 'Clinic management software', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
+      { label: 'Tornos del Sur', detail: '/desarrollo-de-software-costa-rica/tornos-del-sur', category: 'Industrial ERP', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
+      { label: 'Punto Cero', detail: '/desarrollo-de-software-costa-rica/punto-cero', category: 'Subscription-based maintenance system', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/acceso' },
+      { label: 'Vértice Seguridad Industrial', detail: '/desarrollo-de-software-costa-rica/vertice-seguridad-industrial', category: 'Commercial & inventory ERP', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
     ]
   },
   faq: {
@@ -1090,6 +1096,20 @@ function contentRoutes(): Routes {
       loadComponent: () =>
         import('./pages/system-detail-page').then((m) => m.SystemDetailPageComponent)
     },
+    // Landing «Desarrollo de software a la medida en Costa Rica» y las fichas de sus demos.
+    // Viven en los dos árboles de idioma (/… y /en/…) y responden al toggle como el resto del
+    // sitio: el hub se enlaza desde la intro de los demos de /software y cada ficha desde su
+    // tarjeta. Siguen `noindex, nofollow` (meta + cabecera X-Robots-Tag), fuera del sitemap y del
+    // llms.txt: Robert no autorizó indexar todavía (ver SEO_CONTENT y PLAN-EN-SOFTWARE-CR.md).
+    {
+      path: 'desarrollo-de-software-costa-rica',
+      loadComponent: () => import('./pages/software-cr-page').then((m) => m.SoftwareCrPageComponent)
+    },
+    {
+      path: 'desarrollo-de-software-costa-rica/:slug',
+      loadComponent: () =>
+        import('./pages/software-cr-case-page').then((m) => m.SoftwareCrCasePageComponent)
+    },
     // Catch-all relativo: dentro de /en → /en/404; en la raíz → /404.
     {
       path: '**',
@@ -1106,13 +1126,6 @@ export const routes: Routes = [
   {
     path: 'ads',
     loadComponent: () => import('./pages/ads-tool-page').then((m) => m.AdsToolPageComponent)
-  },
-  // Landing «Desarrollo de software a la medida en Costa Rica»: primera versión en producción
-  // para revisión (2026-09-07). Solo ES, `noindex`, sin enlaces entrantes ni sitemap. Fuera de
-  // los árboles de idioma hasta decidir cómo se conecta al sitio (ver SEO_CONTENT).
-  {
-    path: 'desarrollo-de-software-costa-rica',
-    loadComponent: () => import('./pages/software-cr-page').then((m) => m.SoftwareCrPageComponent)
   },
   { path: 'en', canActivate: [langGuard], data: { lang: 'en' }, children: contentRoutes() },
   { path: '', canActivate: [langGuard], data: { lang: 'es' }, children: contentRoutes() }
