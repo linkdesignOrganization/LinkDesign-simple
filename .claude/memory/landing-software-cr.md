@@ -101,3 +101,9 @@ También: `/software` ya no duplica su JSON-LD de videos al hidratar, y el demo 
 `/acceso`. **El checklist de encendido (quitar noindex, sitemap, sitemap-videos, llms.txt, Search Console)
 está en §9 de `~/dev/WebSite/PLAN-EN-SOFTWARE-CR.md` y espera la autorización de Robert.** Pendiente suyo
 también: confirmar los valores PROVISIONAL antes de indexar (la garantía es de un año, no 60 días).
+
+**2026-09-08 · EN PRODUCCIÓN** (commit `9b324b0`): el hub y las seis fichas viven en `/` y en `/en`, con
+`noindex, nofollow` en meta y cabecera, fuera del sitemap y del llms.txt. Verificado por curl en prod.
+Pendientes acordados con Robert, de a uno y cuando él lo pida: encendido SEO (§9 del plan), aviso al CRM del
+formulario enviado desde estas páginas, revisar el impacto en Google Ads antes de tocar nada, y que los
+botones de calendario y WhatsApp reporten conversión como en `/software` sin alterar la configuración actual.
