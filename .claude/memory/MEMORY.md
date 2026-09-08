@@ -1,10 +1,12 @@
 # Memory Index
 
 - [Accesos propios permanentes](accesos-propios-permanentes.md) — las credenciales de Ads, Search Console, DNSimple y Meta se conservan a propósito; no proponer revocarlas
+- [⏳ Plan nota de página de destino, en curso](plan-nota-pagina-destino-en-curso.md) — aprobado el 7 sep 2026, se ejecuta el 8 sep: cédula jurídica y horario en el pie, videos móviles; el plan vive en `docs/plan-nota-pagina-destino.md`; faltan razón social y cédula de Robert; **teléfono descartado** (las llamadas no son canal)
 
 - [Google Ads conversion setup](google-ads-conversion-setup.md) — estrategia de puja (Maximizar valor de conversión), Count:One y las acciones de conversión del sitio
 - [Qué acciones pujan de verdad](google-ads-objetivos-de-puja.md) — medir no es pujar: mirar `conversion_goal_campaign_config` PRIMERO; Argentina usa un objetivo personalizado y toda acción nueva hay que agregarla a mano o no puja
 - [Acceso a la API de Google Ads](google-ads-api-access.md) — nivel Basic, service account y scripts propios en `~\.google-ads\` (sin MCP)
+- [Estadísticas de subasta: sólo en la UI](auction-insights-solo-ui.md) — la API tiene `auction_insight_*` pero el token no está en la lista blanca (cerrada); la fila «Usted» sale con `top_impression_percentage`, no con `search_top_impression_share`; el «ranking superior» es derivado; foto de competidores de sep 2026
 - [Acceso a la Search Console API](search-console-api-access.md) — misma service account, permiso Completo, módulo `gsc.py`; ojo: país es `cri` no `crc`
 - [Estructura de campañas Google Ads](google-ads-estructura-campanas.md) — dos mercados espejo: Búsqueda/Software (CR) y Búsqueda #2/Software #2 (Argentina, Nolõ); horario L-V 8-17; ~225 negativas en dos niveles
 - [Techo y fallas del SEO orgánico](seo-organico-techo-y-fallas.md) — comparado con Zacate: el mercado es 5× más chico y la competencia es del propio oficio; techo 50–180 visitas/mes. Arreglable: `/corporate` y `/weblab` en 404 sin 301, 15 de 40 URLs sin rastrear, y el 51% de las apariciones son ruido de la palabra «link». **No** es contenido, ni antigüedad, ni técnico

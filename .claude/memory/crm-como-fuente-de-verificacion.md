@@ -1,8 +1,11 @@
 ---
 name: crm-como-fuente-de-verificacion
 description: La base del CRM en producción se consulta en lectura para verificar los análisis de Ads; es la única fuente que sabe qué lead terminó en cliente
-metadata:
+metadata: 
+  node_type: memory
   type: project
+  originSessionId: 0ae6d052-546c-431c-9f03-a56447457bfe
+  modified: 2026-09-08T02:19:19.886Z
 ---
 
 Google Ads solo sabe que hubo un "contacto". **El CRM sabe quién era, por qué canal llegó y si
@@ -32,6 +35,25 @@ Colecciones que importan para Ads:
 3. **`sourceChannel` no es confiable para formularios**: R. Loría y Pacific Star Food llegaron por
    formulario y figuran como "Otro". Y los clientes históricos cargados de golpe aparecen como
    "ganado" el día de la carga, inflando cualquier tasa de cierre que no los descuente.
+
+**Lo que agregó la revisión del 7 sep 2026** (la cita del 4 sep):
+
+4. **El canal «Otro» del pipeline son dos cosas, no un cajón de sastre**: citas tomadas en el
+   calendario del sitio («Reserva Automática», «Sacó su propia cita en el sitio web») y referidos de
+   clientes. No existe canal «Reunión»: un clic de «Agendar reunión» que termina en cita aparece
+   como «Otro» y el detalle está en `sourceOtherText`.
+5. **Los clientes históricos se cargaron de golpe dos veces**: 11 el 13 ago y 4 más el 17 ago (We
+   Drive CR, AMAG, La Caja Maestra, Link Design-Nolõ-CRM). Se reconocen porque nacen `ganado` sin
+   recorrido (historial vacío o un único `ganado@` con la fecha de creación). Descontarlos siempre.
+6. **Tasa de cierre por canal descontados esos 15** (al 7 sep 2026, todos los países): WhatsApp 3
+   ganados de 19 resueltos (16 %), Email 4 de 11 (36 %). Solo Costa Rica: WhatsApp 30 %, Email
+   40 %. La brecha existe pero es menor que el «14 de 15 perdidos» del 13 ago, que era de todos los
+   países y anterior a que Deluxe Surfaces (WhatsApp) cerrara como ganado. Y ojo con la selección:
+   al pipeline entra sólo el WhatsApp que valió la pena responder — en la ventana 14 ago–7 sep, de
+   11 clics de WhatsApp en Costa Rica entraron 3.
+7. **Ads y CRM no se enlazan solos**: el único cruce posible es fecha + canal + servicio. Así se
+   emparejó el clic de «copiar correo» del 17 ago (campaña Software, value 45) con Expat Legal
+   Advisors (lead por Email creado ese mismo día, ganado el 26 ago). Es coincidencia fuerte, no prueba.
 
 **Why:** el 13 ago 2026 la inferencia desde Ads decía que Costa Rica había dejado de generar
 formularios. El CRM lo confirmó con fecha exacta (el último es del 7 jul) **y corrigió un error**:

@@ -39,6 +39,22 @@ hay MCP, el token ya no es Explorer, y **sí se interrumpía la autenticación**
 - **Cuentas visibles**: `6364218319` Link Design · `3332293537` MCC · `9018431297` PsicoYng ·
   `6593270911` Zacate Tierra Fertil (ver [[zacate-tierra-fertil-ads]]). La cuenta `6460296196` **ya
   no se ve**: no cuelga del MCC, era accesible solo desde el usuario.
+- **Gestión de vínculos de cuentas (invitar una cuenta al MCC): NO se puede por API con la SA
+  actual.** Existe `CustomerClientLinkService`, pero crear un vínculo nuevo desde el MCC devuelve
+  siempre `manager_link_error=INVALID_CHANGE`, **sea cual sea la cuenta destino** — verificado el
+  26 ago 2026 contra `6929529144` (R. Loría, con vínculo previo CANCELADO) y contra `6460296196`
+  (propia, sin historial): las dos fallan igual. El rechazo es del **emisor**, no del destino, y lo
+  único general es que la SA está como **Estándar** en el MCC, mientras vincular cuentas es
+  privativo de administradores. Aparte, un vínculo en estado CANCELED/REFUSED es **terminal**: no se
+  reactiva (`INVALID_STATUS_CHANGE`); hay que crear uno nuevo. `validate_only=True` es la
+  herramienta correcta para probar esto — valida sin invitar a nadie — y los controles separan bien
+  las causas (cuenta inexistente → `RESOURCE_NOT_FOUND`, ya vinculada →
+  `ALREADY_MANAGED_BY_THIS_MANAGER`, el propio MCC → `CUSTOMER_CANNOT_MANAGE_SELF`).
+  **Ojo con el falso culpable**: que `hola@linkdesign.cr` sea usuaria admin de la cuenta destino
+  **no** estorba — acceso de usuario y vínculo de manager conviven, es la configuración normal de
+  agencia. Y el orden correcto es vincular primero al MCC y recién después quitar el acceso directo,
+  nunca al revés.
+
 - **El scope no limita nada**: `https://www.googleapis.com/auth/adwords` es el único que existe en
   esta API (no hay variante read-only). El techo real lo ponen el nivel de acceso de la SA en Google
   Ads y el developer token. Para GA4 o Search Console se haría igual: agregar el email de la SA allá.
