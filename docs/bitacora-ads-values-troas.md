@@ -2111,3 +2111,41 @@ la tomó Robert.
 
 `verificar_acceso.py` en verde en sus cinco escalones: lectura de las cuatro campañas activas con sus
 pujas, Keyword Planner, y escritura aceptada en `validate_only`. Nivel Basic operativo.
+
+### 9 sep 2026 (cont.) — La señal de los dos sitios está limpia; las acciones viejas siguen pujando sin recibir nada
+
+Robert pidió dejar limpia la señal a Ads en los dos sitios y decidir qué hacer con la convivencia
+de «Contacto» (vieja) y «Contacto Formulario» (nueva). Verificado hoy, por ejecución y no por lectura:
+
+**La señal que sale de los sitios está limpia, en los dos.**
+- Bundles publicados (`linkdesign.cr/main-GPI6R2T6.js`, `nolo.ar/main-EKTTANII.js`): cada uno lleva
+  **solo sus cinco labels nuevos**, una vez cada uno, y **ninguno de los dos labels viejos**
+  (`qSMFCN2ek…` CR, `-7YECOqL7b…` AR) aparece en ninguno. Mismo método de la Vía 1 del 17 ago.
+- `ads.service.ts` idéntico entre sitios salvo labels y comentarios; `LEAD_SCORE_ADS_VALUE` idéntica
+  (30/36/48/60) y `sessionQualityFactor` idéntica. El scoring corregido está desplegado en ambos.
+
+**Las viejas están muertas desde el deploy del 13 ago, medido por fecha de conversión** (no por fecha
+de clic, que es la trampa anotada el 17 ago): «Contacto» y «Contacto Argentina» tienen **cero**
+conversiones con `all_conversions_by_conversion_date` entre el 14 ago y el 9 sep. Las 3 y 4 que la
+lectura por fecha de clic mostraba en los últimos 30 días son clics anteriores al deploy.
+
+Lo que sí arrastran, por mes de conversión: «Contacto» jun 31/374, jul 18/235, ago 8/106;
+«Contacto Argentina» jun 10/106, jul 28/495, ago 13/218. Todo con la escala vieja y el scoring roto, y
+sin distinguir canal. **Las dos siguen ENABLED y primarias (pujan).** «Contacto Formulario» y su par AR:
+cero conversiones desde que existen, coherente con 13 leads en cuatro meses.
+
+**Veredicto.** No tiene sentido que pujen las dos: la vieja no aporta señal nueva y su histórico
+mezcla cuatro canales con values inflados. Tampoco tiene sentido que reciban la misma señal (doble
+conteo). Lo correcto es dejar pujando solo la nueva y pasar la vieja a **secundaria**: deja de contar
+para Smart Bidding y conserva el histórico en los informes. **No eliminarla.**
+
+**El riesgo, y por eso no se aplicó:** cambiar qué acciones son primarias puede reiniciar el período de
+aprendizaje de la puja, y el cierre del 7 sep pide no tocar Ads hasta el 5 oct. Como las viejas llevan
+cuatro semanas sin conversiones, su peso en la ventana de aprendizaje ya es casi nulo y el cambio
+quita poca señal real; pero que Google reinicie o no el aprendizaje no se puede garantizar. Decide
+Robert: ahora, o en la revisión del 5 oct.
+
+**La operación está preparada y validada por el servidor** (`validate_only`, nada aplicado): dos
+`ConversionActionOperation.update` con `primary_for_goal = false` sobre `6925111133` («Contacto») y
+`7650100714` («Contacto Argentina»). Un campo por acción, reversible con la operación inversa. Script
+en el scratchpad de la sesión, `ads-secundarias.py`; con `--apply` escribe.
