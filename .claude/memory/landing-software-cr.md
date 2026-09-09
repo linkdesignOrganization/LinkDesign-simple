@@ -124,3 +124,13 @@ JSON-LD en el cliente sin reutilizar el nodo del prerender, así que en el naveg
 tres componentes y en las dos páginas nuevas. **Para enviar sitemaps por API hace falta el scope
 `https://www.googleapis.com/auth/webmasters`**: el módulo `gsc` pide solo el de lectura y devuelve 403.
 Único paso manual pendiente, opcional: «Solicitar indexación» del hub en la interfaz de Search Console.
+
+**2026-09-08 · el correo de aviso dice la página del lead.** Bitácora en
+`~/dev/WebSite/PLAN-AVISO-CRM-ORIGEN.md`. Se resolvió entero en el CRM (`web-lead.email.ts`), sin tocar
+los sitios ni el esquema del payload: `source.pageUrl` ya viajaba desde la versión 1.0.0 y es
+obligatorio, así que vale también para el histórico y para Nolõ. La fila «Vino por» muestra el nombre
+de la página cuando la página lo aporta y **siempre** la ruta debajo. **Gotcha del deploy del CRM,
+arreglado el mismo día:** el paso «Prepare deployment package» instala sin lock (el del monorepo vive
+en la raíz) y npm 10, el del runner, recorre las `devDependencies` para resolver peers aunque no las
+instale; con vitest 4.1.11 eso revienta con `edgesOut` y dejó el deploy en rojo dos veces. El paquete
+se arma ahora con un `package.json` sin `devDependencies`.
