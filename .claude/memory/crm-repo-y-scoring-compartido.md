@@ -24,3 +24,15 @@ un solo lado pone su suite en rojo. **Regla de oro de Robert: la prioridad #1 es
 COPIA DE ESTE SITIO es la fuente de verdad (su score decide el value de Smart Bidding); si hay
 divergencia se alinea el CRM, nunca este repo; si un cambio altera lo que ve Ads, no se hace. La
 tabla `LEAD_SCORE_ADS_VALUE` (null/30/36/48/60) quedó candada por test explícito.
+
+**2026-09-08 · la calificación se limpió entera** (bitácora: `~/dev/WebSite/PLAN-CALIFICACION-LEADS.md`,
+auditoría: `AUDITORIA-CALIFICACION-LEADS.md`). Venía portada del sitio viejo en junio y medía seis cosas
+distintas de las que decía: clasificaba el origen con secciones que ya no existen, mandaba **todo** el
+tráfico en inglés a un cajón heredado, contaba dos veces la primera página, medía el tiempo con la
+pestaña abierta, comparaba dominios de correo contra catorce cadenas exactas y puntuaba el prefijo que
+el propio sitio anteponía al mensaje. Un lead real pasó de 73 puntos y categoría tibia a 38 y fría.
+**Lo que hay que saber hoy:** el archivo de vectores compartido es `b50741998910ec24…` con 27 vectores,
+idéntico en los tres repos, y **cubre los siete valores del vocabulario de origen**; el país ya no da
+puntos a nadie, pero el dato se conserva y ahora se distingue de la marca (la marca rutea el correo, el
+país es informativo); y **abrir una página con formulario obliga a clasificar su origen**, con una prueba
+que lo caza sola porque saca el inventario del árbol de rutas real. El contrato del envío va por `1.6.0`.
