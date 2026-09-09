@@ -67,47 +67,10 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
   >
 
-  <!-- Structured data: Organization + WebSite -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": "https://linkdesign.cr/#organization",
-        "name": "Link Design",
-        "url": "https://linkdesign.cr/",
-        "description": "Estudio de desarrollo de software y sitios web a medida en San José, Costa Rica. Software empresarial, aplicaciones internas, e-commerce y sitios corporativos construidos desde código.",
-        "slogan": "Software y sitios web a medida, construidos desde código.",
-        "knowsAbout": ["Desarrollo de software a medida", "Desarrollo web", "E-commerce", "Aplicaciones empresariales internas", "Automatización con IA", "SEO técnico", "Angular", "Node.js", "Azure"],
-        "logo": "https://linkdesign.cr/icon-512.png",
-        "email": "hola@linkdesign.cr",
-        "telephone": "+50672325943",
-        "openingHours": "Mo-Fr 08:00-17:00",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "San José",
-          "addressCountry": "CR"
-        },
-        "areaServed": { "@type": "Country", "name": "Costa Rica" },
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "telephone": "+50672325943",
-          "email": "hola@linkdesign.cr",
-          "contactType": "customer service"
-        }
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://linkdesign.cr/#website",
-        "url": "https://linkdesign.cr/",
-        "name": "Link Design",
-        "inLanguage": ["es-CR", "en-US"],
-        "publisher": { "@id": "https://linkdesign.cr/#organization" }
-      }
-    ]
-  }
-  </script>
+  <!-- Structured data: el JSON-LD lo emite SeoService por ruta e idioma.
+       El bloque `brand` (Organization + WebSite) estaba acá, fijo y en español, así que salía
+       igual en las páginas EN; el bloque `route` es WebPage + BreadcrumbList + Service.
+       No devolver ningún bloque a este shell: quedarían dos Organization en la misma página. -->
 </head>
 <body>
   <app-root></app-root>

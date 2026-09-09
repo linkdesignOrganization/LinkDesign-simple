@@ -31,15 +31,58 @@ export interface SeoData {
 
 const SOFTWARE_CR_HUB = '/desarrollo-de-software-costa-rica';
 
-// Nombre corto del padre en el breadcrumb de las páginas de detalle (/software/:slug,
-// /industrias/:slug y las fichas del hub de software CR), por idioma. SEO_CONTENT no tiene nombre
-// corto (su title es largo para una miga) y este servicio no importa seo-content (sería un ciclo).
-const BREADCRUMB_PARENTS: Record<string, { es: string; en: string }> = {
+// Nombres cortos de los niveles intermedios del breadcrumb, por idioma. SEO_CONTENT no tiene
+// nombre corto (su title es largo para una miga) y este servicio no importa seo-content (sería un
+// ciclo). `parent` declara un ancestro que la URL no revela: al hub de software CR solo se llega
+// desde /software (la intro de los demos y la tabla de precios), así que su miga cuelga de ahí
+// aunque su ruta sea de primer nivel. Sin `parent`, el ancestro es el primer segmento de la ruta.
+const BREADCRUMB_NODES: Record<string, { es: string; en: string; parent?: string }> = {
   '/software': { es: 'Software', en: 'Software' },
   '/industrias': { es: 'Industrias', en: 'Industries' },
   [SOFTWARE_CR_HUB]: {
     es: 'Desarrollo de software Costa Rica',
-    en: 'Software development Costa Rica'
+    en: 'Software development Costa Rica',
+    parent: '/software'
+  }
+};
+
+// Ficha de la marca (Organization + WebSite) por idioma. Vivía estática en `src/index.html`, en
+// español, y por eso salía igual en las páginas EN. Solo cambian los campos redactados; nombre,
+// URL, logo, contacto, dirección y los @id son los mismos en los dos idiomas (es la misma entidad,
+// referenciada por `Service.provider` y `WebPage.isPartOf`). `contactType` es un valor de la
+// enumeración de schema.org: va en inglés siempre.
+const BRAND: Record<'es' | 'en', { description: string; slogan: string; knowsAbout: string[] }> = {
+  es: {
+    description:
+      'Estudio de desarrollo de software y sitios web a medida en San José, Costa Rica. Software empresarial, aplicaciones internas, e-commerce y sitios corporativos construidos desde código.',
+    slogan: 'Software y sitios web a medida, construidos desde código.',
+    knowsAbout: [
+      'Desarrollo de software a medida',
+      'Desarrollo web',
+      'E-commerce',
+      'Aplicaciones empresariales internas',
+      'Automatización con IA',
+      'SEO técnico',
+      'Angular',
+      'Node.js',
+      'Azure'
+    ]
+  },
+  en: {
+    description:
+      'Custom software and website development studio in San José, Costa Rica. Business software, internal apps, e-commerce and corporate websites built from code.',
+    slogan: 'Custom software and websites, built from code.',
+    knowsAbout: [
+      'Custom software development',
+      'Web development',
+      'E-commerce',
+      'Internal business applications',
+      'AI automation',
+      'Technical SEO',
+      'Angular',
+      'Node.js',
+      'Azure'
+    ]
   }
 };
 
@@ -103,6 +146,7 @@ export class SeoService {
 
     this.setCanonical(url);
     this.setHreflang(data.canonicalPath ?? this.currentPath(), data.singleUrl);
+    this.setBrandJsonLd(isEn);
     this.setJsonLd(data, url);
   }
 
@@ -153,7 +197,7 @@ export class SeoService {
   }
 
   // JSON-LD por ruta: WebPage (inLanguage según idioma), Breadcrumb y Service para las dos líneas de
-  // negocio. Se conecta al Organization/WebSite estáticos del index.html por @id.
+  // negocio. Se conecta por @id al Organization/WebSite que emite setBrandJsonLd.
   private setJsonLd(data: SeoData, url: string): void {
     const locale = data.locale || 'es_CR';
     const isEn = locale === 'en_US';
@@ -182,20 +226,19 @@ export class SeoService {
     ];
 
     if (path !== '/') {
-      // Inicio → padre (solo en las páginas de detalle, ver BREADCRUMB_PARENTS) → página actual,
-      // con los nombres y las URLs del idioma activo.
+      // Inicio → ancestros declarados (ver BREADCRUMB_NODES) → página actual, con los nombres y
+      // las URLs del idioma activo.
       const crumbs: { name: string; item: string }[] = [
         {
           name: isEn ? 'Home' : 'Inicio',
           item: isEn ? this.absoluteUrl('/en') : `${this.siteOrigin}/`
         }
       ];
-      const segments = path.split('/').filter(Boolean);
-      const parent = segments.length === 2 ? BREADCRUMB_PARENTS['/' + segments[0]] : undefined;
-      if (parent) {
+      for (const ancestor of this.breadcrumbAncestors(path)) {
+        const node = BREADCRUMB_NODES[ancestor];
         crumbs.push({
-          name: isEn ? parent.en : parent.es,
-          item: this.absoluteUrl(`${langPrefix}/${segments[0]}`)
+          name: isEn ? node.en : node.es,
+          item: this.absoluteUrl(`${langPrefix}${ancestor}`)
         });
       }
       crumbs.push({ name: shortName, item: url });
@@ -224,14 +267,21 @@ export class SeoService {
         '@id': `${url}#service`,
         name: shortName,
         description: data.description,
+        // En el idioma de la página: /web es desarrollo web, las industrias cubren las dos líneas
+        // y el resto (/software, /software/:slug y el hub de software CR con sus fichas) es
+        // desarrollo de software a la medida.
         serviceType:
           path === '/web'
-            ? 'Web development'
+            ? isEn
+              ? 'Web development'
+              : 'Desarrollo web'
             : isIndustry
-              ? 'Custom software & web development'
-              : isSoftwareCr && !isEn
-                ? 'Desarrollo de software a la medida'
-                : 'Custom software development',
+              ? isEn
+                ? 'Custom software & web development'
+                : 'Desarrollo de software y sitios web a medida'
+              : isEn
+                ? 'Custom software development'
+                : 'Desarrollo de software a la medida',
         areaServed: { '@type': 'Country', name: 'Costa Rica' },
         provider: { '@id': `${this.siteOrigin}/#organization` },
         // Solo el hub: el rango que dicen su tabla de precios y la respuesta 01 de su FAQ.
@@ -248,16 +298,84 @@ export class SeoService {
       });
     }
 
+    this.writeJsonLd('route', { '@context': 'https://schema.org', '@graph': graph });
+  }
+
+  // Ancestros del breadcrumb, de la raíz hacia abajo. El primero sale de la URL (/a/b → /a) o de
+  // `parent` cuando la ruta es de primer nivel, y a partir de ahí se sube por `parent`. Solo cuentan
+  // los niveles declarados en BREADCRUMB_NODES: una ruta desconocida no agrega migas. El control de
+  // repetidos corta cualquier ciclo si alguien declarara dos `parent` cruzados.
+  private breadcrumbAncestors(path: string): string[] {
+    const segments = path.split('/').filter(Boolean);
+    let node = segments.length === 2 ? '/' + segments[0] : BREADCRUMB_NODES[path]?.parent;
+    const chain: string[] = [];
+    while (node && BREADCRUMB_NODES[node] && !chain.includes(node)) {
+      chain.unshift(node);
+      node = BREADCRUMB_NODES[node].parent;
+    }
+    return chain;
+  }
+
+  // Organization + WebSite, la ficha de la marca, en el idioma de la página. Los @id no dependen
+  // del idioma: son la misma entidad en todo el sitio y los referencian `Service.provider` y
+  // `WebPage.isPartOf`. `WebSite.inLanguage` lista los dos idiomas que sirve el sitio (propiedad
+  // del sitio, no de la página; la del documento va en el `WebPage`).
+  private setBrandJsonLd(isEn: boolean): void {
+    const brand = isEn ? BRAND.en : BRAND.es;
+    this.writeJsonLd('brand', {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': `${this.siteOrigin}/#organization`,
+          name: 'Link Design',
+          url: `${this.siteOrigin}/`,
+          description: brand.description,
+          slogan: brand.slogan,
+          knowsAbout: brand.knowsAbout,
+          logo: `${this.siteOrigin}/icon-512.png`,
+          email: 'hola@linkdesign.cr',
+          telephone: '+50672325943',
+          openingHours: 'Mo-Fr 08:00-17:00',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'San José',
+            addressCountry: 'CR'
+          },
+          areaServed: { '@type': 'Country', name: 'Costa Rica' },
+          contactPoint: {
+            '@type': 'ContactPoint',
+            telephone: '+50672325943',
+            email: 'hola@linkdesign.cr',
+            contactType: 'customer service'
+          }
+        },
+        {
+          '@type': 'WebSite',
+          '@id': `${this.siteOrigin}/#website`,
+          url: `${this.siteOrigin}/`,
+          name: 'Link Design',
+          inLanguage: ['es-CR', 'en-US'],
+          publisher: { '@id': `${this.siteOrigin}/#organization` }
+        }
+      ]
+    });
+  }
+
+  // Un <script type="application/ld+json"> por clave. Al hidratar reutiliza el nodo que dejó el
+  // prerender (SSG): crear uno nuevo dejaría el bloque duplicado en la página, como ya pasó con el
+  // VideoObject de viewcases.
+  private writeJsonLd(key: string, data: unknown): void {
     let script = this.doc.querySelector<HTMLScriptElement>(
-      'script[type="application/ld+json"][data-seo="route"]'
+      `script[type="application/ld+json"][data-seo="${key}"]`
     );
     if (!script) {
       script = this.doc.createElement('script');
       script.setAttribute('type', 'application/ld+json');
-      script.setAttribute('data-seo', 'route');
+      script.setAttribute('data-seo', key);
       this.doc.head.appendChild(script);
     }
-    script.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+    script.textContent = JSON.stringify(data);
   }
 
   private currentPath(): string {

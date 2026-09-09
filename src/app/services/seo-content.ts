@@ -36,7 +36,7 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
     es: {
       title: 'Desarrollo de software a medida | Link Design Costa Rica',
       description:
-        'Empresa de desarrollo de software en Costa Rica: aplicaciones internas, automatización e integración tecnológica que ordenan procesos y mejoran la productividad.',
+        'Empresa de desarrollo de software en Costa Rica: aplicaciones internas, automatización e integración tecnológica para ordenar procesos y ganar productividad.',
       keywords:
         'software a medida, desarrollo de software, aplicaciones internas, automatización, integración tecnológica, costa rica',
       canonicalPath: '/software'
@@ -74,7 +74,7 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
     es: {
       title: 'Soluciones a medida por industria | Link Design CR',
       description:
-        'Software y sitios web a medida para tu sector en Costa Rica: industria, distribución y logística, salud, servicios profesionales y técnicos, fitness y educación.',
+        'Software y sitios web a medida para tu sector en Costa Rica: industria, logística, salud, servicios profesionales y técnicos, fitness, wellness y educación.',
       keywords:
         'industrias, soluciones por industria, software a medida, sitios web, costa rica, link design',
       canonicalPath: '/industrias'
@@ -82,7 +82,7 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
     en: {
       title: 'Custom solutions by industry | Link Design CR',
       description:
-        'Custom software and websites for your sector in Costa Rica: industry, distribution and logistics, health, professional and technical services, fitness and education.',
+        'Custom software and websites for your sector in Costa Rica: industry, logistics, health, professional and technical services, fitness, wellness and education.',
       keywords: 'industries, solutions by industry, custom software, websites, costa rica, link design',
       canonicalPath: '/industrias',
       locale: 'en_US'
@@ -99,7 +99,7 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
     en: {
       title: 'Contact & project meeting | Link Design Costa Rica',
       description:
-        "Let's talk about your project in Costa Rica. Reach us by email or WhatsApp and book a meeting with our digital team.",
+        "Let's talk about your project in Costa Rica. Reach us by email or WhatsApp and book a meeting with the Link Design digital team.",
       keywords: 'contact, link design, email, whatsapp, meeting, costa rica',
       canonicalPath: '/contacto',
       locale: 'en_US'
@@ -125,7 +125,7 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
   },
   // Página principal de la app OAuth interna de Google Ads: existe porque la verificación de marca
   // de Google Auth Platform exige una homepage accesible que explique su propósito. NO es contenido
-  // del sitio: `noindex` y sin enlaces entrantes — describe una herramienta de uso interno.
+  // del sitio: `noindex` y sin enlaces entrantes, porque describe una herramienta de uso interno.
   //
   // El noindex sólo funciona desde acá: App aplica seoForUrl() en un effect por ruta, así que un
   // Meta.updateTag en el componente pierde siempre (por eso la página servía el SEO del home, con
@@ -155,20 +155,22 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
   },
   // Landing «Desarrollo de software a la medida en Costa Rica» (/desarrollo-de-software-costa-rica),
   // en ES y EN (/en/…): sin `singleUrl`, `withCanonical` antepone /en al canonical en inglés y
-  // SeoService declara el par hreflang recíproco. Sigue en revisión: `noindex, nofollow` (meta +
-  // cabecera X-Robots-Tag en staticwebapp.config.json), fuera del sitemap y del llms.txt hasta
-  // que Robert autorice indexar. Las fichas (/…/:slug) se resuelven en seoForUrl (rama caseMatch).
+  // SeoService declara el par hreflang recíproco. INDEXABLE desde el 2026-09-08, cuando Robert lo
+  // autorizó: sin `robots` propio hereda el del resto del sitio (`index, follow,
+  // max-image-preview:large, …`, el valor por defecto de SeoService), ya no lleva cabecera
+  // X-Robots-Tag en staticwebapp.config.json y entra al sitemap y al llms.txt en el mismo push
+  // (meta y cabecera tienen que viajar juntas o la página sigue sin indexarse). Las fichas
+  // (/…/:slug) se resuelven en seoForUrl (rama caseMatch), con el mismo criterio.
   '/desarrollo-de-software-costa-rica': {
     es: {
-      title: 'Empresa de desarrollo de software a la medida en Costa Rica | Link Design',
+      title: 'Empresa de desarrollo de software en Costa Rica | Link Design',
       // 160 caracteres: rango de la tabla de precios y llamada a la acción dentro del recorte de Google.
       description:
         'Empresa de desarrollo de software a la medida en Costa Rica. Rangos reales de USD 1.500 a 15.000, plazos por tipo de sistema y seis demos que puedes probar hoy.',
       keywords:
         'desarrollo de software costa rica, empresas de desarrollo de software costa rica, software a la medida costa rica, link design',
       canonicalPath: '/desarrollo-de-software-costa-rica',
-      dateModified: '2026-09-08',
-      robots: 'noindex, nofollow'
+      dateModified: '2026-09-08'
     },
     en: {
       title: 'Custom software development company in Costa Rica | Link Design',
@@ -177,8 +179,7 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
       keywords: 'custom software development costa rica, software company costa rica, link design',
       canonicalPath: '/desarrollo-de-software-costa-rica',
       locale: 'en_US',
-      dateModified: '2026-09-08',
-      robots: 'noindex, nofollow'
+      dateModified: '2026-09-08'
     }
   },
   '/404': {
@@ -215,7 +216,18 @@ function lastSentenceBoundary(s: string, punct: string): number {
   return -1;
 }
 
-function metaDescription(text: string, max = 158): string {
+// `min` es el piso del rango que el sitio se fija para las descriptions (120 a 160): un corte
+// limpio por oración o por dos puntos solo se acepta si llega a ese piso; si no, se prefiere
+// aprovechar el párrafo hasta `max` y cerrar con elipsis, porque una description de 96 caracteres
+// desaprovecha el snippet. Nunca se agrega texto que no esté en el contenido.
+/** Tope de ancho del <title> que el sitio se fija para que el buscador no lo recorte. */
+const TITLE_MAX = 70;
+
+function fitsTitle(title: string): boolean {
+  return title.length <= TITLE_MAX;
+}
+
+function metaDescription(text: string, max = 158, min = 120): string {
   const para = text.split('\n\n')[0].trim();
   if (para.length <= max) return para;
 
@@ -225,10 +237,10 @@ function metaDescription(text: string, max = 158): string {
     lastSentenceBoundary(window, '!'),
     lastSentenceBoundary(window, '?')
   );
-  if (sentenceEnd >= 80) return para.slice(0, sentenceEnd + 1).trim();
+  if (sentenceEnd + 1 >= min) return para.slice(0, sentenceEnd + 1).trim();
 
   const colon = window.lastIndexOf(':');
-  if (colon >= 80) return para.slice(0, colon).trim() + '.';
+  if (colon >= min) return para.slice(0, colon).trim() + '.';
 
   const cut = para.slice(0, max);
   const lastSpace = cut.lastIndexOf(' ');
@@ -261,10 +273,12 @@ function caseDescription(c: SoftwareCrCase, lang: Lang): string {
 }
 
 // SEO derivado del contenido aprobado de cada sistema (no es copy nuevo: el title usa el nombre
-// del sistema y la descripción es su párrafo "Qué es" recortado para el meta).
+// del sistema y la descripción es su párrafo "Qué es" recortado para el meta). El separador es la
+// barra, como en el resto de los títulos del sitio: el guion largo está prohibido en los copys y
+// salía en el <title> de las siete páginas de sistema. El título más largo queda en 66 caracteres.
 function systemSeo(detail: SystemDetail, lang: Lang): SeoData {
   const description = metaDescription(detail.whatItIs);
-  const suffix = lang === 'en' ? 'Custom software — Link Design' : 'Software a medida — Link Design';
+  const suffix = lang === 'en' ? 'Custom software | Link Design' : 'Software a medida | Link Design';
   const keywords =
     lang === 'en'
       ? `${detail.name.toLowerCase()}, custom software, software development, costa rica, link design`
@@ -287,7 +301,11 @@ function industrySeo(detail: IndustryDetail, lang: Lang): SeoData {
       ? `${detail.name.toLowerCase()}, custom software, web development, costa rica, link design`
       : `${detail.name.toLowerCase()}, software a medida, sitios web, costa rica, link design`;
   return {
-    title: `${detail.pageTitle} | Link Design`,
+    // El h1 usa `pageTitle` completo; el <title> cae al nombre de la industria cuando ese
+    // encabezado no cabe en el ancho que muestra el buscador (regla del sitio: 70 caracteres).
+    title: fitsTitle(`${detail.pageTitle} | Link Design`)
+      ? `${detail.pageTitle} | Link Design`
+      : `${detail.name} | Link Design`,
     description,
     keywords,
     canonicalPath: `/industrias/${detail.slug}`,
@@ -329,14 +347,19 @@ export function seoForUrl(url: string, lang: Lang): SeoData {
 
   // Ficha de un demo de la landing de software CR: /desarrollo-de-software-costa-rica/<slug>, en ES
   // y EN (/en/…). Sin `singleUrl`: withCanonical antepone /en al canonical en inglés y SeoService
-  // declara el par hreflang recíproco. Sigue en revisión como el hub: `noindex, nofollow` (meta +
-  // cabecera X-Robots-Tag en staticwebapp.config.json), fuera del sitemap y del llms.txt.
+  // declara el par hreflang recíproco. INDEXABLE como el hub desde el 2026-09-08: sin `robots`
+  // propio hereda el `index, follow, …` de SeoService, ya no lleva cabecera X-Robots-Tag y las doce
+  // URLs (seis fichas × dos idiomas) entran al sitemap, al de videos y al llms.txt en el mismo push.
   const caseMatch = base.match(/^\/desarrollo-de-software-costa-rica\/([^/]+)$/);
   if (caseMatch) {
     const c = getSoftwareCrCase(caseMatch[1], lang);
     if (c) {
       return withCanonical({
         // Sufijo corto: la categoría ya es la keyword de la ficha y el país va en la description.
+        // Todos los títulos del sitio cierran con la marca, también cuando el nombre del demo es
+        // largo: con «Vértice Seguridad Industrial» el título llega a 73 caracteres y el buscador
+        // recorta el sufijo, que es la parte prescindible. La alternativa, omitir la marca solo en
+        // esa ficha, dejaba el par ES/EN desparejo.
         title: `${c.name}: ${c.category} | Link Design`,
         description: caseDescription(c, lang),
         keywords:
@@ -350,7 +373,6 @@ export function seoForUrl(url: string, lang: Lang): SeoData {
         imageHeight: 682,
         imageAlt: `${c.name}: ${c.category}`,
         dateModified: '2026-09-08',
-        robots: 'noindex, nofollow',
         ...(lang === 'en' ? { locale: 'en_US' } : {})
       });
     }

@@ -77,7 +77,7 @@ const homePageEn: LandingData = {
   eyebrow: 'Link Design / 001',
   title: 'Two sides. One standard for building custom software and websites.',
   description:
-    'Link Design splits into two clear entry points: one for custom software, one for custom websites — inside a living, precise, type-heavy interface.',
+    'Link Design splits into two clear entry points: one for custom software, one for custom websites, inside a living, precise, type-heavy interface.',
   homeArms: [
     {
       eyebrow: '/software',
@@ -92,7 +92,7 @@ const homePageEn: LandingData = {
       eyebrow: '/web',
       title: 'Custom websites',
       body:
-        'We design custom websites with their own identity — performance, SEO and a clear visual experience from the first scroll.',
+        'We design custom websites with their own identity: performance, SEO and a clear visual experience from the first scroll.',
       cta: 'Go to Web',
       route: '/web',
       type: 'web'
@@ -435,7 +435,7 @@ const softwarePageEn: LandingData = {
         slug: 'automatizacion-ia',
         title: 'Applied AI automation',
         body:
-          'Flows that read documents, fill out forms, classify data and connect tasks that used to be done by hand. AI runs in the background without changing how the team works — and without replacing the client relationship.',
+          'Flows that read documents, fill out forms, classify data and connect tasks that used to be done by hand. AI runs in the background without changing how the team works, and without replacing the client relationship.',
         chips: ['Applied AI', 'Document reading', 'Data classification', 'Automated processes']
       }
     ]
@@ -549,7 +549,7 @@ const softwarePageEn: LandingData = {
       {
         question: 'What is support like after the system is delivered?',
         answer:
-          "We offer support plans with a defined SLA. It covers questions, bug fixes, operational tweaks and new features as the operation evolves. The scope and model are agreed when the project closes. Internal software isn't delivered and abandoned — it's supported over time."
+          "We offer support plans with a defined SLA. It covers questions, bug fixes, operational tweaks and new features as the operation evolves. The scope and model are agreed when the project closes. Internal software isn't delivered and abandoned. It's supported over time."
       },
       {
         question: "How does the project's payment work?",

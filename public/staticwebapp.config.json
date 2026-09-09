@@ -19,30 +19,6 @@
       "statusCode": 301
     },
     {
-      "route": "/desarrollo-de-software-costa-rica",
-      "headers": {
-        "X-Robots-Tag": "noindex, nofollow"
-      }
-    },
-    {
-      "route": "/desarrollo-de-software-costa-rica/*",
-      "headers": {
-        "X-Robots-Tag": "noindex, nofollow"
-      }
-    },
-    {
-      "route": "/en/desarrollo-de-software-costa-rica",
-      "headers": {
-        "X-Robots-Tag": "noindex, nofollow"
-      }
-    },
-    {
-      "route": "/en/desarrollo-de-software-costa-rica/*",
-      "headers": {
-        "X-Robots-Tag": "noindex, nofollow"
-      }
-    },
-    {
       "route": "/*.{js,css}",
       "headers": {
         "cache-control": "public, max-age=31536000, immutable"
