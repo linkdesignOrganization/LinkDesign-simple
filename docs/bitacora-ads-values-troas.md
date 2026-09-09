@@ -2028,3 +2028,86 @@ de copy, siete de acciones separadas, cuatro de los cambios de página del 8 sep
    canal ya permiten recalcular la tasa de cierre WhatsApp / correo.
 6. **Search Console**: impresiones y posición de `/web` en Costa Rica, semana a semana, como control
    de que Google sigue leyendo la página.
+
+---
+
+## 9 sep 2026 — El value del formulario cambió porque el scoring estaba roto, y eso cae dentro de la ventana de lectura de octubre
+
+**No se tocó nada en Google Ads.** Lo que cambió es lo que el sitio reporta, y por eso entra acá.
+
+### Qué pasó
+
+Entre el 8 y el 9 de septiembre se auditó y se corrigió la calificación de leads
+([`PLAN-CALIFICACION-LEADS.md`](../../PLAN-CALIFICACION-LEADS.md) y
+[`AUDITORIA-CALIFICACION-LEADS.md`](../../AUDITORIA-CALIFICACION-LEADS.md) en la raíz del workspace).
+La fórmula estaba bien; lo que estaba mal eran los datos que entraban. Seis de veintitrés factores
+medían algo distinto de lo que decían y tres eran imposibles de cumplir. Venía portada del sitio
+anterior en junio y nadie la revisó en los siete cambios de estructura posteriores.
+
+**Por qué esto es asunto de Ads:** el value de «Contacto Formulario» sale de la categoría del lead
+(`LEAD_SCORE_ADS_VALUE`: nurture 30, cold 36, warm 48, hot 60), y la categoría sale de ese puntaje.
+Además, los values de «Contacto WhatsApp», «Contacto Correo» y «Contacto Reunión» se modulan por la
+calidad de la sesión, que usaba la misma medición de tiempo equivocada. O sea: la corrección toca las
+cuatro conversiones de contacto, no solo la del formulario.
+
+**La dirección del error era casi siempre hacia arriba.** El texto que el propio sitio anteponía al
+mensaje regalaba los 12 puntos de «mensaje detallado»; el contador de páginas sumaba una de más, así
+que los bonos de 3 y 5 páginas se cobraban con una menos; el tiempo se medía con la pestaña abierta y
+no con la atención real, lo que regalaba el bono de 2 minutos y evitaba la penalización de 30 segundos;
+y había 8 puntos por ser de Costa Rica, que salieron por decisión de Robert. Solo la clasificación de
+página restaba, y a menos páginas.
+
+**Medido con un envío real** capturado del navegador: 73 puntos y categoría warm con la fórmula vieja,
+38 y cold con la corregida. En value reportado, eso es **48 → 36**. Como el value va por escalones, un
+lead solo cambia de value si cruza uno de los cortes (20, 50, 80): muchos cambian de puntaje sin
+cambiar de value.
+
+### Línea base antes de que entren los values nuevos
+
+Últimos 30 días al 9 sep 2026, cuenta 6364218319, los dos mercados:
+
+| acción | conv. | valor | valor/conv. |
+|---|---|---|---|
+| Contacto Reunión Argentina | 5,0 | 258,0 | 51,60 |
+| Contacto WhatsApp Argentina | 25,0 | 203,0 | 8,12 |
+| Scroll Argentina (2) | 183,0 | 183,0 | 1,00 |
+| Contacto Correo Argentina | 3,0 | 120,0 | 40,00 |
+| Contacto Reunión | 2,0 | 102,0 | 51,00 |
+| Scroll | 98,0 | 98,0 | 1,00 |
+| Contacto WhatsApp | 11,0 | 93,0 | 8,45 |
+| Contacto Correo | 2,0 | 85,0 | 42,50 |
+| Contacto Argentina | 4,0 | 73,0 | 18,25 |
+| Contacto | 3,0 | 24,0 | 8,00 |
+
+Por semana: 10 ago 72,1 conv. / 169,1; 17 ago 75,1 / 387,4; 24 ago 69,0 / 220,0; 31 ago 86,9 / 369,6;
+7 sep 33,0 / 93,0 (semana en curso).
+
+**«Contacto Formulario» y «Contacto Formulario Argentina» no registran ni una conversión en 30 días**,
+lo que es coherente con 13 leads en cuatro meses. Las que sí registran son las viejas «Contacto» y
+«Contacto Argentina», que siguen habilitadas y **pujando**. Conviene entender esa convivencia antes de
+tocar cualquier value.
+
+### Lo que esto le hace a la ventana de lectura del 5 oct
+
+El cierre del 7 sep dejó escrito que **no se toca nada en Ads hasta la revisión del 5 de octubre**,
+porque cualquier cambio contamina la lectura del efecto de la página de destino. Esta corrección **no
+es un cambio en Ads**, pero sí cambia la señal que recibe Smart Bidding desde el 9 de septiembre.
+Al leer octubre hay que tenerlo presente:
+
+- El value medio de las conversiones de contacto puede bajar sin que el negocio haya empeorado: antes
+  estaba inflado.
+- La comparación de value contra las semanas de agosto **no es homogénea**. La frontera es el 9 sep.
+- Lo que sí sigue siendo comparable: clics, impresiones, CPC, cuota de impresiones, nota de página de
+  destino y leads serios del CRM, que no dependen del value.
+
+### Qué NO se hizo, a propósito
+
+No se tocó ninguna campaña, ni puja, ni presupuesto, ni acción de conversión, ni la tabla
+`LEAD_SCORE_ADS_VALUE`, ni la escala 10/50 que el cierre del 7 sep confirmó alineada con la tasa de
+cierre real por canal. La única decisión de negocio que movió el eje fue quitar los puntos por país, y
+la tomó Robert.
+
+### Verificado hoy
+
+`verificar_acceso.py` en verde en sus cinco escalones: lectura de las cuatro campañas activas con sus
+pujas, Keyword Planner, y escritura aceptada en `validate_only`. Nivel Basic operativo.
