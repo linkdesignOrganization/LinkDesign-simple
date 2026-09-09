@@ -207,8 +207,9 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
 export const SEO_FALLBACK = SEO_CONTENT['/'];
 
 // Recorta el primer párrafo de "Qué es" a una meta-descripción limpia (~158 chars): prioriza
-// terminar en fin de oración; si no entra, cierra en el ":" de una enumeración; en último caso
-// corta en límite de palabra + elipsis. Nunca corta a media palabra (lo que se veía roto en SERP).
+// terminar en fin de oración; si no entra, cierra con punto en el ":" o en la última "," de la
+// enumeración; en último caso corta en límite de palabra + elipsis. Nunca corta a media palabra
+// (lo que se veía roto en SERP).
 function lastSentenceBoundary(s: string, punct: string): number {
   for (let i = s.length - 1; i >= 0; i--) {
     if (s[i] === punct && (i + 1 >= s.length || s[i + 1] === ' ')) return i;
@@ -217,9 +218,12 @@ function lastSentenceBoundary(s: string, punct: string): number {
 }
 
 // `min` es el piso del rango que el sitio se fija para las descriptions (120 a 160): un corte
-// limpio por oración o por dos puntos solo se acepta si llega a ese piso; si no, se prefiere
-// aprovechar el párrafo hasta `max` y cerrar con elipsis, porque una description de 96 caracteres
-// desaprovecha el snippet. Nunca se agrega texto que no esté en el contenido.
+// limpio por oración solo se acepta si llega a ese piso; si no, se busca el corte de cláusula más
+// largo que entre en `max` (el ":" que abre una enumeración o la última "," de esa enumeración) y
+// se cierra con punto, porque una description de 96 caracteres desaprovecha el snippet. La coma
+// importa: sin ella, la automatización con IA cerraba en «clasificarlos y…» / «classifying it and…»,
+// colgada de la conjunción. La elipsis queda de último recurso, y nunca se agrega texto que no
+// esté en el contenido.
 /** Tope de ancho del <title> que el sitio se fija para que el buscador no lo recorte. */
 const TITLE_MAX = 70;
 
@@ -239,12 +243,15 @@ function metaDescription(text: string, max = 158, min = 120): string {
   );
   if (sentenceEnd + 1 >= min) return para.slice(0, sentenceEnd + 1).trim();
 
-  const colon = window.lastIndexOf(':');
-  if (colon >= min) return para.slice(0, colon).trim() + '.';
+  const clause = Math.max(window.lastIndexOf(':'), window.lastIndexOf(','));
+  if (clause >= min) return para.slice(0, clause).trimEnd() + '.';
 
   const cut = para.slice(0, max);
   const lastSpace = cut.lastIndexOf(' ');
-  return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd() + '…';
+  const word = (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd();
+  // Sin conjunción ni puntuación colgando: cortar en «… capacitación profesional y…» deja la frase
+  // en el aire, y es lo que pasaba en la industria de educación y formación.
+  return word.replace(/\s+\b(y|e|o|u|and|or)$/i, '').replace(/[,;:]$/, '') + '…';
 }
 
 // Baja la inicial de la categoría para meterla dentro de una frase, salvo si la primera palabra es
@@ -356,10 +363,10 @@ export function seoForUrl(url: string, lang: Lang): SeoData {
     if (c) {
       return withCanonical({
         // Sufijo corto: la categoría ya es la keyword de la ficha y el país va en la description.
-        // Todos los títulos del sitio cierran con la marca, también cuando el nombre del demo es
-        // largo: con «Vértice Seguridad Industrial» el título llega a 73 caracteres y el buscador
-        // recorta el sufijo, que es la parte prescindible. La alternativa, omitir la marca solo en
-        // esa ficha, dejaba el par ES/EN desparejo.
+        // El nombre del demo se conserva siempre, aunque con «Vértice Seguridad Industrial» el
+        // título llegue a 73 caracteres: es lo que identifica la ficha en la pestaña y en el
+        // resultado, y sin él el título queda casi igual al de la página de sistema de ERP. Lo que
+        // el buscador recorta de un título largo es el final, o sea la marca, que es lo prescindible.
         title: `${c.name}: ${c.category} | Link Design`,
         description: caseDescription(c, lang),
         keywords:

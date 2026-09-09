@@ -30,6 +30,14 @@ const HUB = '/desarrollo-de-software-costa-rica';
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const LANGS: Lang[] = ['es', 'en'];
 
+// El <title> de una ficha lleva siempre nombre del demo, categoría y marca. Con «Vértice Seguridad
+// Industrial» llega a 73 caracteres y el buscador recorta el final, que es la marca: se prefiere eso
+// a soltar el nombre, porque es lo que identifica la ficha y sin él el título queda casi igual al de
+// la página de sistema de ERP. Por eso las fichas admiten 75 y el resto del sitio 70.
+const CASE_TITLE_MAX = 75;
+const caseTitle = (c: { name: string; category: string }) =>
+  `${c.name}: ${c.category} | Link Design`;
+
 describe('seoForUrl (hub de software CR y fichas)', () => {
   it('resolves the hub in English with a /en canonical, indexable and no singleUrl', () => {
     const seo = seoForUrl(`/en${HUB}`, 'en');
@@ -86,7 +94,7 @@ describe('seoForUrl (hub de software CR y fichas)', () => {
       const c = getSoftwareCrCase(slug, 'en')!;
       const seo = seoForUrl(`/en${HUB}/${slug}`, 'en');
 
-      expect(seo.title, slug).toBe(`${c.name}: ${c.category} | Link Design`);
+      expect(seo.title, slug).toBe(caseTitle(c));
       expect(seo.description, slug).toMatch(/^Demo of a custom /);
       expect(seo.description, slug).toContain('built in Costa Rica');
       expect(seo.description, slug).toContain(c.range);
@@ -120,7 +128,7 @@ describe('seoForUrl (hub de software CR y fichas)', () => {
       const c = getSoftwareCrCase(slug, 'es')!;
       const seo = seoForUrl(`${HUB}/${slug}`, 'es');
 
-      expect(seo.title, slug).toBe(`${c.name}: ${c.category} | Link Design`);
+      expect(seo.title, slug).toBe(caseTitle(c));
       expect(seo.description, slug).toMatch(/^Demo de un /);
       expect(seo.description, slug).toContain('hecho a la medida en Costa Rica');
       expect(seo.description, slug).toContain(c.range);
@@ -296,13 +304,27 @@ describe('títulos derivados', () => {
     }
   });
 
-  it('never lets a derived description pass 160 characters', () => {
-    // Solo el tope: metaDescription() corta en fin de oración y nunca a media palabra, así que tres
-    // páginas de sistema quedan cortas (automatización con IA en los dos idiomas, 101 y 96, y el ERP
-    // en inglés, 116) porque su segunda oración no entra en 158. Subirlas de 120 pide reescribir el
-    // párrafo «Qué es» en systems-content.ts, que es copy aprobado y no se toca desde acá.
+  it('keeps every derived description between 120 and 160 characters', () => {
+    // Las páginas de sistema y de industria derivan su description del contenido de la página, y
+    // `metaDescription()` la cierra en fin de oración o en el corte de cláusula más largo que entre
+    // en 158, nunca a media palabra.
     for (const seo of derived()) {
+      expect(seo.description.length, seo.canonicalPath).toBeGreaterThanOrEqual(120);
       expect(seo.description.length, seo.canonicalPath).toBeLessThanOrEqual(160);
+    }
+  });
+
+  it('never closes a description on a dangling conjunction', () => {
+    for (const seo of derived()) {
+      expect(seo.description, seo.canonicalPath).not.toMatch(/\b(y|e|o|u|and|or)…$/);
+    }
+  });
+
+  it('keeps every title between 25 and 70 characters, 75 in the case pages', () => {
+    for (const seo of everySeo()) {
+      const max = (seo.canonicalPath ?? '').includes(`${HUB}/`) ? CASE_TITLE_MAX : 70;
+      expect(seo.title.length, seo.canonicalPath).toBeGreaterThanOrEqual(25);
+      expect(seo.title.length, seo.canonicalPath).toBeLessThanOrEqual(max);
     }
   });
 
@@ -314,6 +336,35 @@ describe('títulos derivados', () => {
         const tail = `| ${lang === 'en' ? 'Custom software' : 'Software a medida'} | Link Design`;
         expect(seo.title, `${slug} (${lang})`).toContain(tail);
       }
+    }
+  });
+
+  it('opens every case title with the demo name, in both languages', () => {
+    for (const slug of SOFTWARE_CR_CASE_SLUGS) {
+      for (const lang of LANGS) {
+        const c = getSoftwareCrCase(slug, lang)!;
+        const path = lang === 'en' ? `/en${HUB}/${slug}` : `${HUB}/${slug}`;
+        expect(seoForUrl(path, lang).title, path).toMatch(
+          new RegExp(`^${c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}: `)
+        );
+        expect(seoForUrl(path, lang).title, path).toMatch(/\| Link Design$/);
+      }
+    }
+  });
+
+  it('gives the two languages of a page the same title shape', () => {
+    const shape = (title: string) => title.split(': ').length;
+    for (const slug of SOFTWARE_CR_CASE_SLUGS) {
+      const es = seoForUrl(`${HUB}/${slug}`, 'es').title;
+      const en = seoForUrl(`/en${HUB}/${slug}`, 'en').title;
+      expect(shape(en), slug).toBe(shape(es));
+    }
+    for (const slug of INDUSTRY_SLUGS) {
+      const es = seoForUrl(`/industrias/${slug}`, 'es').title;
+      const en = seoForUrl(`/en/industrias/${slug}`, 'en').title;
+      expect(en.startsWith('Custom solutions for'), slug).toBe(
+        es.startsWith('Soluciones a medida para')
+      );
     }
   });
 });
