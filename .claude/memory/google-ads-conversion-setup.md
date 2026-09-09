@@ -28,3 +28,12 @@ El sitio LinkDesign (linkdesign.cr) reporta conversiones a Google Ads (cuenta AW
 
 **Why:** la estrategia de puja decide si el value de conversión mueve el bidding o es decorativo; acá mueve el bidding.
 **How to apply:** antes de tocar values de conversión, recordar que alimentan Smart Bidding; y que Count:One ya deduplica, así que no hace falta dedupe client-side.
+
+**2026-09-09 · señal limpia, y un pendiente fechado.** Al corregir el scoring (ver
+`crm-repo-y-scoring-compartido.md`) cambió el value que reportan las cuatro conversiones de contacto
+desde el 9 sep: antes estaba inflado casi siempre. Línea base de 30 días guardada en
+`docs/bitacora-ads-values-troas.md` (entrada del 9 sep). Verificado que los dos sitios disparan solo
+sus cinco labels nuevos y ninguno de los viejos. **Pendiente para la revisión del 5 oct 2026, punto 7
+de la bitácora, por decisión expresa de Robert:** pasar «Contacto» (6925111133) y «Contacto Argentina»
+(7650100714) de primarias a secundarias. Están muertas desde el 13 ago pero siguen pujando con
+histórico contaminado. **No tocarlas antes ni eliminarlas.**

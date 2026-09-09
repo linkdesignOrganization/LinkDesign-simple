@@ -2028,6 +2028,15 @@ de copy, siete de acciones separadas, cuatro de los cambios de página del 8 sep
    canal ya permiten recalcular la tasa de cierre WhatsApp / correo.
 6. **Search Console**: impresiones y posición de `/web` en Costa Rica, semana a semana, como control
    de que Google sigue leyendo la página.
+7. **Pasar «Contacto» (6925111133) y «Contacto Argentina» (7650100714) de primarias a secundarias.**
+   Decidido por Robert el 9 sep: **no se toca antes**, queda para este día. Las dos están muertas desde
+   el 13 ago (cero conversiones por fecha de conversión desde el 14) y siguen pujando con un histórico
+   de tres meses con la escala vieja, el scoring roto y sin distinguir canal. La operación es un
+   `ConversionActionOperation.update` con `primary_for_goal = false` por acción, validada por el
+   servidor el 9 sep con `validate_only`; se rehace en un minuto con `ads.client()` y
+   `ConversionActionService.mutate_conversion_actions`. **No eliminarlas**: el histórico se queda en
+   los informes. Hacerlo ese día y no antes evita que un eventual reinicio del aprendizaje de la puja
+   contamine la lectura de la página de destino.
 
 ---
 
@@ -2149,3 +2158,7 @@ Robert: ahora, o en la revisión del 5 oct.
 `ConversionActionOperation.update` con `primary_for_goal = false` sobre `6925111133` («Contacto») y
 `7650100714` («Contacto Argentina»). Un campo por acción, reversible con la operación inversa. Script
 en el scratchpad de la sesión, `ads-secundarias.py`; con `--apply` escribe.
+
+**Decisión de Robert (9 sep, cierre):** no se toca. Queda como pendiente número 7 de la revisión del
+5 oct, arriba. La señal de los dos sitios ya está limpia y verificada; lo único que sigue sucio es que
+las dos acciones viejas pujan sin recibir nada, y eso se resuelve ese día.
