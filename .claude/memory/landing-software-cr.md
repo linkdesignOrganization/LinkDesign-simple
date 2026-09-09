@@ -134,3 +134,11 @@ arreglado el mismo día:** el paso «Prepare deployment package» instala sin lo
 en la raíz) y npm 10, el del runner, recorre las `devDependencies` para resolver peers aunque no las
 instale; con vitest 4.1.11 eso revienta con `edgesOut` y dejó el deploy en rojo dos veces. El paquete
 se arma ahora con un `package.json` sin `devDependencies`.
+
+**2026-09-09 · conversiones de Ads en las páginas nuevas.** Los tres botones de contacto del hub
+(«Agendar reunión» y «WhatsApp» del hero) y de las fichas («Agendar reunión de 30 minutos», sección
+de precio) reportan desde hoy las mismas conversiones que el hero, el footer y `/contacto`
+(`AdsService.scheduleMeeting` / `.whatsapp`). Regla para páginas nuevas: todo enlace a cal.com o
+wa.me lleva su `(click)` al `AdsService`; los specs `software-cr-page.spec.ts` y
+`software-cr-case-page.spec.ts` lo cubren, junto con el calendario por idioma. Nolõ no tiene estas
+páginas; si las recibe, misma regla.
