@@ -15,7 +15,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { AdsService } from '../services/ads.service';
 import { LeadFormService, LeadSubmitContext } from '../lead-form/services/lead-form.service';
 import { TimelineService } from '../lead-form/services/timeline.service';
-import { LeadFormRawValue } from '../lead-form/models/lead-payload.model';
+import { LeadFormRawValue, LeadPageContext } from '../lead-form/models/lead-payload.model';
 import { NeedOption, PreferredContactOption } from '../lead-form/models/lead-form-options';
 import {
   LucideCalendar,
@@ -785,20 +785,30 @@ export class ContactFooterComponent {
   readonly info = input.required<ContactInfo>();
 
   /**
-   * Contexto opcional del sistema cuando el form se renderiza en una página /software/<slug>.
-   * Si está presente, se antepone una línea al mensaje del lead para que el CRM identifique
-   * qué sistema estaba viendo. Es el único canal viable sin redeploy del CRM: `message` es el
-   * campo que viaja en el payload Y se muestra en el email de aviso; un campo nuevo en el
-   * payload lo descartaría el esquema Zod del CRM. En el resto del sitio el input va ausente
-   * y el mensaje no se toca.
+   * Contexto opcional del sistema cuando el form se renderiza en una página
+   * /software/<slug> (y, en este sitio, en una ficha del hub de Costa Rica).
+   * Viaja al CRM en `source.page_context`, su propio campo del payload, para que
+   * el correo de aviso y la ficha sepan qué sistema estaba viendo.
+   *
+   * Hasta la v1.6.0 esto se anteponía al mensaje entre corchetes, porque el
+   * esquema del CRM no tenía dónde ponerlo. El mensaje volvió a ser solo lo que
+   * escribió la persona.
    */
   readonly systemContext = input<SystemContext | null>(null);
 
   /**
-   * Igual que systemContext pero para una página de industria (/industrias/<slug>): antepone una
-   * línea al mensaje del lead para que el CRM identifique de qué industria vino. Mismo canal (`message`).
+   * Igual que systemContext pero para una página de industria
+   * (/industrias/<slug>). Solo uno de los dos está activo por página.
    */
   readonly industryContext = input<SystemContext | null>(null);
+
+  /**
+   * El contexto que viaja en el payload. Sistema e industria son excluyentes
+   * por página, así que el primero que exista es el bueno.
+   */
+  private readonly pageContext = computed<LeadPageContext | null>(
+    () => this.systemContext() ?? this.industryContext()
+  );
 
   private readonly i18n = inject(LanguageService);
   private readonly ads = inject(AdsService);
@@ -906,7 +916,7 @@ export class ContactFooterComponent {
       company: v.company,
       email: v.email,
       phone: v.phone,
-      message: this.withIndustryContext(this.withSystemContext(v.message)),
+      message: v.message,
       need: [...this.needs()].map((k) => NEED_MAP[k]).filter((x): x is NeedOption => !!x),
       preferred_contact: [...this.contactPrefs()]
         .map((k) => CONTACT_MAP[k])
@@ -919,7 +929,8 @@ export class ContactFooterComponent {
       formLocation: 'footer',
       formLoadedAt: this.formLoadedAt,
       formFirstInteractionAt: this.formFirstInteractionAt,
-      interactionCount: this.interactionCount
+      interactionCount: this.interactionCount,
+      pageContext: this.pageContext()
     };
 
     this.leadForm.submit(raw, context).subscribe((result) => {
@@ -931,37 +942,6 @@ export class ContactFooterComponent {
         this.submitError.set(result.message);
       }
     });
-  }
-
-  // Si el form viene de la página de un sistema, antepone una línea limpia y legible al
-  // mensaje para que el CRM (email de aviso + detalle) identifique qué sistema veía el lead.
-  // Si no hay contexto, devuelve el mensaje sin tocar.
-  private withSystemContext(message: string): string {
-    const sys = this.systemContext();
-    if (!sys) {
-      return message;
-    }
-    const note =
-      this.lang() === 'en'
-        ? `[Lead from the system page: ${sys.name}]`
-        : `[Consulta desde la página del sistema: ${sys.name}]`;
-    const body = message.trim();
-    return body ? `${note}\n\n${body}` : note;
-  }
-
-  // Igual que withSystemContext pero para industria. Solo uno de los dos contextos está activo por
-  // página, así que se pueden encadenar sin pisarse.
-  private withIndustryContext(message: string): string {
-    const ind = this.industryContext();
-    if (!ind) {
-      return message;
-    }
-    const note =
-      this.lang() === 'en'
-        ? `[Lead from the industry page: ${ind.name}]`
-        : `[Consulta desde la industria: ${ind.name}]`;
-    const body = message.trim();
-    return body ? `${note}\n\n${body}` : note;
   }
 
   protected copyEmail(): void {
