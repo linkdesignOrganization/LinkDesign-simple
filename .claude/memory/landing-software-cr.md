@@ -107,3 +107,20 @@ también: confirmar los valores PROVISIONAL antes de indexar (la garantía es de
 Pendientes acordados con Robert, de a uno y cuando él lo pida: encendido SEO (§9 del plan), aviso al CRM del
 formulario enviado desde estas páginas, revisar el impacto en Google Ads antes de tocar nada, y que los
 botones de calendario y WhatsApp reporten conversión como en `/software` sin alterar la configuración actual.
+
+**2026-09-08 · INDEXABLE.** Robert autorizó el encendido: fuera el `noindex` (meta y cabecera) del hub y
+las seis fichas en los dos idiomas, 14 URLs nuevas en `sitemap.xml` (54 en total), 14 en
+`sitemap-videos.xml` con la duración de cada clip, sección propia en `llms.txt`, y los dos sitemaps
+reenviados a Search Console con 0 errores y 0 avisos (el de videos **nunca había estado registrado**,
+aunque el `robots.txt` lo declaraba desde siempre). Siguen `noindex` `/ads` y las dos páginas 404.
+En la misma ronda se dejó consistente el SEO del resto del sitio: el `@graph` de marca salía en español
+en las páginas EN y ahora lo emite `SeoService` por idioma (`data-seo="brand"`, salió del `index.html`);
+`serviceType` por idioma; breadcrumbs del hub y las fichas colgando de `/software`; catorce títulos de
+páginas de sistema perdieron el guion largo; todas las páginas indexables quedaron con título ≤ 70 y
+description entre 120 y 160 (`metaDescription()` tiene ahora un piso, y el `<title>` de una industria se
+desacopla de su h1 cuando no cabe). **Gotcha nuevo:** `faq-accordion` y `services-stack` creaban su
+JSON-LD en el cliente sin reutilizar el nodo del prerender, así que en el navegador se duplicaban
+`FAQPage` e `ItemList`; el patrón correcto (buscar `script[data-seo="…"]` antes de crear) ya está en los
+tres componentes y en las dos páginas nuevas. **Para enviar sitemaps por API hace falta el scope
+`https://www.googleapis.com/auth/webmasters`**: el módulo `gsc` pide solo el de lectura y devuelve 403.
+Único paso manual pendiente, opcional: «Solicitar indexación» del hub en la interfaz de Search Console.
