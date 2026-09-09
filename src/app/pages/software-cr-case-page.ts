@@ -19,6 +19,7 @@ import { environment } from '../../environments/environment';
 import { ContactFooterComponent, ContactInfo, SystemContext } from '../components/contact-footer.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { TrackSectionDirective } from '../directives/track-section.directive';
+import { AdsService } from '../services/ads.service';
 import { LanguageService } from '../services/language.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import {
@@ -206,7 +207,7 @@ const CASE_VIDEO_DURATIONS: Record<SoftwareCrCaseSlug, string> = {
               <p class="cc-cost__disclaimer">{{ l().costDisclaimer }}</p>
             </div>
             <div class="cc-cost__actions">
-              <a class="button" [href]="calendarLink()" target="_blank" rel="noopener noreferrer">
+              <a class="button" [href]="calendarLink()" target="_blank" rel="noopener noreferrer" (click)="onMeetingClick()">
                 <span>{{ l().meetCta }}</span>
                 <span class="button-arrow" aria-hidden="true">→</span>
               </a>
@@ -725,6 +726,7 @@ export class SoftwareCrCasePageComponent implements OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   private readonly i18n = inject(LanguageService);
+  private readonly ads = inject(AdsService);
 
   protected readonly lang = this.i18n.lang;
 
@@ -781,6 +783,12 @@ export class SoftwareCrCasePageComponent implements OnDestroy {
   protected readonly calendarLink = computed(() =>
     this.lang() === 'en' && this.info.calendarLinkEn ? this.info.calendarLinkEn : this.info.calendarLink
   );
+
+  // «Agendar reunión de 30 minutos» reporta a Google Ads la misma conversión de agendar que el
+  // resto del sitio. El enlace sigue abriéndose en pestaña nueva.
+  protected onMeetingClick(): void {
+    this.ads.scheduleMeeting();
+  }
 
   constructor() {
     afterNextRender(() => this.setupReveal());

@@ -2162,3 +2162,21 @@ en el scratchpad de la sesión, `ads-secundarias.py`; con `--apply` escribe.
 **Decisión de Robert (9 sep, cierre):** no se toca. Queda como pendiente número 7 de la revisión del
 5 oct, arriba. La señal de los dos sitios ya está limpia y verificada; lo único que sigue sucio es que
 las dos acciones viejas pujan sin recibir nada, y eso se resuelve ese día.
+
+### 9 sep 2026 · el hub y las fichas de demo ya reportan agendar y WhatsApp
+
+Los tres botones de contacto de las páginas nuevas estaban muertos para Ads: «Agendar reunión» y
+«WhatsApp» del hero de `/desarrollo-de-software-costa-rica`, y «Agendar reunión de 30 minutos» de la
+sección de precio de las seis fichas. Abrían cal.com o wa.me sin llamar al `AdsService`, mientras el
+mismo botón en el hero de `/software`, en el footer y en `/contacto` sí reporta. Desde el deploy de
+hoy reportan las mismas conversiones que el resto del sitio (`scheduleMeeting` y `whatsapp`, con el
+mismo value modulado por sesión). No se tocó nada en Ads: son las acciones y etiquetas de siempre.
+
+**Para la lectura del 5 oct:** las conversiones de agendar y WhatsApp incluyen desde el 9 sep los
+clics hechos en el hub y en las fichas, que antes no contaban. Si sube el conteo de esas dos acciones
+sin que suba el de formularios, primero mirar cuánto viene de esas páginas antes de leerlo como
+cambio de comportamiento.
+
+Verificación: cuatro pruebas unitarias (una por botón y una por idioma en cada página; las de botón
+vieron rojo antes del cambio y las de idioma se forzaron a fallar con una mutación), suite completa
+en verde y HTML prerenderizado con el calendario correcto por idioma en hub y fichas.

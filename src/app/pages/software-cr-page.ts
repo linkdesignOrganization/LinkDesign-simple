@@ -28,6 +28,7 @@ import { IndustriesSectionComponent } from '../components/industries-section.com
 import { ProjectStagesComponent } from '../components/project-stages.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { TrackSectionDirective } from '../directives/track-section.directive';
+import { AdsService } from '../services/ads.service';
 import { LanguageService } from '../services/language.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { INDUSTRY_CARDS } from './industries-content';
@@ -87,11 +88,11 @@ import {
           </h1>
           <p class="sc-hero__lead">{{ c().hero.lead }}</p>
           <div class="sc-hero__actions">
-            <a class="button" [href]="calendarLink()" target="_blank" rel="noopener noreferrer">
+            <a class="button" [href]="calendarLink()" target="_blank" rel="noopener noreferrer" (click)="onMeetingClick()">
               <span>{{ c().hero.ctaPrimary }}</span>
               <span class="button-arrow" aria-hidden="true">→</span>
             </a>
-            <a class="button" [href]="info.whatsappLink" target="_blank" rel="noopener noreferrer">
+            <a class="button" [href]="info.whatsappLink" target="_blank" rel="noopener noreferrer" (click)="onWhatsappClick()">
               <span>{{ c().hero.ctaSecondary }}</span>
               <span class="button-arrow" aria-hidden="true">→</span>
             </a>
@@ -1215,6 +1216,7 @@ export class SoftwareCrPageComponent implements OnDestroy {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly i18n = inject(LanguageService);
+  private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
 
   // Contenido, rótulos, mazo de industrias y fichas en el idioma activo. El toggle navega al otro
@@ -1237,6 +1239,16 @@ export class SoftwareCrPageComponent implements OnDestroy {
   protected readonly calendarLink = computed(() =>
     this.lang() === 'en' && this.info.calendarLinkEn ? this.info.calendarLinkEn : this.info.calendarLink
   );
+
+  // Los dos botones del hero reportan a Google Ads la misma conversión que en el resto del sitio
+  // (hero de /software y /web, footer, /contacto). El enlace sigue abriéndose en pestaña nueva.
+  protected onMeetingClick(): void {
+    this.ads.scheduleMeeting();
+  }
+
+  protected onWhatsappClick(): void {
+    this.ads.whatsapp();
+  }
 
   // Etiqueta el lead en el CRM con la página de origen (misma vía que el detalle de sistema). El
   // nombre queda en español en ambos idiomas: es una etiqueta interna y el footer antepone su prefijo.
