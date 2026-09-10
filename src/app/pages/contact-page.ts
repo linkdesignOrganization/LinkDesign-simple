@@ -14,6 +14,7 @@ import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { TrackSectionDirective } from '../directives/track-section.directive';
 import { LanguageService } from '../services/language.service';
 import { AdsService } from '../services/ads.service';
+import { COMPANY_SCHEDULE } from '../company-info';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 
 @Component({
@@ -399,7 +400,7 @@ const CONTACT_TEXT = {
     areas: 'Áreas de trabajo',
     whatsapp: 'Escríbenos por WhatsApp',
     calendar: 'Agenda una reunión',
-    schedule: 'Lunes a viernes, 8 a 17',
+    schedule: COMPANY_SCHEDULE.es.long,
     response: 'Sábados y domingos, descansamos',
     software: 'Software a medida',
     web: 'Sitios web',
@@ -413,7 +414,7 @@ const CONTACT_TEXT = {
     areas: 'What we do',
     whatsapp: 'Message us on WhatsApp',
     calendar: 'Book a meeting',
-    schedule: 'Monday to Friday, 8am–5pm',
+    schedule: COMPANY_SCHEDULE.en.long,
     response: 'Saturdays and Sundays, we rest',
     software: 'Custom software',
     web: 'Websites',

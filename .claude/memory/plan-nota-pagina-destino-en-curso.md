@@ -1,6 +1,6 @@
 ---
 name: plan-nota-pagina-destino-en-curso
-description: "Plan aprobado el 7 sep 2026 para mover la nota de página de destino (cédula y horario en el pie, videos móviles); se ejecuta el 8 sep 2026 y faltan datos de Robert"
+description: "Plan de la nota de página de destino: cédula y horario en el pie EN PROD desde el 10 sep 2026 (ambos sitios); queda la acción 3 (videos móviles), que Robert autoriza paso a paso"
 metadata: 
   node_type: memory
   type: project
@@ -29,3 +29,9 @@ tres acciones.
 **How to apply:** abrir el plan, pedir los dos datos, ejecutar en el orden del día, anotar en la
 bitácora y **borrar esta memoria** cuando el plan esté ejecutado. La lectura de la nota es
 el **lunes 5 oct 2026, 9:00** (evento en Calendar con aviso por correo, creado el 7 sep; guion en el cierre de la entrada del 7 sep (cont.) de la bitácora). Hasta entonces **no se toca nada en Ads**, por decisión de Robert del 7 sep. Ver [[lcp-dominado-por-videos]] y [[crm-como-fuente-de-verificacion]].
+
+**Actualización 10 sep 2026.** Acciones 1 y 2 ejecutadas y en producción en los dos sitios con los
+datos que dio Robert: CR cédula 3-101-912048 (razón social «3-101-912048 Sociedad Anónima», solo en
+el JSON-LD); AR razón social NOLO CAAR y CUIT 30-71951427-4. Fuente única en `src/app/company-info.ts`
+de cada sitio. **Regla vigente: cada cambio de este plan lleva autorización explícita de Robert**
+(lo dijo el 10 sep). Queda la acción 3; «lo vemos después». No borrar esta memoria hasta cerrarla.

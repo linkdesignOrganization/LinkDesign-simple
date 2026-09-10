@@ -1,4 +1,8 @@
-# Plan — mover la nota de página de destino (acordado el 7 sep 2026, se ejecuta el 8 sep)
+# Plan — mover la nota de página de destino (acordado el 7 sep 2026)
+
+> **Estado 10 sep 2026:** acciones 1 y 2 **en producción** en Link Design y en Nolõ (ver la entrada del
+> 10 sep en `bitacora-ads-values-troas.md`). La acción 3 queda pendiente por decisión de Robert; cada
+> paso de este plan lleva su autorización explícita.
 
 ## Por qué
 

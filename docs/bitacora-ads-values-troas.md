@@ -2180,3 +2180,18 @@ cambio de comportamiento.
 Verificación: cuatro pruebas unitarias (una por botón y una por idioma en cada página; las de botón
 vieron rojo antes del cambio y las de idioma se forzaron a fallar con una mutación), suite completa
 en verde y HTML prerenderizado con el calendario correcto por idioma en hub y fichas.
+
+### 10 sep 2026 · acciones 1 y 2 del plan de la nota de página de destino, en producción
+
+Robert entregó la cédula jurídica (3-101-912048; la razón social es «3-101-912048 Sociedad Anónima»,
+el mismo número) y aprobó el cambio. Desde hoy el pie de todas las páginas muestra, debajo de la
+ubicación y con la misma letra: «L-V, 8 a 17» y «Cédula jurídica 3-101-912048» (en inglés «Mon-Fri,
+8am-5pm» y «Legal ID 3-101-912048»). La razón social no se muestra porque repetiría el número; va,
+junto con la cédula, en la ficha de marca que lee Google (`legalName` y `taxID` en `Organization`).
+El horario vive ahora en un solo lugar (`src/app/company-info.ts`): el pie usa la forma corta y
+`/contacto` la larga. Dos pruebas nuevas en el spec del pie. Lo mismo se hizo en Nolõ con sus datos
+(NOLO CAAR, CUIT 30-71951427-4, L-V 9 a 18), así que **Argentina deja de ser control** para estas dos
+acciones; el control queda solo para la acción 3.
+
+La acción 3 (videos más livianos para celular) queda pendiente por decisión de Robert («lo vemos
+después»). Lectura de la nota: 5 oct 2026, sin cambios.
