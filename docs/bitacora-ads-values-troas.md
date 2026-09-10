@@ -2195,3 +2195,37 @@ acciones; el control queda solo para la acción 3.
 
 La acción 3 (videos más livianos para celular) queda pendiente por decisión de Robert («lo vemos
 después»). Lectura de la nota: 5 oct 2026, sin cambios.
+
+### 10 sep 2026 · acción 3 del plan de la nota de página de destino, en producción
+
+Videos livianos para celular en los dos bloques que están sobre el fold, en Link Design y en Nolõ.
+El navegador elige el archivo por tamaño de pantalla con `<source media="(max-width: 760px)">`, así
+que decide **antes** de descargar y no depende de la hidratación. En escritorio no cambia nada.
+
+**De dónde salen los clips.** En `/web` no hubo que generar nada: el CRM ya produce una pieza de
+720 px por proyecto (la que usa la tabla del portafolio) con el mismo contenido que el render de
+hero de 1280, y el carrusel la ignoraba. En `/software` **no existía** versión chica: se generaron
+los nueve clips con la misma receta del CRM (`scale=720:-2`, 30 fps, CRF 28, faststart, sin audio),
+misma proporción 1,875 y mismo encuadre; viven en `public/media/software/<nombre>-mobile.mp4` y se
+versionan en el repo (no vienen del CRM).
+
+Peso descargado en celular, por bloque:
+
+| bloque | antes | después |
+|---|---:|---:|
+| carrusel de `/web` (3 primeros) | 6,4 MB | 1,6 MB |
+| pestañas de `/software` | 4,5 MB | 1,5 MB |
+| viewcases de `/software` (6) | 12,3 MB | 3,9 MB |
+
+Medido con Chrome real a 390 px y red 4G lenta (1,6 Mbps, 150 ms), caché desactivada, comparando
+los dos builds servidos localmente: a los 10 s de abrir, el build viejo no había completado ningún
+video y el nuevo ya tenía el primero (en `/software`, dos). Verificado además que a 390 px pide el
+clip de 720 y a 1280 el original, en los dos sitios, en carrusel, pestañas y viewcases.
+
+Tres pruebas nuevas por sitio fijan la regla (mutación: al quitar el `<source>` móvil se ponen
+rojas). Con esto **el plan `docs/plan-nota-pagina-destino.md` queda ejecutado**: sus tres acciones
+están en producción. La lectura de la nota sigue siendo el 5 oct 2026, y Argentina ya no es control
+de nada porque recibió las tres.
+
+Pendiente menor, fuera del plan: el viewcase de Vértice apunta al mismo archivo que la pestaña
+«automatiza» (`vertice.mp4` y `automatiza.mp4` son idénticos); falta la grabación real de Vértice.

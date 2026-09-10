@@ -1,8 +1,10 @@
 # Plan — mover la nota de página de destino (acordado el 7 sep 2026)
 
-> **Estado 10 sep 2026:** acciones 1 y 2 **en producción** en Link Design y en Nolõ (ver la entrada del
-> 10 sep en `bitacora-ads-values-troas.md`). La acción 3 queda pendiente por decisión de Robert; cada
-> paso de este plan lleva su autorización explícita.
+> **Estado 10 sep 2026: PLAN EJECUTADO.** Las tres acciones están en producción en Link Design y en
+> Nolõ (dos entradas del 10 sep en `bitacora-ads-values-troas.md`). La acción 3 se resolvió sin el
+> laboratorio de comparación previsto: en `/web` el clip de 720 px ya existía (lo genera el CRM para
+> la tabla) y en `/software` se generaron los nueve con la receta del CRM, respetando encuadre y
+> proporción. Queda solo **leer la nota el 5 oct 2026**.
 
 ## Por qué
 
