@@ -45,6 +45,8 @@ export type SoftwareCrCase = {
   summary: string;
   poster: string;
   video: string;
+  /** Clip de 720 px para celular: mismo encuadre y proporción, un tercio del peso. */
+  videoMobile: string;
   link: string;
   before: string;
   after: string;
@@ -67,6 +69,7 @@ export const SOFTWARE_CR_CASES: SoftwareCrCase[] = [
       'Socios, planes, cobros, asistencia y clases de una cadena de gimnasios en un solo panel, con una capa de IA que avisa quién está por irse.',
     poster: '/media/software/pulso.jpg',
     video: '/media/software/pulso.mp4',
+    videoMobile: '/media/software/pulso-mobile.mp4',
     link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net',
     before:
       'Membresías que vencen sin aviso, clases con cupo en una pizarra, cobros que se persiguen por WhatsApp y cuatro sedes que nadie ve juntas.',
@@ -101,6 +104,7 @@ export const SOFTWARE_CR_CASES: SoftwareCrCase[] = [
       'Legajo completo, organigrama, vacaciones y licencias, selección por vacante y evaluaciones, con alertas de riesgo de renuncia.',
     poster: '/media/software/cumbre.jpg',
     video: '/media/software/cumbre.mp4',
+    videoMobile: '/media/software/cumbre-mobile.mp4',
     link: 'https://orange-forest-0713c560f.7.azurestaticapps.net',
     before:
       'Vacaciones, permisos e incapacidades en correos y hojas de cálculo, legajos repartidos en carpetas y una selección que se sigue de memoria.',
@@ -134,6 +138,7 @@ export const SOFTWARE_CR_CASES: SoftwareCrCase[] = [
       'Agenda por profesional, ficha del paciente con odontograma, tratamientos por etapas y el circuito completo de presupuestos, pagos y obras sociales.',
     poster: '/media/software/dental.jpg',
     video: '/media/software/dental.mp4',
+    videoMobile: '/media/software/dental-mobile.mp4',
     link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda',
     before:
       'Agenda en papel o en una app genérica que no sabe de tratamientos por etapas, ni de obras sociales, ni de cuánto debe cada paciente.',
@@ -166,6 +171,7 @@ export const SOFTWARE_CR_CASES: SoftwareCrCase[] = [
       'La orden de trabajo de un taller metalúrgico de punta a punta, con materiales, horas máquina y costo real contra estimado, más planificación por máquina, inventario y mermas.',
     poster: '/media/software/tornos.jpg',
     video: '/media/software/tornos.mp4',
+    videoMobile: '/media/software/tornos-mobile.mp4',
     link: 'https://app-tornosops.azurewebsites.net/dashboard',
     before:
       'Órdenes de trabajo en un cuaderno, materia prima que se acaba a mitad de una pieza, máquinas que se pisan en el calendario y costos que se conocen al final del mes.',
@@ -199,6 +205,7 @@ export const SOFTWARE_CR_CASES: SoftwareCrCase[] = [
       'Un sistema con tres caras, gerencia, cliente y técnico, para vender y operar mantenimiento por suscripción.',
     poster: '/media/software/puntocero.jpg',
     video: '/media/software/puntocero.mp4',
+    videoMobile: '/media/software/puntocero-mobile.mp4',
     link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/acceso',
     before:
       'Contratos de mantenimiento con visitas que se olvidan, técnicos sin ruta, clientes que no saben cuándo los visitan y reportes que nadie aprueba.',
@@ -233,6 +240,7 @@ export const SOFTWARE_CR_CASES: SoftwareCrCase[] = [
       'Del cliente a la nota de crédito. Cotización con margen, pedido, despacho y devolución, con stock reservado y disponible en seis ubicaciones.',
     poster: '/media/software/vertice.jpg',
     video: '/media/software/vertice.mp4',
+    videoMobile: '/media/software/vertice-mobile.mp4',
     link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home',
     before:
       'Precios por cliente en la cabeza del vendedor, cotizaciones que tardan días, stock que nadie confía y despachos que se pierden entre bodegas.',
@@ -263,7 +271,7 @@ export const SOFTWARE_CR_CASE_SLUGS = SOFTWARE_CR_CASES.map((c) => c.slug);
 /** Campos traducibles; slug, system, poster, video y link se toman siempre del ES. */
 export type SoftwareCrCaseText = Omit<
   SoftwareCrCase,
-  'slug' | 'system' | 'poster' | 'video' | 'link'
+  'slug' | 'system' | 'poster' | 'video' | 'videoMobile' | 'link'
 >;
 
 /**

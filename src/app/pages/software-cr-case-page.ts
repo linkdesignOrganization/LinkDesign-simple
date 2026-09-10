@@ -118,6 +118,8 @@ const CASE_VIDEO_DURATIONS: Record<SoftwareCrCaseSlug, string> = {
               playsinline
               preload="metadata"
             >
+              <!-- En celular, el clip de 720 px (mismo encuadre, un tercio del peso). -->
+              <source media="(max-width: 760px)" [src]="s.videoMobile" type="video/mp4" />
               <source [src]="s.video" type="video/mp4" />
             </video>
           </a>

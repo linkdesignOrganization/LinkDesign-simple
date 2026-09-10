@@ -2229,3 +2229,11 @@ de nada porque recibió las tres.
 
 Pendiente menor, fuera del plan: el viewcase de Vértice apunta al mismo archivo que la pestaña
 «automatiza» (`vertice.mp4` y `automatiza.mp4` son idénticos); falta la grabación real de Vértice.
+
+**Ampliación del mismo día:** las seis fichas de demo (`/desarrollo-de-software-<país>/:slug`) y las
+secciones de demo de las siete páginas de sistema usan los mismos nueve videos, así que también
+sirven el clip de 720 px en celular. El clip vive como campo `videoMobile` en el contenido de cada
+ficha, con una prueba que exige que sea el nombre del video con sufijo `-mobile` para que nadie
+apunte a un archivo inexistente al agregar una ficha (mutación comprobada). Con esto, **todos** los
+videos de los dos sitios eligen archivo por tamaño de pantalla: carrusel de `/web`, pestañas y
+viewcases de `/software`, fichas y páginas de sistema. La tabla del portafolio ya lo hacía.
