@@ -59,7 +59,7 @@ const TIMING_OR_BUDGET_RE =
  * persona, así que no debe contar como mensaje.
  *
  * Se reconoce por la FORMA y no por el texto, a propósito: hoy hay cuatro
- * variantes (sistema e industria, en español e inglés), Link Design y Nolõ no
+ * variantes (sistema e industria, en español e inglés), Link Design y Kravõnia no
  * las redactan igual, el hub de Costa Rica reusa la de sistema con otro nombre,
  * y el bloque 2 puede cambiarlas. Un patrón atado a las palabras envejecería
  * igual que envejeció `detectLanding()`.

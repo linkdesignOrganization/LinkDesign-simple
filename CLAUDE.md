@@ -26,7 +26,7 @@ Software/Web) y el `app-contact-footer` sólo se renderiza en las páginas inter
 
 ## Sitio gemelo
 
-Nolõ (`Desktop\Nolo\WEB`, dominio `nolo.ar`, mercado argentino) es un fork con la **misma
+Kravõnia (`~/dev/WebSite/kravonia-simple`, dominio `kravonia.ar`, mercado argentino) es un fork con la **misma
 arquitectura**. Un cambio acá suele aplicar allá cambiando IDs, branding y teléfonos — y viceversa.
 Antes de dar por terminado un cambio estructural, preguntá si corresponde replicarlo.
 

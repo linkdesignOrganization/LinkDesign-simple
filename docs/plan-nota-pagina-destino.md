@@ -1,7 +1,7 @@
 # Plan — mover la nota de página de destino (acordado el 7 sep 2026)
 
 > **Estado 10 sep 2026: PLAN EJECUTADO.** Las tres acciones están en producción en Link Design y en
-> Nolõ (dos entradas del 10 sep en `bitacora-ads-values-troas.md`). La acción 3 se resolvió sin el
+> Kravõnia (dos entradas del 10 sep en `bitacora-ads-values-troas.md`). La acción 3 se resolvió sin el
 > laboratorio de comparación previsto: en `/web` el clip de 720 px ya existía (lo genera el CRM para
 > la tabla) y en `/software` se generaron los nueve con la receta del CRM, respetando encuadre y
 > proporción. Queda solo **leer la nota el 5 oct 2026**.
@@ -34,7 +34,7 @@ ninguna se revertiría. La nota es lenta y relativa; **la lectura es ~5 oct 2026
 - `preload="metadata"` de los videos de `/software` **no se toca** (memoria `lcp-dominado-por-videos`).
 - Las metas de SEO salen sólo de `app.ts` + `SEO_CONTENT`; este plan no las toca. La ruta `/ads` no
   se toca.
-- **Nolõ** (`Desktop\Nolo\WEB`) es un fork con los mismos componentes. Las acciones 1 y 2 necesitan
+- **Kravõnia** (`Desktop\Kravõnia\WEB`) es un fork con los mismos componentes. Las acciones 1 y 2 necesitan
   sus propios datos legales argentinos: van en la sesión de Argentina. La acción 3 es estructural y
   se replica después de aprobada acá.
 - Deploy = push a `main` (workflow de Azure SWA). Commit y push sólo cuando Robert lo pida.
@@ -152,7 +152,7 @@ builds servidos localmente, nunca local contra producción (trampa anotada en la
    texto), tests, y verificación visual del pie ES/EN en móvil y escritorio contra producción (nada
    cambia salvo las tres líneas nuevas).
 2. Generar las variantes de video y la comparación (3a). Robert decide.
-3. Si aprueba: cablear (3b), medir (3c), y decidir con él si se replica a Nolõ ahora o en su sesión.
+3. Si aprueba: cablear (3b), medir (3c), y decidir con él si se replica a Kravõnia ahora o en su sesión.
 4. Anotar en `bitacora-ads-values-troas.md` qué salió, cuándo y con qué medición, y fijar la
    lectura de la nota para **~5 oct 2026** (Calendar), junto con la segunda lectura de Search
    Console de `/web`.

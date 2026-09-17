@@ -43,7 +43,7 @@ Colecciones que importan para Ads:
    clientes. No existe canal «Reunión»: un clic de «Agendar reunión» que termina en cita aparece
    como «Otro» y el detalle está en `sourceOtherText`.
 5. **Los clientes históricos se cargaron de golpe dos veces**: 11 el 13 ago y 4 más el 17 ago (We
-   Drive CR, AMAG, La Caja Maestra, Link Design-Nolõ-CRM). Se reconocen porque nacen `ganado` sin
+   Drive CR, AMAG, La Caja Maestra, Link Design-Kravõnia-CRM). Se reconocen porque nacen `ganado` sin
    recorrido (historial vacío o un único `ganado@` con la fecha de creación). Descontarlos siempre.
 6. **Tasa de cierre por canal descontados esos 15** (al 7 sep 2026, todos los países): WhatsApp 3
    ganados de 19 resueltos (16 %), Email 4 de 11 (36 %). Solo Costa Rica: WhatsApp 30 %, Email

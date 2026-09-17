@@ -13,4 +13,4 @@ El tracking del caso de soporte de Microsoft por sobrefacturación de Azure Stat
 - `C:\Users\Roberth Castillo\Desktop\LinkDesign\webOld\LinkDesign2.0\AZURE-SWA-OVERCHARGE-CASE.md` — bitácora completa del caso (ticket `2605150040000686`, suscripción `CEFSA-prod`, reclamo de $254.15, comandos `az` de verificación en §8).
 - `C:\Users\Roberth Castillo\Desktop\LinkDesign\webOld\LinkDesign2.0\AZURE-SWA-TICKET-REPLY.md` — texto de la última respuesta enviada a Microsoft.
 
-Cuesta encontrarlo porque la carpeta `LinkDesign\web` fue renombrada a `LinkDesign\webOld` al migrar al sitio nuevo; el caso quedó ahí. Relacionado: [[sitios-gemelos-linkdesign-nolo]].
+Cuesta encontrarlo porque la carpeta `LinkDesign\web` fue renombrada a `LinkDesign\webOld` al migrar al sitio nuevo; el caso quedó ahí. Relacionado: [[sitios-gemelos-linkdesign-kravonia]].

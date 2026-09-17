@@ -8,7 +8,7 @@ metadata:
   modified: 2026-08-08T03:56:56.268Z
 ---
 
-Cuenta `6593270911` (Zacate Tierra Fertil) bajo el MCC — ver [[google-ads-api-access]]. Sitio: `C:\Users\Roberth Castillo\Desktop\Zacate Tierra Fértil\ZacateSelecto` (Angular, repo linkdesignOrganization/ZacateSelecto). Analizada el 24 jul 2026, período estable 28 dic 2025 – 23 jul 2026. **Bitácora: `docs/bitacora-ads.md` en ese repo** (cada sitio lleva la suya — convención acordada el 24 jul; la de Nolõ ya existe: `docs/bitacora-ads.md` en `nolo-simple`, creada el 30 jul 2026).
+Cuenta `6593270911` (Zacate Tierra Fertil) bajo el MCC — ver [[google-ads-api-access]]. Sitio: `C:\Users\Roberth Castillo\Desktop\Zacate Tierra Fértil\ZacateSelecto` (Angular, repo linkdesignOrganization/ZacateSelecto). Analizada el 24 jul 2026, período estable 28 dic 2025 – 23 jul 2026. **Bitácora: `docs/bitacora-ads.md` en ese repo** (cada sitio lleva la suya — convención acordada el 24 jul; la de Kravõnia ya existe: `docs/bitacora-ads.md` en `kravonia-simple`, creada el 30 jul 2026).
 
 - **Campaña "Búsqueda"** (`20769919090`): MAXIMIZE_CONVERSIONS sin tCPA, USD 15/día, corre 24/7. ("Búsqueda #3" `21173691297` está ENDED.)
 - **Conversiones**: una sola acción del sitio, "Whatsapp frontend" (`AW-11401086381/vJ7ICJ…`), value 1 fijo para WhatsApp/llamada/correo — 94% de las primarias; + "Local actions - Directions" (value 1). "Clicks to call" (extensiones, 105 en 7 meses) es SECUNDARIA — no alimenta el bidding. Acá el análisis correcto es por CPA, no por valor.

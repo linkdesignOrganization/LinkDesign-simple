@@ -33,7 +33,7 @@ export type SoftwareCrIntegration = {
   text: string;
 };
 
-/** Enlace dentro de un párrafo, por ejemplo la marca Nolõ hacia nolo.ar. */
+/** Enlace dentro de un párrafo, por ejemplo la marca Kravõnia hacia kravonia.ar. */
 export type SoftwareCrLink = { text: string; href: string };
 
 /** Un párrafo es un texto plano o una lista de trozos con enlaces intercalados. */
@@ -270,7 +270,7 @@ export const SOFTWARE_CR = {
     paragraphs: [
       [
         'Somos Link Design, un estudio de diseño y desarrollo de software en San José, Costa Rica. Desde 2020 construimos sitios y sistemas para empresas de Costa Rica y, con nuestra marca ',
-        { text: 'Nolõ', href: 'https://nolo.ar' },
+        { text: 'Kravõnia', href: 'https://kravonia.ar' },
         ', para empresas de Argentina; hoy también tenemos clientes en Estados Unidos, México y España. Somos un equipo de diseño, desarrollo, control de calidad y arquitectura que trabaja junto en cada proyecto, sin intermediarios ni subcontratación.'
       ],
       'Usamos nuestro propio software para operar: el sistema con el que damos seguimiento a cada propuesta, cada reunión y cada cliente lo construimos nosotros, con las mismas reglas que aplicamos a los tuyos.'
@@ -580,7 +580,7 @@ export const SOFTWARE_CR_EN: SoftwareCrContent = {
     paragraphs: [
       [
         'We are Link Design, a design and software development studio in San José, Costa Rica. Since 2020 we have built websites and systems for companies in Costa Rica and, under our ',
-        { text: 'Nolõ', href: 'https://nolo.ar' },
+        { text: 'Kravõnia', href: 'https://kravonia.ar' },
         ' brand, for companies in Argentina. Today we also have clients in the United States, Mexico and Spain. We are one team covering design, development, quality assurance and architecture, working together on every project, with no intermediaries and no subcontracting.'
       ],
       'We run on our own software: the system we use to track every proposal, every meeting and every client was built by us, under the same rules we apply to yours.'

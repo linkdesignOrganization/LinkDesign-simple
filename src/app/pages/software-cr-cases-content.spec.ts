@@ -28,7 +28,7 @@ const SPANISH_LEAK =
 
 // Nombres propios que el inglés conserva (§7.1): se quitan antes de buscar fugas.
 const PROPER_NAMES =
-  /Vértice Seguridad Industrial|Nolõ|San José|Estudio Dental Mendieta|Tornos del Sur|Punto Cero|SINPE Móvil|Mercado Pago|Costa Rica|Link Design|Gran Área Metropolitana/g;
+  /Vértice Seguridad Industrial|Kravõnia|San José|Estudio Dental Mendieta|Tornos del Sur|Punto Cero|SINPE Móvil|Mercado Pago|Costa Rica|Link Design|Gran Área Metropolitana/g;
 
 // Campos que no son texto traducible: vienen del ES y quedan fuera del escaneo de fugas.
 const INVARIANT_KEYS = new Set(['slug', 'system', 'poster', 'video', 'videoMobile', 'link']);

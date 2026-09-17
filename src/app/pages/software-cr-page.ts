@@ -1108,7 +1108,7 @@ import {
       text-wrap: pretty;
     }
 
-    /* Enlace dentro del texto de «Quiénes somos» (la marca Nolõ hacia nolo.ar). */
+    /* Enlace dentro del texto de «Quiénes somos» (la marca Kravõnia hacia kravonia.ar). */
     .sc-about__link {
       color: var(--ink);
       font-weight: 600;

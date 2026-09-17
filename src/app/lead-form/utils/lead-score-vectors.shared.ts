@@ -6,7 +6,7 @@
  * Este archivo existe IDÉNTICO (byte a byte) en:
  *   · crm/server/src/modules/web-leads/lead-score-vectors.shared.ts
  *   · LinkDesign-simple/src/app/lead-form/utils/lead-score-vectors.shared.ts
- *   · nolo-simple/src/app/lead-form/utils/lead-score-vectors.shared.ts
+ *   · kravonia-simple/src/app/lead-form/utils/lead-score-vectors.shared.ts
  *
  * La fórmula de scoring vive copiada a mano en los tres repos. Cada repo tiene
  * un spec que corre ESTOS vectores contra SU copia: si alguien cambia la

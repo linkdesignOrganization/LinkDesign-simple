@@ -22,5 +22,5 @@ peleaban contra el back. Se quitaron.
 
 **How to apply:** una página que "entra corrida" o un back que "no vuelve donde estaba" se
 arregla EN EL SERVICIO (o subiendo su ventana de reintentos), **nunca agregando `scrollTo` por
-página** — eso recrea el bug del back. Mismo servicio, idéntico, en nolo-simple y
+página** — eso recrea el bug del back. Mismo servicio, idéntico, en kravonia-simple y
 LinkDesign-simple: si se toca en uno, replicar en el otro.

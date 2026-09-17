@@ -1,6 +1,6 @@
 ---
 name: google-ads-estructura-campanas
-description: "Estructura de campañas de la cuenta Link Design (6364218319): dos mercados (CR y AR/Nolõ) con campañas espejo, horario L-V 8-17, ~225 negativas"
+description: "Estructura de campañas de la cuenta Link Design (6364218319): dos mercados (CR y AR/Kravõnia) con campañas espejo, horario L-V 8-17, ~225 negativas"
 metadata: 
   node_type: memory
   type: project
@@ -8,13 +8,13 @@ metadata:
   modified: 2026-07-30T17:48:03.482Z
 ---
 
-Estructura observada en julio 2026 (cuenta `6364218319`, ver [[google-ads-api-access]] y [[sitios-gemelos-linkdesign-nolo]]):
+Estructura observada en julio 2026 (cuenta `6364218319`, ver [[google-ads-api-access]] y [[sitios-gemelos-linkdesign-kravonia]]):
 
 - **4 campañas ENABLED, espejo por mercado (misma keyword, GEO DISTINTO — no compiten entre sí):**
   - Costa Rica (geo 2188, sitio linkdesign.cr): "Búsqueda" (`21910466866`, USD 10/día desde el 23 jul 2026, `desarrollo de sitios web` BROAD) y "Software" (`23552967347`, USD 15/día y keyword de vuelta en BROAD desde el 23 jul 2026 — la era PHRASE a 5.60 terminó ahí).
-  - Argentina (geo 2032, sitio Nolõ): "Búsqueda #2" (`23949699115`, USD 15/día, misma keyword en PHRASE) y "Software #2" (`23939960385`, USD 15/día).
+  - Argentina (geo 2032, sitio Kravõnia): "Búsqueda #2" (`23949699115`, USD 15/día, misma keyword en PHRASE) y "Software #2" (`23939960385`, USD 15/día).
 - OJO: comparar una campaña con su "#2" es comparar mercados distintos (CPCs y competencia diferentes), NO un A/B test.
-- **Campañas AR (Nolõ), estado 24 jul 2026:** la "Búsqueda #2" activa es `23949699115`; existe una homónima vieja REMOVED (`22111386447`, budget 20) que aparece como fantasma con USD 0 en el Performance Planner — ignorarla. Ambas AR estuvieron pausadas del 8 al 13 jul y el **19 jul cambiaron de estrategia: de Maximizar CONVERSIONES a Maximizar VALOR de conversión** (confirmado por el dueño; la API no capturó el detalle — `changed_fields` vacío y old/new esqueléticos). La estrategia vieja optimizaba por cantidad → explica el mix AR 92% scrolls. El historial AR pre-19 jul NO es comparable en puja (otro régimen); sirven solo métricas de mercado. Por eso el Planner las marca "no compatible". Mix AR de julio: **92% scrolls** (contacto solo 48% del valor). El **×2 de values se replicó en Nolõ el 24 jul 2026** (repo `C:\Users\Roberth Castillo\Desktop\Sowe\WEB` = `nolo-simple` en GitHub, commit `e860ca1`) — mismo esquema que CR en los 4 sitios/campañas desde esa fecha. Diagnóstico: ~4 días hábiles de datos post-cambio de estrategia = insuficiente; análisis AR sumado a la revisión del 13 ago.
+- **Campañas AR (Kravõnia), estado 24 jul 2026:** la "Búsqueda #2" activa es `23949699115`; existe una homónima vieja REMOVED (`22111386447`, budget 20) que aparece como fantasma con USD 0 en el Performance Planner — ignorarla. Ambas AR estuvieron pausadas del 8 al 13 jul y el **19 jul cambiaron de estrategia: de Maximizar CONVERSIONES a Maximizar VALOR de conversión** (confirmado por el dueño; la API no capturó el detalle — `changed_fields` vacío y old/new esqueléticos). La estrategia vieja optimizaba por cantidad → explica el mix AR 92% scrolls. El historial AR pre-19 jul NO es comparable en puja (otro régimen); sirven solo métricas de mercado. Por eso el Planner las marca "no compatible". Mix AR de julio: **92% scrolls** (contacto solo 48% del valor). El **×2 de values se replicó en Kravõnia el 24 jul 2026** (repo `C:\Users\Roberth Castillo\Desktop\Sowe\WEB` = `kravonia-simple` en GitHub, commit `e860ca1`) — mismo esquema que CR en los 4 sitios/campañas desde esa fecha. Diagnóstico: ~4 días hábiles de datos post-cambio de estrategia = insuficiente; análisis AR sumado a la revisión del 13 ago.
 - Acciones de conversión separadas por mercado: "Contacto"/"Scroll" (CR) y "Contacto Argentina"/"Scroll Argentina (2)" (AR, activas desde jun 2026).
 - Todas con Maximizar valor de conversión **sin tROAS**; presupuestos no compartidos.
 - **Ad schedule de "Búsqueda":** L–V 8:00–17:00 (no hay datos de fin de semana).

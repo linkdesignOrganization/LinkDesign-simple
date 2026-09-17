@@ -22,7 +22,7 @@ const SPANISH_LEAK =
 
 // Nombres propios que el inglés conserva (§7.1): se quitan antes de buscar fugas.
 const PROPER_NAMES =
-  /Vértice Seguridad Industrial|Nolõ|San José|Estudio Dental Mendieta|Tornos del Sur|Punto Cero|SINPE Móvil|Mercado Pago|Costa Rica|Link Design|Gran Área Metropolitana/g;
+  /Vértice Seguridad Industrial|Kravõnia|San José|Estudio Dental Mendieta|Tornos del Sur|Punto Cero|SINPE Móvil|Mercado Pago|Costa Rica|Link Design|Gran Área Metropolitana/g;
 
 // Claves que no son texto (enlaces, identificadores): fuera del escaneo de fugas.
 const NON_TEXT_KEYS = new Set(['href', 'system', 'icon']);
@@ -123,7 +123,7 @@ describe('SOFTWARE_CR (paridad ES/EN del hub)', () => {
 
     const linksEs = paragraphLinks(SOFTWARE_CR);
     const linksEn = paragraphLinks(SOFTWARE_CR_EN);
-    expect(linksEs.flat().map((l) => l.href)).toEqual(['https://nolo.ar']);
+    expect(linksEs.flat().map((l) => l.href)).toEqual(['https://kravonia.ar']);
     const hrefs = (links: SoftwareCrLink[][]) => links.map((p) => p.map((l) => l.href));
     const texts = (links: SoftwareCrLink[][]) => links.map((p) => p.map((l) => l.text));
     expect(hrefs(linksEn)).toEqual(hrefs(linksEs));

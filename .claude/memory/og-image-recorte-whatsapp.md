@@ -17,7 +17,7 @@ recorte solo porque era un círculo centrado y chico; un logotipo largo no perdo
 Estado desde el 2026-08-11 (commit `4ae1480`): la tarjeta muestra el **logotipo tipográfico
 «Link Design»** en vez del monograma «LD», con el mismo tratamiento que `.brand` en `app.scss`
 —Space Grotesk 500, `letter-spacing: -0.06em`, `#111111` sobre `#f6f6f6`— para que lea como hermana
-de la de Nolõ, que ya mostraba su logotipo. Nolõ ocupa ~48% del ancho, o sea al borde del recorte.
+de la de Kravõnia, que ya mostraba su logotipo. Kravõnia ocupa ~48% del ancho, o sea al borde del recorte.
 
 Cómo se regeneró (por si hay que rehacerla): HTML de 1200×630 con la fuente cargada de Google Fonts
 y un ajuste proporcional del `font-size` al ancho objetivo, capturado con
@@ -36,4 +36,4 @@ Tres cosas que conviene no olvidar:
 - **`icon-512.png` sigue siendo el monograma LD** a propósito: ahí es lo correcto como ícono de app y
   como `logo` del JSON-LD. El cambio aplica solo a la tarjeta de compartir.
 
-Relacionado: [[sitios-gemelos-linkdesign-nolo]]
+Relacionado: [[sitios-gemelos-linkdesign-kravonia]]

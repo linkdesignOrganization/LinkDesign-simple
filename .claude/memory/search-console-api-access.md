@@ -23,8 +23,8 @@ haría igual: agregar el email de la SA allá") — se hizo exactamente así.
   `webmasters.readonly`, no el nivel de permiso — por eso Completo no abre riesgo de escritura, y
   Propietario (único que gestiona usuarios) sí sería de más.
 - **Tres propiedades, todas con `siteFullUser`** (constantes en `gsc.py`): `sc-domain:linkdesign.cr`,
-  `sc-domain:nolo.ar` (el dominio de Nolõ es **`.ar`, no `.cr`** — ver
-  [[sitios-gemelos-linkdesign-nolo]]) y `https://zacatetierrafertil.com/` (ver
+  `sc-domain:nolo.ar` (el dominio de Kravõnia es **`.ar`, no `.cr`** — ver
+  [[sitios-gemelos-linkdesign-kravonia]]) y `https://zacatetierrafertil.com/` (ver
   [[zacate-tierra-fertil-ads]]).
 - **La de Zacate es ajena y por eso trae histórico**: la administra `mario@zacatetierrafertil.com`,
   que agregó la service account el 7 ago 2026. **Se le pidió acceso en vez de verificar el dominio

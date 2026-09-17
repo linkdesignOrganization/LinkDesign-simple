@@ -8,7 +8,7 @@ metadata:
   modified: 2026-08-17T17:59:28.954Z
 ---
 
-Tras activar la hidratación (2026-08-17, commit `c1232de` acá y `e576921` en Nolõ), el CLS quedó
+Tras activar la hidratación (2026-08-17, commit `c1232de` acá y `e576921` en Kravõnia), el CLS quedó
 resuelto pero **el LCP en móvil no se movió: ~5,8–6,6 s en 4G lenta**, muy por encima del umbral
 bueno de 2,5 s. En escritorio sí quedó bien (1,2–1,8 s).
 

@@ -128,7 +128,7 @@ tres componentes y en las dos páginas nuevas. **Para enviar sitemaps por API ha
 **2026-09-08 · el correo de aviso dice la página del lead.** Bitácora en
 `~/dev/WebSite/PLAN-AVISO-CRM-ORIGEN.md`. Se resolvió entero en el CRM (`web-lead.email.ts`), sin tocar
 los sitios ni el esquema del payload: `source.pageUrl` ya viajaba desde la versión 1.0.0 y es
-obligatorio, así que vale también para el histórico y para Nolõ. La fila «Vino por» muestra el nombre
+obligatorio, así que vale también para el histórico y para Kravõnia. La fila «Vino por» muestra el nombre
 de la página cuando la página lo aporta y **siempre** la ruta debajo. **Gotcha del deploy del CRM,
 arreglado el mismo día:** el paso «Prepare deployment package» instala sin lock (el del monorepo vive
 en la raíz) y npm 10, el del runner, recorre las `devDependencies` para resolver peers aunque no las
@@ -140,5 +140,5 @@ se arma ahora con un `package.json` sin `devDependencies`.
 de precio) reportan desde hoy las mismas conversiones que el hero, el footer y `/contacto`
 (`AdsService.scheduleMeeting` / `.whatsapp`). Regla para páginas nuevas: todo enlace a cal.com o
 wa.me lleva su `(click)` al `AdsService`; los specs `software-cr-page.spec.ts` y
-`software-cr-case-page.spec.ts` lo cubren, junto con el calendario por idioma. Nolõ no tiene estas
+`software-cr-case-page.spec.ts` lo cubren, junto con el calendario por idioma. Kravõnia no tiene estas
 páginas; si las recibe, misma regla.

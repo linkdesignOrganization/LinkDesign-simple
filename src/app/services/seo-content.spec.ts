@@ -22,7 +22,7 @@ import { SEO_CONTENT, seoForUrl } from './seo-content';
 const SPANISH_LEAK =
   /¿|ñ|[áéíóúÁÉÍÓÚ]|\b(de la|de los|para que|porque|también|desde|cada|sistemas?|empresas?|nosotros|contigo|puedes|tu|tus)\b/g;
 const PROPER_NAMES =
-  /Vértice Seguridad Industrial|Nolõ|San José|Estudio Dental Mendieta|Tornos del Sur|Punto Cero|SINPE Móvil|Mercado Pago|Costa Rica|Link Design|Gran Área Metropolitana/g;
+  /Vértice Seguridad Industrial|Kravõnia|San José|Estudio Dental Mendieta|Tornos del Sur|Punto Cero|SINPE Móvil|Mercado Pago|Costa Rica|Link Design|Gran Área Metropolitana/g;
 const leaks = (text: string) =>
   text.replace(/«[^»]*»/g, '').replace(PROPER_NAMES, '').match(SPANISH_LEAK) ?? [];
 

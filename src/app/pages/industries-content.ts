@@ -1,12 +1,12 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Contenido de las páginas de industria (Link Design, CR).
-// El ES está adaptado del contenido de Nolo: voseo→"tú" + regionalismos CR (planilla→hoja de
+// El ES está adaptado del contenido de Kravõnia: voseo→"tú" + regionalismos CR (planilla→hoja de
 // cálculo, frigorífico→procesadora de carne, obra social/prepaga→seguro/convenio, ruteros→rutas
 // de venta, cuenta corriente→cuentas por cobrar/estado de cuenta, rubro→sector). depósito,
 // mercadería y turno se mantienen: LinkDesign ya los usa en systems-content (su voz CR).
 // (español neutro con "tú", tildes). No editar el copy ES "a ojo".
 //
-// Bilingüe es/en. El EN reusa el de Nolo (inglés neutro "you", sirve igual para CR).
+// Bilingüe es/en. El EN reusa el de Kravõnia (inglés neutro "you", sirve igual para CR).
 // → INDUSTRIES_CONTENT trae `es` y `en`; getIndustryDetail resuelve por idioma (cae a `es` por
 // seguridad). Las rutas /en/industrias SÍ se registran (ver app.routes.ts) y el toggle del header
 // cambia el idioma del contenido.

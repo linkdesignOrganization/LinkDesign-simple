@@ -50,7 +50,7 @@ antes de escribir, y **releer del servidor** después (no confiar en el eco de l
 API — sólo por el historial de cambios de la interfaz.
 
 Esta memoria describe **la cuenta**, que es una sola para los dos mercados — por eso menciona las
-campañas argentinas. **El caso argentino del 18 ago 2026 se documenta en la bitácora de Nolõ**
+campañas argentinas. **El caso argentino del 18 ago 2026 se documenta en la bitácora de Kravõnia**
 (`docs/bitacora-ads.md` de ese repo), no acá: una bitácora por sitio.
 
 Ver [[google-ads-conversion-setup]] y [[google-ads-estructura-campanas]].

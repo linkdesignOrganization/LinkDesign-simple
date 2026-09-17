@@ -80,7 +80,7 @@ Umbrales del 13 ago ajustados a estos montos:
 
 Al evaluar si convenía medir el desenlace comercial (lead → cliente ganado) para alimentar la puja,
 apareció un límite que condiciona todo el plan de medición. Aplica igual a Nolõ, que comparte el
-modelo de conversiones (ver `docs/bitacora-ads.md` en `nolo-simple`).
+modelo de conversiones (ver `docs/bitacora-ads.md` en `kravonia-simple`).
 
 ### El hallazgo: hoy no se puede medir el mix de canales
 
@@ -157,7 +157,7 @@ deja rastro ni siquiera como conversión.
 
 ### Pendientes relacionados
 
-- [x] Réplica del ×2 en el sitio Nolõ: **desplegada el 24 jul 2026** (commit `e860ca1` en `nolo-simple`). La escala de values es de la cuenta, así que tenía que moverse en los dos sitios a la vez o el histórico quedaba en dos unidades distintas. Lo que se hizo con las campañas de ese mercado, y cómo se leyó su ventana, está en su bitácora.
+- [x] Réplica del ×2 en el sitio Nolõ: **desplegada el 24 jul 2026** (commit `e860ca1` en `kravonia-simple`). La escala de values es de la cuenta, así que tenía que moverse en los dos sitios a la vez o el histórico quedaba en dos unidades distintas. Lo que se hizo con las campañas de ese mercado, y cómo se leyó su ventana, está en su bitácora.
 - Negativas sugeridas para "Búsqueda": `webstudios`, `bravebits`, `guatemala`; decidir política del tráfico en inglés global ("landing page", "best website design", …). **Medido el 13 ago**: los tres términos juntos costaron **8,85 USD en todo 2026** — higiene, no economía. Lo que sí pesa son las marcas de terceros en "Software" (32,78 USD en 20 días); ver la entrada del 13 ago. **Insumo nuevo (7 ago)**: Search Console confirma que el inglés genera impresiones sin retorno también en orgánico — "costa rica website design" 224 impresiones / 0 clics, "website design costa rica" 220/0, "web designer costa rica" 189/0, y EE.UU. aporta 516 impresiones y **0 clics** en 16 meses. No prueba qué hace ese tráfico al pagarlo, pero quita la hipótesis de que sea demanda desatendida que el orgánico ya estaría capturando.
 - [x] ~~Revisar anomalía de jun 2026: Scroll reportó valor 93 con 64 conversiones (hubo scrolls con value > 1 durante el despliegue de la modulación).~~ **Cerrada el 13 ago**: un único evento el 11 jun (exceso +29, que explica toda la diferencia). No se repite desde julio.
 
@@ -870,7 +870,7 @@ Quedan anotados para no volver a investigarlos:
 
 El origen es argentino: revisando por qué el clic de "Software #2" (Nolõ) está caro aparecieron dos
 cosas que **no son de Nolõ sino de esta cuenta entera**, y que afectan igual a Costa Rica. El detalle
-del análisis argentino está en `docs/bitacora-ads.md` del repo `nolo-simple`; acá va sólo lo de acá.
+del análisis argentino está en `docs/bitacora-ads.md` del repo `kravonia-simple`; acá va sólo lo de acá.
 
 ### Las extensiones de las cuatro campañas eran de sitios web
 
@@ -987,7 +987,7 @@ activas de Costa Rica firman correcto con `Link Design`.
 Las decisiones geográficas y de segmentación **no se pueden tomar con el ratio valor/costo**: los
 scrolls son la enorme mayoría de las conversiones y valen 1 punto cada uno, así que dominan el ratio
 y aplastan la señal de los contactos. En Nolõ esto invirtió la lectura de un bloque entero (detalle
-en la bitácora de `nolo-simple`). **Para ese tipo de decisión hay que contar contactos por clic**, y
+en la bitácora de `kravonia-simple`). **Para ese tipo de decisión hay que contar contactos por clic**, y
 mirar aparte cuántos de esos contactos son leads serios.
 
 ### Qué cubre de verdad cada keyword — y por qué NO se tocan
@@ -1191,7 +1191,7 @@ su ventana es más chica— están en la bitácora de Nolõ.
 
 ## 14 ago 2026 (noche) — El copy nuevo y los videos, EN PRODUCCIÓN
 
-Se publicó en `main` de los dos sitios (merge `9639876` acá, `af7eb8a` en `nolo-simple`) y el
+Se publicó en `main` de los dos sitios (merge `9639876` acá, `af7eb8a` en `kravonia-simple`) y el
 workflow de Azure terminó en verde. Verificado en producción sobre las cuatro páginas.
 
 ### Qué se cambió, y con qué criterio
