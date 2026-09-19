@@ -2237,3 +2237,54 @@ ficha, con una prueba que exige que sea el nombre del video con sufijo `-mobile`
 apunte a un archivo inexistente al agregar una ficha (mutación comprobada). Con esto, **todos** los
 videos de los dos sitios eligen archivo por tamaño de pantalla: carrusel de `/web`, pestañas y
 viewcases de `/software`, fichas y páginas de sistema. La tabla del portafolio ya lo hacía.
+
+## 18 sep 2026 — El formulario llegó a cero, y ya no es una sospecha: es el canal que eligen
+
+Robert preguntó si el formulario no se llena «por estar en el footer». La medición de hoy confirma
+la tendencia que el 13 de agosto quedó como hipótesis, y la afina.
+
+**Lo que NO pasó.** No es que Google mande menos gente ni que el negocio se enfriara:
+
+| | may | jun | jul | ago | sep (18 d) |
+|---|---:|---:|---:|---:|---:|
+| Clics de Ads | 241 | 411 | 427 | 582 | 379 |
+| Leads en el CRM (todos los canales) | 3 | 7 | 11 | **25** | 9 |
+| **Formularios web** | 3 | 5 | 4 | **1** | **0** |
+
+Agosto fue el mejor mes de leads de la historia del CRM y septiembre va a ritmo de ~15. Las sesiones
+del sitio también suben (jul 368 · ago 643 · sep 483 en 18 días). Lo único en cero es el formulario.
+
+**Y no está roto:** la prueba de Robert del 17 sep entró correcta, con `detectedCountry AR` por
+dominio y ruteo a `hola@kravonia.ar`.
+
+**Lo que sí pasa: la gente contacta, pero por otro canal.** Conversiones de septiembre (18 días):
+
+| Acción | CR | AR | total |
+|---|---:|---:|---:|
+| WhatsApp | 6 | 19 | **25** |
+| Reunión | 3 | 3 | 6 |
+| Correo | 2 | 3 | 5 |
+| **Formulario** | **0** | **0** | **0** |
+
+La acción `Contacto Formulario` (7720307646) y su par argentino (7720307658) están **ENABLED y con
+los labels correctos en los dos sitios**: el cero es real, no un fallo de medición. El CRM, fuente
+independiente, dice lo mismo. Los leads que sí entran (sep: WhatsApp 6, Otro 3) lo confirman: desde
+el 7 jul no entra **ni un** formulario en Costa Rica.
+
+**Respuesta a la pregunta del footer: es parte de la causa, pero no la principal.** La acción
+`Scroll` (50 % de la página) se disparó 193 veces sobre 379 clics en septiembre: **la mitad de los
+visitantes sí recorre la página**. El problema no es que el formulario sea invisible, es que **para
+cuando se llega abajo, el visitante ya tuvo tres oportunidades más fáciles de contactar**: el botón
+de WhatsApp fijo en el topbar (1 jul 2026) y, dentro de la propia sección de contacto, WhatsApp y
+«copiar correo» *antes* del formulario. Un clic contra cinco campos.
+
+**Por qué importa en plata, y no solo en volumen.** El total de leads no cayó: subió. Lo que cambió
+es la mezcla, hacia el canal que peor cierra. Con los datos del pipeline de la entrada del 13 ago:
+de los leads de WhatsApp ya cerrados se perdieron **14 de 15** (6,7 % de cierre), mientras que los
+dos formularios de 2026 que llegaron a cliente —R. Loría y Pacific Star Food— **se ganaron los dos**.
+Estamos comprando más clics que nunca y convirtiéndolos al canal de peor calidad.
+
+**Sin decidir todavía** (Robert preguntó, no pidió cambios). Las palancas que la evidencia sugiere,
+de menor a mayor intervención: subir el formulario por encima de WhatsApp dentro de la sección de
+contacto; reducir los cinco campos; dar al formulario un lugar propio antes del pie en `/software` y
+`/web`. Ninguna toca el botón del topbar, que además sirve para el tráfico que sí prefiere WhatsApp.
