@@ -662,12 +662,14 @@ export class LeadFormComponent {
   protected readonly contactPrefs = signal<ReadonlySet<string>>(new Set());
 
   protected readonly submitted = signal(false);
-  protected readonly sent = signal(false);
   protected readonly submitting = signal(false);
   protected readonly submitError = signal<string | null>(null);
 
   // CRM: servicio + contexto anti-spam (tiempo en el form + nº de interacciones).
   private readonly leadForm = inject(LeadFormService);
+
+  /** Enviado: lo comparten todos los formularios de la página (ver LeadFormService.hasSent). */
+  protected readonly sent = this.leadForm.hasSent;
   private readonly timeline = inject(TimelineService);
   private readonly formLoadedAt = Date.now();
   private interactionCount = 0;
@@ -755,7 +757,7 @@ export class LeadFormComponent {
       this.submitting.set(false);
       // 'spam_detected' se trata como éxito visual (no se le informa al bot).
       if (result.status === 'success' || result.status === 'spam_detected') {
-        this.sent.set(true);
+        this.leadForm.markSent();
       } else {
         this.submitError.set(result.message);
       }

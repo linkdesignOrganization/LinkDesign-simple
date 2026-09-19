@@ -1,4 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
@@ -97,6 +97,20 @@ export interface LeadSubmitContext {
  */
 @Injectable({ providedIn: 'root' })
 export class LeadFormService {
+  /**
+   * Se prende cuando cualquier formulario de la página logró enviar. Es del servicio, no del
+   * componente, porque una página puede montar dos (el del recuadro de /contacto y el del pie):
+   * si solo se marcara el que se usó, el otro quedaría vacío invitando a reenviar, y ahí el
+   * limitador de un envío por minuto respondería «Esperá un momento», como si no hubiera salido.
+   * No se persiste: al recargar, los formularios vuelven a estar disponibles.
+   */
+  private readonly sentInThisVisit = signal(false);
+  readonly hasSent = this.sentInThisVisit.asReadonly();
+
+  markSent(): void {
+    this.sentInThisVisit.set(true);
+  }
+
   private isBrowser: boolean;
 
   constructor(

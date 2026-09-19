@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
@@ -37,7 +38,19 @@ describe('ContactFooterComponent', () => {
       providers: [
         provideRouter([]),
         // El envío real al CRM se prueba aparte; aquí solo confirmamos la integración del form.
-        { provide: LeadFormService, useValue: { submit: () => of({ status: 'success', lead_id: 'test' }) } }
+        {
+          provide: LeadFormService,
+          // `hasSent` es la señal compartida entre los formularios de una misma página: el doble
+          // tiene que traerla, si no el template revienta al pintar el bloque de «enviado».
+          useValue: (() => {
+            const sent = signal(false);
+            return {
+              submit: () => of({ status: 'success', lead_id: 'test' }),
+              hasSent: sent,
+              markSent: () => sent.set(true)
+            };
+          })()
+        }
       ]
     }).compileComponents();
   });
