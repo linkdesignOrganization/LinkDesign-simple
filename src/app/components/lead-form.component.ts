@@ -227,13 +227,15 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
        que el recuadro crezca. Solo aire: ningún campo se quita ni se achica de fuente. */
     /* Nombre, Correo y Teléfono, cada uno en su fila; el recuadro de /contacto no muestra Empresa
        (Robert, 19 sep). Las opciones siguen en dos columnas. */
+    /* Ritmo vertical uniforme (1.4rem) entre bloques: con las opciones en una fila sobraban
+       57 px dentro del recuadro y se reparten como aire (Robert, 19 sep). */
     .cf-form--compact .cf-grid {
       grid-template-columns: 1fr;
-      gap: 0.8rem 0.9rem;
+      gap: 1.4rem 0.9rem;
     }
 
     .cf-form--compact .cf-field {
-      gap: 0.3rem;
+      gap: 0.4rem;
     }
 
     .cf-form--compact .cf-field input,
@@ -251,7 +253,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       flex-wrap: wrap;
       align-items: flex-start;
       gap: 0.75rem 0.9rem;
-      margin-top: 0.85rem;
+      margin-top: 1.4rem;
     }
 
     .cf-form--compact .cf-chips--needs {
@@ -283,11 +285,11 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     }
 
     .cf-form--compact .cf-chips-row + .cf-field {
-      margin-top: 0.85rem;
+      margin-top: 1.4rem;
     }
 
     .cf-form--compact .cf-submit {
-      margin-top: 0.9rem;
+      margin-top: 1.4rem;
       padding: 0.5rem 1rem;
     }
 
