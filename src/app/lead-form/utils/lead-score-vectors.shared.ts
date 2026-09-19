@@ -123,9 +123,9 @@ export const SCORE_VECTORS: ScoreVector[] = [
     expected: { score: 0, category: 'nurture' },
   },
   {
-    name: 'corporativo con empresa (+15 sustituye al -5, +10 empresa)',
+    name: 'corporativo con empresa (+15 sustituye al -5; la empresa ya no suma, 2026-09-19)',
     over: { contact: { email_domain_type: 'corporate', company: 'Acme SA' } },
-    expected: { score: 30, category: 'cold' },
+    expected: { score: 20, category: 'cold' },
   },
   {
     name: 'pide software a medida (+20)',
@@ -246,20 +246,22 @@ export const SCORE_VECTORS: ScoreVector[] = [
     expected: { score: -55, category: 'suspicious' },
   },
   {
-    name: 'borde exacto warm = 50 (corp+empresa+sitio_web+llamada)',
+    name: 'borde exacto warm = 50 (corp+sitio_web+llamada+landing software; la empresa no cuenta)',
     over: {
       contact: { email_domain_type: 'corporate', company: 'Acme SA' },
       intent: { need: ['sitio_web'], preferred_contact: ['llamada'] },
+      source: { landing: 'software' },
     },
     expected: { score: 50, category: 'warm' },
   },
   {
-    name: 'borde exacto hot = 80 (corp+empresa+software+llamada+landing+cpc)',
+    name: 'borde exacto hot = 80 (corp+software+llamada+landing+cpc+sesión>2min; la empresa no cuenta)',
     over: {
       contact: { email_domain_type: 'corporate', company: 'Acme SA' },
       intent: { need: ['software_a_medida'], preferred_contact: ['llamada'] },
       source: { landing: 'software' },
       attribution: { utm_medium: 'cpc' },
+      session: { time_on_site_ms: 150_000 },
     },
     expected: { score: 80, category: 'hot' },
   },
@@ -282,6 +284,6 @@ export const SCORE_VECTORS: ScoreVector[] = [
         country_source: 'both',
       },
     },
-    expected: { score: 163, category: 'hot' },
+    expected: { score: 153, category: 'hot' },
   },
 ];

@@ -114,9 +114,11 @@ export function computeLeadScore(payload: LeadPayload): LeadScoreResult {
   } else {
     add('email_personal', -5);
   }
-  if (payload.contact.company) {
-    add('tiene_empresa', 10);
-  }
+  // `tiene_empresa` (+10) salió el 2026-09-19 por decisión de Robert: el campo
+  // es opcional, muchas veces no coincide con el sitio de la empresa y no dice
+  // nada que el dominio del correo no diga mejor. El dato se sigue recibiendo y
+  // guardando; lo que sale son los puntos. Mueve el eje a propósito: un lead
+  // que escribió empresa puntúa hasta diez menos que antes.
 
   // ----- Intent -----
   const needs = payload.intent.need ?? [];
