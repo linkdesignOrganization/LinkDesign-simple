@@ -62,7 +62,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
         </div>
       } @else {
         <div class="cf-grid">
-          <div class="cf-field">
+          <div class="cf-field cf-field--name">
             <label [attr.for]="ids().name">{{ t().name }} <span class="cf-req" aria-hidden="true">*</span></label>
             <input
               [attr.id]="ids().name"
@@ -227,24 +227,28 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
        que el recuadro crezca. Solo aire: ningún campo se quita ni se achica de fuente. */
     /* Nombre, Correo y Teléfono, cada uno en su fila; el recuadro de /contacto no muestra Empresa
        (Robert, 19 sep). Las opciones siguen en dos columnas. */
-    /* Ritmo vertical uniforme (1.4rem) entre bloques: con las opciones en una fila sobraban
-       57 px dentro del recuadro y se reparten como aire (Robert, 19 sep). */
+    /* Dos columnas (Correo | Teléfono) con Nombre a fila entera, y el aire que sobra repartido
+       parejo entre bloques (Robert, 19 sep: «la doble columna con más gap entre los elementos»). */
     .cf-form--compact .cf-grid {
-      grid-template-columns: 1fr;
-      gap: 1.4rem 0.9rem;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--lf-compact-gap, 2.3rem) 1.2rem;
+    }
+
+    .cf-form--compact .cf-field--name {
+      grid-column: 1 / -1;
     }
 
     .cf-form--compact .cf-field {
       gap: 0.4rem;
     }
 
-    .cf-form--compact .cf-field input,
-    .cf-form--compact .cf-field textarea {
+    .cf-form--compact .cf-field input {
       padding: 0.25rem 0;
     }
 
     .cf-form--compact .cf-field textarea {
-      min-height: 3.1rem;
+      min-height: 5.1rem;
+      padding: 0.5rem 0.65rem;
     }
 
     /* Compacto: los dos grupos en una sola fila (necesidad con texto, canal solo con icono). */
@@ -253,7 +257,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       flex-wrap: wrap;
       align-items: flex-start;
       gap: 0.75rem 0.9rem;
-      margin-top: 1.4rem;
+      margin-top: var(--lf-compact-gap, 2.3rem);
     }
 
     .cf-form--compact .cf-chips--needs {
@@ -285,11 +289,11 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     }
 
     .cf-form--compact .cf-chips-row + .cf-field {
-      margin-top: 1.4rem;
+      margin-top: var(--lf-compact-gap, 2.3rem);
     }
 
     .cf-form--compact .cf-submit {
-      margin-top: 1.4rem;
+      margin-top: var(--lf-compact-gap, 2.3rem);
       padding: 0.5rem 1rem;
     }
 
@@ -365,8 +369,13 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       transition: border-color 160ms ease;
     }
 
+    /* El cuadro de mensaje va cerrado (Robert, 19 sep 2026): con solo la línea de abajo no se
+       entendía que era un área para escribir. Los campos de una línea siguen subrayados. */
     .cf-field textarea {
-      min-height: 4rem;
+      min-height: 5rem;
+      padding: 0.6rem 0.75rem;
+      border: 1px solid var(--lf-line);
+      border-radius: 0.5rem;
       resize: vertical;
     }
 
@@ -378,12 +387,12 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     .cf-field input:focus,
     .cf-field textarea:focus {
       outline: none;
-      border-bottom-color: var(--accent);
+      border-color: var(--accent);
     }
 
     .cf-field input[aria-invalid='true'],
     .cf-field textarea[aria-invalid='true'] {
-      border-bottom-color: var(--lf-error-line);
+      border-color: var(--lf-error-line);
     }
 
     .cf-error {
@@ -623,8 +632,15 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
 
     @media (max-width: 560px) {
       .cf-grid,
-      .cf-chips-row {
+      .cf-chips-row,
+      .cf-form--compact .cf-grid {
         grid-template-columns: 1fr;
+      }
+
+      /* En celular el recuadro no tiene sobrante que repartir: el compacto vuelve al ritmo del
+         formulario regular en móvil (1.6rem) para no estirar la página. */
+      .cf-form--compact {
+        --lf-compact-gap: 1.6rem;
       }
 
       /* Apilado a 1 columna: más aire vertical entre campos (los gap pensados para 2 columnas colapsaban). */
