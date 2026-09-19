@@ -59,7 +59,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
         <div class="ct-cards">
           <!-- Interruptor: misma mecánica que el de idioma (pulgar que viaja), pero ancho
                completo porque las palabras son largas. Queda fijo arriba del recuadro. -->
-          <article class="ct-card ct-card--switch">
+          <div class="ct-switchbar">
             <button
               type="button"
               class="ct-switch"
@@ -73,7 +73,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
               <span class="ct-switch__opt" [class.is-active]="panel() === 'info'">{{ t().tabInfo }}</span>
               <span class="ct-switch__opt" [class.is-active]="panel() === 'form'">{{ t().tabForm }}</span>
             </button>
-          </article>
+          </div>
 
           <!-- Los dos paneles viven en una sola tira vertical: al cambiar, la información baja y
                el formulario entra desde arriba. La ventana recorta y acompaña con su altura. -->
@@ -163,6 +163,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
                     formLocation="contact_page"
                     idPrefix="ctf"
                     variant="light"
+                    density="compact"
                     [pageContext]="formPageContext"
                   />
                 </article>
@@ -229,17 +230,13 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 
     /* Cards unidas en vertical: radio solo en los extremos del bloque, borde compartido
        (mismo patrón que dev-types / portfolio). */
+    /* UN solo recuadro: el borde, el radio y el fondo viven acá. Adentro, el interruptor arriba y
+       la tira con los dos paneles; las secciones se separan con un divisor, no con bordes propios. */
     .ct-cards {
       display: flex;
       flex-direction: column;
       align-self: start;
-    }
-
-    .ct-card {
-      display: flex;
-      flex-direction: column;
-      gap: 1.1rem;
-      padding: clamp(1.5rem, 2.4vw, 2.1rem);
+      overflow: hidden;
       border: 1px solid var(--line-strong);
       border-radius: 0.9rem;
       /* Opaco a propósito: tapa la grilla técnica del fondo. Cambia de color con el tema
@@ -248,32 +245,37 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
       transition: background-color 450ms ease, border-color 450ms ease;
     }
 
+    .ct-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      padding: clamp(1.5rem, 2.4vw, 2.1rem);
+    }
+
     .ct-card + .ct-card {
-      border-top: 0;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+      border-top: 1px solid var(--line-strong);
     }
 
-    .ct-card:not(:last-child) {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    /* Tema oscuro (cuando el footer activa la dark-zone): card elevado oscuro + borde claro,
+    /* Tema oscuro (cuando el footer activa la dark-zone): recuadro elevado oscuro + borde claro,
        para que el cambio a negro sea cuidado y no quede un panel claro sobre fondo oscuro. */
-    :host-context(.app-dark) .ct-card {
+    :host-context(.app-dark) .ct-cards {
       background: #161616;
       border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    :host-context(.app-dark) .ct-card + .ct-card {
+      border-top-color: rgba(255, 255, 255, 0.16);
     }
 
     /* --- Interruptor Información / Formulario --------------------------------------------
        Copia la mecánica del de idioma (app.scss .lang-toggle): el pulgar es absoluto, ocupa la
        mitad y viaja con translateX. Acá va a ancho completo porque las palabras son largas. */
-    .ct-card--switch {
-      padding-block: clamp(1rem, 1.6vw, 1.3rem);
+    .ct-switchbar {
+      padding: 0.7rem 0.7rem 0;
     }
 
     .ct-switch {
+      width: 100%;
       position: relative;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -303,7 +305,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     .ct-switch__opt {
       position: relative;
       z-index: 1;
-      padding-block: 0.42rem;
+      padding-block: 0.36rem;
       color: var(--muted);
       font-family: var(--font-mono);
       font-size: 0.72rem;
@@ -319,6 +321,10 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     }
 
     /* --- La tira: los dos paneles, uno debajo del otro --------------------------------- */
+    .ct-panel > .ct-card:first-child {
+      padding-top: clamp(1.1rem, 1.8vw, 1.4rem);
+    }
+
     .ct-window {
       overflow: hidden;
       transition: height 380ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -339,10 +345,9 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
       flex: none;
     }
 
+    /* El panel del formulario arranca pegado al interruptor, como el de información. */
     .ct-card--form {
-      /* El formulario en el recuadro va en una columna: 416 px no dan para dos. */
-      border-bottom-left-radius: 0.9rem;
-      border-bottom-right-radius: 0.9rem;
+      padding-top: clamp(1.1rem, 1.8vw, 1.4rem);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -360,11 +365,6 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-    }
-
-    .ct-card--form ::ng-deep .cf-grid,
-    .ct-card--form ::ng-deep .cf-chips-row {
-      grid-template-columns: 1fr;
     }
 
     .ct-list,
@@ -505,12 +505,15 @@ export class ContactPageComponent {
   private readonly formHeight = signal(0);
 
   /**
-   * Alto del recuadro: el del panel activo. Se anima, así que al cambiar de panel el recuadro
-   * crece o encoge acompañando al deslizamiento en vez de saltar. Vale 0 hasta la primera
-   * medición (prerender y primer frame), y ahí el CSS lo deja en `auto`.
+   * Alto de la ventana: FIJO, el del panel de información (decisión de Robert, 18 sep: «el cuadro
+   * no se mueve, se mueve el contenido que tiene adentro»). El formulario va compacto para entrar
+   * en ese alto. Vale 0 hasta la primera medición (prerender y primer frame), y ahí el CSS lo
+   * deja en `auto`.
    */
   protected readonly windowHeight = computed(() => {
-    const h = this.panel() === 'form' ? this.formHeight() : this.infoHeight();
+    // El mayor de los dos: en escritorio el formulario compacto entra en el alto de la
+    // información; en celular va a una columna y es más alto, y no puede cortarse el botón.
+    const h = Math.max(this.infoHeight(), this.formHeight());
     return h > 0 ? h : null;
   });
 

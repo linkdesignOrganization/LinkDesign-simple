@@ -51,7 +51,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, LucideMail, LucidePhone, LucideCheck, WhatsappIconComponent],
   template: `
-    <form class="cf-form" [class.cf-form--light]="variant() === 'light'" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <form class="cf-form" [class.cf-form--light]="variant() === 'light'" [class.cf-form--compact]="density() === 'compact'" [formGroup]="form" (ngSubmit)="submit()" novalidate>
       @if (sent()) {
         <div class="cf-sent" role="status">
           <span class="cf-sent__icon" aria-hidden="true">
@@ -210,6 +210,47 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     /* Form minimal, sin panel ni cajas. Cada campo es una sola línea inferior
        (como el website): label en mayúsculas y el input en mono sobre el negro.
        Flex column para poder alinear el botón a la derecha. */
+    /* Variante compacta: el mismo formulario apretado para caber en el recuadro de /contacto sin
+       que el recuadro crezca. Solo aire: ningún campo se quita ni se achica de fuente. */
+    .cf-form--compact .cf-grid {
+      gap: 0.75rem 0.9rem;
+    }
+
+    .cf-form--compact .cf-field {
+      gap: 0.2rem;
+    }
+
+    .cf-form--compact .cf-field input,
+    .cf-form--compact .cf-field textarea {
+      padding: 0.25rem 0;
+    }
+
+    .cf-form--compact .cf-field textarea {
+      min-height: 2.5rem;
+    }
+
+    .cf-form--compact .cf-chips-row {
+      gap: 0.75rem 0.9rem;
+      margin-top: 0.8rem;
+    }
+
+    .cf-form--compact .cf-chips__row {
+      gap: 0.35rem;
+    }
+
+    .cf-form--compact .cf-chip {
+      padding: 0.24rem 0.52rem;
+    }
+
+    .cf-form--compact .cf-chips-row + .cf-field {
+      margin-top: 0.8rem;
+    }
+
+    .cf-form--compact .cf-submit {
+      margin-top: 0.85rem;
+      padding: 0.5rem 1rem;
+    }
+
     /* Variante clara: mismo formulario sobre un fondo claro (el recuadro de /contacto). */
     .cf-form--light {
       --lf-label: #3c3c3c;
@@ -586,6 +627,9 @@ export class LeadFormComponent {
 
   /** `light` = fondo claro (recuadro de /contacto). Por defecto, la paleta del pie oscuro. */
   readonly variant = input<'dark' | 'light'>('dark');
+
+  /** `compact` = menos aire entre campos y botón más bajo, para entrar en un recuadro de alto fijo. */
+  readonly density = input<'regular' | 'compact'>('regular');
 
   /**
    * Contexto opcional del sistema cuando el form se renderiza en una página
