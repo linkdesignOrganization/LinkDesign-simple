@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   LucideArrowUpRight,
@@ -9,6 +19,7 @@ import {
 } from '@lucide/angular';
 
 import { ContactFooterComponent, ContactInfo } from '../components/contact-footer.component';
+import { LeadFormComponent } from '../components/lead-form.component';
 import { WhatsappIconComponent } from '../components/whatsapp-icon.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { TrackSectionDirective } from '../directives/track-section.directive';
@@ -22,6 +33,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    LeadFormComponent,
     RouterLink,
     LocalizeUrlPipe,
     ContactFooterComponent,
@@ -45,6 +57,29 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
         </div>
 
         <div class="ct-cards">
+          <!-- Interruptor: misma mecánica que el de idioma (pulgar que viaja), pero ancho
+               completo porque las palabras son largas. Queda fijo arriba del recuadro. -->
+          <article class="ct-card ct-card--switch">
+            <button
+              type="button"
+              class="ct-switch"
+              [class.is-form]="panel() === 'form'"
+              role="switch"
+              [attr.aria-checked]="panel() === 'form'"
+              [attr.aria-label]="t().switchAria"
+              (click)="togglePanel()"
+            >
+              <span class="ct-switch__thumb" aria-hidden="true"></span>
+              <span class="ct-switch__opt" [class.is-active]="panel() === 'info'">{{ t().tabInfo }}</span>
+              <span class="ct-switch__opt" [class.is-active]="panel() === 'form'">{{ t().tabForm }}</span>
+            </button>
+          </article>
+
+          <!-- Los dos paneles viven en una sola tira vertical: al cambiar, la información baja y
+               el formulario entra desde arriba. La ventana recorta y acompaña con su altura. -->
+          <div class="ct-window" [style.height.px]="windowHeight()">
+            <div class="ct-strip" [style.transform]="stripTransform()">
+              <div class="ct-panel" #panelInfo>
           <article class="ct-card">
             <span class="ct-card__label">{{ t().channels }}</span>
             <ul class="ct-list">
@@ -120,6 +155,20 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
               </li>
             </ul>
           </article>
+              </div>
+
+              <div class="ct-panel" #panelForm>
+                <article class="ct-card ct-card--form">
+                  <app-lead-form
+                    formLocation="contact_page"
+                    idPrefix="ctf"
+                    variant="light"
+                    [pageContext]="formPageContext"
+                  />
+                </article>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -217,6 +266,93 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
       border-color: rgba(255, 255, 255, 0.16);
     }
 
+    /* --- Interruptor Información / Formulario --------------------------------------------
+       Copia la mecánica del de idioma (app.scss .lang-toggle): el pulgar es absoluto, ocupa la
+       mitad y viaja con translateX. Acá va a ancho completo porque las palabras son largas. */
+    .ct-card--switch {
+      padding-block: clamp(1rem, 1.6vw, 1.3rem);
+    }
+
+    .ct-switch {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0.28rem;
+      border: 1px solid var(--line-strong);
+      border-radius: 0.55rem;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .ct-switch__thumb {
+      position: absolute;
+      top: 0.28rem;
+      left: 0.28rem;
+      width: calc(50% - 0.28rem);
+      height: calc(100% - 0.56rem);
+      border-radius: 0.4rem;
+      background: var(--ink);
+      transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .ct-switch.is-form .ct-switch__thumb {
+      transform: translateX(100%);
+    }
+
+    .ct-switch__opt {
+      position: relative;
+      z-index: 1;
+      padding-block: 0.42rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      transition: color 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .ct-switch__opt.is-active {
+      color: var(--surface);
+    }
+
+    /* --- La tira: los dos paneles, uno debajo del otro --------------------------------- */
+    .ct-window {
+      overflow: hidden;
+      transition: height 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Sin medida todavía (prerender y primer frame): se ve el panel de información entero. */
+    .ct-window:not([style*='height']) {
+      height: auto;
+    }
+
+    .ct-strip {
+      display: flex;
+      flex-direction: column;
+      transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .ct-panel {
+      flex: none;
+    }
+
+    .ct-card--form {
+      /* El formulario en el recuadro va en una columna: 416 px no dan para dos. */
+      border-bottom-left-radius: 0.9rem;
+      border-bottom-right-radius: 0.9rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ct-switch__thumb,
+      .ct-window,
+      .ct-strip {
+        transition: none;
+      }
+    }
+
     .ct-card__label {
       color: var(--muted);
       font-family: var(--font-mono);
@@ -224,6 +360,11 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
+    }
+
+    .ct-card--form ::ng-deep .cf-grid,
+    .ct-card--form ::ng-deep .cf-chips-row {
+      grid-template-columns: 1fr;
     }
 
     .ct-list,
@@ -355,10 +496,69 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
   `
 })
 export class ContactPageComponent {
+  /** Panel visible en el recuadro. Arranca en la información, como hasta ahora. */
+  protected readonly panel = signal<'info' | 'form'>('info');
+
+  private readonly panelInfo = viewChild<ElementRef<HTMLElement>>('panelInfo');
+  private readonly panelForm = viewChild<ElementRef<HTMLElement>>('panelForm');
+  private readonly infoHeight = signal(0);
+  private readonly formHeight = signal(0);
+
+  /**
+   * Alto del recuadro: el del panel activo. Se anima, así que al cambiar de panel el recuadro
+   * crece o encoge acompañando al deslizamiento en vez de saltar. Vale 0 hasta la primera
+   * medición (prerender y primer frame), y ahí el CSS lo deja en `auto`.
+   */
+  protected readonly windowHeight = computed(() => {
+    const h = this.panel() === 'form' ? this.formHeight() : this.infoHeight();
+    return h > 0 ? h : null;
+  });
+
+  /** La tira sube exactamente el alto del panel de información para dejar ver el formulario. */
+  protected readonly stripTransform = computed(() =>
+    this.panel() === 'form' ? `translateY(-${this.infoHeight()}px)` : 'translateY(0)',
+  );
+
+  protected togglePanel(): void {
+    this.panel.update((p) => (p === 'info' ? 'form' : 'info'));
+  }
+
+  /** Contexto que viaja al CRM con el lead, para distinguirlo del formulario del pie. */
+  protected readonly formPageContext = {
+    name: 'Formulario de la página de contacto',
+    slug: 'contacto/formulario',
+  };
+
+  private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(LanguageService);
   private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
   protected readonly t = computed(() => CONTACT_TEXT[this.lang()]);
+
+  constructor() {
+    // Solo en el browser: `afterNextRender` no corre en el prerender. Se remide cuando cambian
+    // los paneles (idioma, ancho, la altura del formulario al mostrar errores o el estado
+    // enviado), así el recuadro nunca queda con un alto viejo.
+    afterNextRender(() => {
+      if (typeof ResizeObserver === 'undefined') {
+        return;
+      }
+      const observer = new ResizeObserver(() => this.measurePanels());
+      const info = this.panelInfo()?.nativeElement;
+      const form = this.panelForm()?.nativeElement;
+      if (info) observer.observe(info);
+      if (form) observer.observe(form);
+      this.measurePanels();
+      this.destroyRef.onDestroy(() => observer.disconnect());
+    });
+  }
+
+  private measurePanels(): void {
+    const info = this.panelInfo()?.nativeElement;
+    const form = this.panelForm()?.nativeElement;
+    if (info) this.infoHeight.set(Math.round(info.getBoundingClientRect().height));
+    if (form) this.formHeight.set(Math.round(form.getBoundingClientRect().height));
+  }
 
   protected readonly info: ContactInfo = {
     email: 'hola@linkdesign.cr',
@@ -398,6 +598,9 @@ export class ContactPageComponent {
 const CONTACT_TEXT = {
   es: {
     aria: 'Contacto',
+    tabInfo: 'Información',
+    tabForm: 'Formulario',
+    switchAria: 'Cambiar entre información de contacto y formulario',
     channels: 'Canales',
     info: 'Información',
     areas: 'Áreas de trabajo',
@@ -406,12 +609,15 @@ const CONTACT_TEXT = {
     schedule: COMPANY_SCHEDULE.es.long,
     response: 'Sábados y domingos, descansamos',
     software: 'Software a medida',
-    web: 'Sitios web',
+    web: 'Página web',
     copy: 'Copiar correo',
     copied: 'Correo copiado'
   },
   en: {
     aria: 'Contact',
+    tabInfo: 'Details',
+    tabForm: 'Form',
+    switchAria: 'Switch between contact details and form',
     channels: 'Channels',
     info: 'Information',
     areas: 'What we do',

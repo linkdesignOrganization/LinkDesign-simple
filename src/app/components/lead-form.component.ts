@@ -18,7 +18,8 @@ import {
   NeedOption,
   PreferredContactOption
 } from '../lead-form/models/lead-form-options';
-import { LucideCheck, LucideMail, LucideMessageCircle, LucidePhone } from '@lucide/angular';
+import { LucideCheck, LucideMail, LucidePhone } from '@lucide/angular';
+import { WhatsappIconComponent } from './whatsapp-icon.component';
 
 type NeedChip = { key: string; es: string; en: string };
 type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: string; en: string };
@@ -48,9 +49,9 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
   selector: 'app-lead-form',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, LucideMail, LucidePhone, LucideMessageCircle, LucideCheck],
+  imports: [ReactiveFormsModule, LucideMail, LucidePhone, LucideCheck, WhatsappIconComponent],
   template: `
-    <form class="cf-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <form class="cf-form" [class.cf-form--light]="variant() === 'light'" [formGroup]="form" (ngSubmit)="submit()" novalidate>
       @if (sent()) {
         <div class="cf-sent" role="status">
           <span class="cf-sent__icon" aria-hidden="true">
@@ -151,7 +152,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
                 >
                   @switch (method.icon) {
                     @case ('mail') { <svg lucideMail [size]="14" [strokeWidth]="1"></svg> }
-                    @case ('message') { <svg lucideMessageCircle [size]="14" [strokeWidth]="1"></svg> }
+                    @case ('message') { <app-whatsapp-icon [size]="12" /> }
                     @case ('phone') { <svg lucidePhone [size]="14" [strokeWidth]="1"></svg> }
                   }
                   <span>{{ method[lang()] }}</span>
@@ -189,12 +190,54 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
        columna derecha de .cf-inner. Como bloque toma el ancho de la columna y el
        alto de su contenido, igual que el form, así que el layout no cambia. */
     :host {
+      /* Paleta del formulario en tokens: por defecto la de siempre (claro sobre el pie oscuro).
+         La página de contacto lo monta sobre un recuadro claro y solo redefine estas variables
+         con la clase cf-form--light, sin duplicar ni una regla. */
+      --lf-label: #ececec;
+      --lf-text: #f0f0f0;
+      --lf-placeholder: #6f6f6f;
+      --lf-line: rgba(255, 255, 255, 0.22);
+      --lf-chip-line: rgba(255, 255, 255, 0.18);
+      --lf-chip-text: #d6d6d6;
+      --lf-chip-hover-line: rgba(255, 255, 255, 0.4);
+      --lf-chip-strong: #ffffff;
+      --lf-error: #ff9090;
+      --lf-error-line: #ff7a7a;
+
       display: block;
     }
 
     /* Form minimal, sin panel ni cajas. Cada campo es una sola línea inferior
        (como el website): label en mayúsculas y el input en mono sobre el negro.
        Flex column para poder alinear el botón a la derecha. */
+    /* Variante clara: mismo formulario sobre un fondo claro (el recuadro de /contacto). */
+    .cf-form--light {
+      --lf-label: #3c3c3c;
+      --lf-text: #111111;
+      --lf-placeholder: #9a9a9a;
+      --lf-line: rgba(17, 17, 17, 0.22);
+      --lf-chip-line: rgba(17, 17, 17, 0.18);
+      --lf-chip-text: #3c3c3c;
+      --lf-chip-hover-line: rgba(17, 17, 17, 0.45);
+      --lf-chip-strong: #111111;
+      --lf-error: #c62828;
+      --lf-error-line: #c62828;
+    }
+
+    /* Y si el pie de esa misma página pinta su zona oscura, vuelve a la paleta original. */
+    :host-context(.app-dark) .cf-form--light {
+      --lf-label: #ececec;
+      --lf-text: #f0f0f0;
+      --lf-placeholder: #6f6f6f;
+      --lf-line: rgba(255, 255, 255, 0.22);
+      --lf-chip-line: rgba(255, 255, 255, 0.18);
+      --lf-chip-text: #d6d6d6;
+      --lf-chip-hover-line: rgba(255, 255, 255, 0.4);
+      --lf-chip-strong: #ffffff;
+      --lf-error: #ff9090;
+      --lf-error-line: #ff7a7a;
+    }
+
     .cf-form {
       display: flex;
       flex-direction: column;
@@ -214,7 +257,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     }
 
     .cf-field label {
-      color: #ececec;
+      color: var(--lf-label);
       font-size: 0.72rem;
       font-weight: 500;
       letter-spacing: 0.08em;
@@ -230,10 +273,10 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       width: 100%;
       padding: 0.35rem 0;
       border: 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+      border-bottom: 1px solid var(--lf-line);
       border-radius: 0;
       background: transparent;
-      color: #f0f0f0;
+      color: var(--lf-text);
       font-family: var(--font-mono);
       font-size: 0.85rem;
       transition: border-color 160ms ease;
@@ -246,7 +289,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
 
     .cf-field input::placeholder,
     .cf-field textarea::placeholder {
-      color: #6f6f6f;
+      color: var(--lf-placeholder);
     }
 
     .cf-field input:focus,
@@ -257,11 +300,11 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
 
     .cf-field input[aria-invalid='true'],
     .cf-field textarea[aria-invalid='true'] {
-      border-bottom-color: #ff7a7a;
+      border-bottom-color: var(--lf-error-line);
     }
 
     .cf-error {
-      color: #ff9090;
+      color: var(--lf-error);
       font-size: 0.72rem;
     }
 
@@ -284,7 +327,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     .cf-chips__label {
       margin-bottom: 0.65rem;
       padding: 0;
-      color: #ececec;
+      color: var(--lf-label);
       font-size: 0.72rem;
       font-weight: 500;
       letter-spacing: 0.08em;
@@ -302,10 +345,10 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       align-items: center;
       gap: 0.35rem;
       padding: 0.32rem 0.62rem;
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid var(--lf-chip-line);
       border-radius: 0.5rem;
       background: transparent;
-      color: #d6d6d6;
+      color: var(--lf-chip-text);
       font: inherit;
       font-size: 0.74rem;
       cursor: pointer;
@@ -313,8 +356,8 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     }
 
     .cf-chip:hover {
-      border-color: rgba(255, 255, 255, 0.4);
-      color: #ffffff;
+      border-color: var(--lf-chip-hover-line);
+      color: var(--lf-chip-strong);
     }
 
     .cf-chip:focus-visible {
@@ -325,7 +368,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     .cf-chip.is-active {
       border-color: var(--accent);
       background: rgba(61, 81, 255, 0.18);
-      color: #ffffff;
+      color: var(--lf-chip-strong);
     }
 
     /* Aire entre los chips y el campo Mensaje. */
@@ -540,6 +583,9 @@ export class LeadFormComponent {
    * instancia recibe el suyo y los `<label for>` apuntan al campo correcto.
    */
   readonly idPrefix = input<string>('cf');
+
+  /** `light` = fondo claro (recuadro de /contacto). Por defecto, la paleta del pie oscuro. */
+  readonly variant = input<'dark' | 'light'>('dark');
 
   /**
    * Contexto opcional del sistema cuando el form se renderiza en una página
