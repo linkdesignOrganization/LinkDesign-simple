@@ -310,7 +310,8 @@
     transform 220ms ease;
 }
 
-.wa-button svg,
+/* El de WhatsApp no entra acá: es <app-whatsapp-icon> y se dimensiona por su entrada `size`
+   (24 = estos mismos 1.5rem), porque la encapsulación deja su <svg> fuera de este alcance. */
 .hs-button svg {
   width: 1.5rem;
   height: 1.5rem;
@@ -338,7 +339,7 @@
 }
 
 /* El ícono va por encima del relleno. */
-.wa-button svg {
+.wa-button app-whatsapp-icon {
   position: relative;
   z-index: 1;
 }

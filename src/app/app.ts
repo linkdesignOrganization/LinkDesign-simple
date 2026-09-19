@@ -13,6 +13,7 @@ import { LucideArrowLeft, LucideHeadset } from '@lucide/angular';
 import { filter, map } from 'rxjs';
 
 import { TechnicalGridSurfaceComponent } from './components/technical-grid-surface.component';
+import { WhatsappIconComponent } from './components/whatsapp-icon.component';
 import { LanguageService } from './services/language.service';
 import { AdsService } from './services/ads.service';
 import { SeoService } from './services/seo.service';
@@ -25,6 +26,7 @@ import { SessionLanguageService } from './services/session-language.service';
     RouterOutlet,
     RouterLink,
     TechnicalGridSurfaceComponent,
+    WhatsappIconComponent,
     LucideHeadset,
     LucideArrowLeft,
   ],

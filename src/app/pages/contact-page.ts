@@ -5,11 +5,11 @@ import {
   LucideCalendar,
   LucideCheck,
   LucideCopy,
-  LucideMail,
-  LucideMessageCircle
+  LucideMail
 } from '@lucide/angular';
 
 import { ContactFooterComponent, ContactInfo } from '../components/contact-footer.component';
+import { WhatsappIconComponent } from '../components/whatsapp-icon.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { TrackSectionDirective } from '../directives/track-section.directive';
 import { LanguageService } from '../services/language.service';
@@ -28,7 +28,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     DarkZoneDirective,
     TrackSectionDirective,
     LucideMail,
-    LucideMessageCircle,
+    WhatsappIconComponent,
     LucideCalendar,
     LucideArrowUpRight,
     LucideCopy,
@@ -70,8 +70,11 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
               </li>
               <li>
                 <a class="ct-row" [href]="info.whatsappLink" target="_blank" rel="noopener noreferrer" (click)="onWhatsapp()">
+                  <!-- 17 y no 20 como sus vecinos: el logotipo de WhatsApp dibuja hasta el
+                       borde de su caja y los Lucide dejan ~2 de 24 de aire, así que a igual
+                       tamaño el círculo sobresale de la fila. 20 x 20/24 ≈ 17 los empareja. -->
                   <span class="ct-row__icon" aria-hidden="true">
-                    <svg lucideMessageCircle [size]="20" [strokeWidth]="1"></svg>
+                    <app-whatsapp-icon [size]="17" />
                   </span>
                   <span class="ct-row__text">{{ t().whatsapp }}</span>
                 </a>
