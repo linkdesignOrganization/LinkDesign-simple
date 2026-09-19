@@ -77,16 +77,20 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
             }
           </div>
 
-          <div class="cf-field">
-            <label [attr.for]="ids().company">{{ t().company }}</label>
-            <input
-              [attr.id]="ids().company"
-              type="text"
-              formControlName="company"
-              [placeholder]="t().companyPh"
-              autocomplete="organization"
-            />
-          </div>
+          @if (showCompany()) {
+  
+            <div class="cf-field">
+              <label [attr.for]="ids().company">{{ t().company }}</label>
+              <input
+                [attr.id]="ids().company"
+                type="text"
+                formControlName="company"
+                [placeholder]="t().companyPh"
+                autocomplete="organization"
+              />
+            </div>
+
+          }
 
           <div class="cf-field">
             <label [attr.for]="ids().email">{{ t().email }} <span class="cf-req" aria-hidden="true">*</span></label>
@@ -212,17 +216,11 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
        Flex column para poder alinear el botón a la derecha. */
     /* Variante compacta: el mismo formulario apretado para caber en el recuadro de /contacto sin
        que el recuadro crezca. Solo aire: ningún campo se quita ni se achica de fuente. */
-    /* Nombre y Empresa comparten fila (Empresa es opcional y corta); Correo y Teléfono van a
-       ancho completo, que son los que se escriben con más cuidado. Es el punto medio entre las dos
-       columnas, que se sentían apretadas, y todo a una fila, que no entra en el recuadro sin que
-       crezca (Robert, 19 sep). Las opciones siguen en dos columnas. */
+    /* Nombre, Correo y Teléfono, cada uno en su fila; el recuadro de /contacto no muestra Empresa
+       (Robert, 19 sep). Las opciones siguen en dos columnas. */
     .cf-form--compact .cf-grid {
+      grid-template-columns: 1fr;
       gap: 0.8rem 0.9rem;
-    }
-
-    .cf-form--compact .cf-grid > .cf-field:nth-child(3),
-    .cf-form--compact .cf-grid > .cf-field:nth-child(4) {
-      grid-column: 1 / -1;
     }
 
     .cf-form--compact .cf-field {
@@ -636,6 +634,9 @@ export class LeadFormComponent {
 
   /** `light` = fondo claro (recuadro de /contacto). Por defecto, la paleta del pie oscuro. */
   readonly variant = input<'dark' | 'light'>('dark');
+
+  /** El campo Empresa se puede ocultar (recuadro de /contacto, decisión de Robert del 19 sep). */
+  readonly showCompany = input(true);
 
   /** `compact` = menos aire entre campos y botón más bajo, para entrar en un recuadro de alto fijo. */
   readonly density = input<'regular' | 'compact'>('regular');

@@ -167,6 +167,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
                     idPrefix="ctf"
                     variant="light"
                     density="compact"
+                    [showCompany]="false"
                     [pageContext]="formPageContext"
                   />
                 </article>
