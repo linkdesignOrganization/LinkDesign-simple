@@ -2288,3 +2288,23 @@ Estamos comprando más clics que nunca y convirtiéndolos al canal de peor calid
 de menor a mayor intervención: subir el formulario por encima de WhatsApp dentro de la sección de
 contacto; reducir los cinco campos; dar al formulario un lugar propio antes del pie en `/software` y
 `/web`. Ninguna toca el botón del topbar, que además sirve para el tráfico que sí prefiere WhatsApp.
+
+## 19 sep 2026 — El formulario entra a `/contacto`, y la empresa deja de puntuar
+
+**Lo que cambió en el sitio.** Desde hoy el formulario vive también dentro del recuadro de `/contacto`,
+detrás de un interruptor «Información / Formulario», con el mismo envío al CRM y la misma conversión
+a Ads que el del pie (que sigue igual). Es el experimento de tres meses de `PLAN-FORMULARIO-CONTACTO.md`
+(bitácora en la raíz del workspace): la hipótesis es que los formularios llegaron a cero porque nadie
+baja al pie. Lectura alrededor del **19 dic 2026**. El CRM y el correo de aviso dicen de qué formulario
+vino cada lead (`form_location`: `contact_page` o `footer`), así que se puede contar por separado.
+Diferencias del recuadro que conviene recordar al leer: no muestra Empresa ni la opción «Otro», y
+los canales de contacto van solo con icono. Verificado en producción con un lead de prueba por sitio
+(nombre «PRUEBA recuadro /contacto (borrar)»), con las peticiones a Google bloqueadas: la conversión
+que armó el sitio fue de 36 USD (cold) y no salió.
+
+**Cambio de fórmula el mismo día (decisión de Robert): `tiene_empresa` (+10) sale.** El campo es
+opcional y no dice nada que el dominio del correo no diga mejor; `email_corporativo` (+15) no cambia.
+Hecho en los tres repos a la vez, vectores compartidos actualizados. **Efecto mecánico sobre el
+value:** solo el lead que escribía empresa y estaba a menos de 10 puntos de un corte baja una
+categoría (cold 36 → nurture 30, warm 48 → cold 36, hot 60 → warm 48); los demás no se mueven. Al
+comparar valor por costo antes y después de esta fecha, separar este efecto del de comportamiento.
