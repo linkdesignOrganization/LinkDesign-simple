@@ -21,7 +21,7 @@ import {
 import { LucideCheck, LucideMail, LucidePhone } from '@lucide/angular';
 import { WhatsappIconComponent } from './whatsapp-icon.component';
 
-type NeedChip = { key: string; es: string; en: string };
+type NeedChip = { key: string; es: string; en: string; short: { es: string; en: string } };
 type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: string; en: string };
 
 // Mapeo de las keys del form (diseño nuevo) al contrato exacto que espera el CRM.
@@ -124,10 +124,10 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
         </div>
 
         <div class="cf-chips-row">
-          <fieldset class="cf-chips">
+          <fieldset class="cf-chips cf-chips--needs">
             <legend class="cf-chips__label">{{ t().needsLegend }}</legend>
             <div class="cf-chips__row">
-              @for (need of NEEDS; track need.key) {
+              @for (need of needChips(); track need.key) {
                 <button
                   type="button"
                   class="cf-chip"
@@ -135,23 +135,27 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
                   [attr.aria-pressed]="isNeed(need.key)"
                   (click)="toggleNeed(need.key)"
                 >
-                  {{ need[lang()] }}
+                  {{ needLabel(need) }}
                 </button>
               }
             </div>
           </fieldset>
 
-          <fieldset class="cf-chips">
+          <fieldset class="cf-chips cf-chips--contact">
             <legend class="cf-chips__label">
-              {{ t().contactLegend }} <span class="cf-req" aria-hidden="true">*</span>
+              {{ compact() ? t().contactLegendShort : t().contactLegend }}
+              <span class="cf-req" aria-hidden="true">*</span>
             </legend>
             <div class="cf-chips__row">
               @for (method of CONTACT_METHODS; track method.key) {
                 <button
                   type="button"
                   class="cf-chip cf-chip--icon"
+                  [class.cf-chip--icon-only]="compact()"
                   [class.is-active]="isContact(method.key)"
                   [attr.aria-pressed]="isContact(method.key)"
+                  [attr.aria-label]="compact() ? method[lang()] : null"
+                  [attr.title]="compact() ? method[lang()] : null"
                   (click)="toggleContact(method.key)"
                 >
                   @switch (method.icon) {
@@ -159,14 +163,19 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
                     @case ('message') { <app-whatsapp-icon [size]="12" /> }
                     @case ('phone') { <svg lucidePhone [size]="14" [strokeWidth]="1"></svg> }
                   }
-                  <span>{{ method[lang()] }}</span>
+                  @if (!compact()) {
+                    <span>{{ method[lang()] }}</span>
+                  }
                 </button>
               }
             </div>
-            @if (submitted() && contactPrefs().size === 0) {
+            @if (submitted() && contactPrefs().size === 0 && !compact()) {
               <span class="cf-error">{{ t().contactErr }}</span>
             }
           </fieldset>
+          @if (submitted() && contactPrefs().size === 0 && compact()) {
+            <span class="cf-error cf-chips-row__error">{{ t().contactErr }}</span>
+          }
         </div>
 
         <div class="cf-field">
@@ -236,17 +245,41 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       min-height: 3.1rem;
     }
 
+    /* Compacto: los dos grupos en una sola fila (necesidad con texto, canal solo con icono). */
     .cf-form--compact .cf-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
       gap: 0.75rem 0.9rem;
       margin-top: 0.85rem;
     }
 
+    .cf-form--compact .cf-chips--needs {
+      flex: 1 1 auto;
+    }
+
+    .cf-form--compact .cf-chips--contact {
+      flex: 0 0 auto;
+    }
+
     .cf-form--compact .cf-chips__row {
+      flex-wrap: nowrap;
       gap: 0.35rem;
     }
 
     .cf-form--compact .cf-chip {
       padding: 0.24rem 0.52rem;
+    }
+
+    /* Solo icono: misma altura que los chips con texto (25 px) para que la fila quede pareja. */
+    .cf-form--compact .cf-chip--icon-only {
+      justify-content: center;
+      min-height: 1.5625rem;
+      padding-inline: 0.5rem;
+    }
+
+    .cf-form--compact .cf-chips-row__error {
+      flex-basis: 100%;
     }
 
     .cf-form--compact .cf-chips-row + .cf-field {
@@ -690,17 +723,34 @@ export class LeadFormComponent {
   protected readonly lang = this.i18n.lang;
   protected readonly t = computed(() => LEAD_FORM_TEXT[this.lang()]);
 
+  /** `short`: rótulo del recuadro de /contacto, donde los tres chips comparten una fila. */
   protected readonly NEEDS: NeedChip[] = [
-    { key: 'software', es: 'Software a medida', en: 'Custom software' },
-    { key: 'web', es: 'Página web', en: 'Website' },
-    { key: 'ecommerce', es: 'E-commerce', en: 'E-commerce' },
-    { key: 'other', es: 'Otro', en: 'Other' }
+    {
+      key: 'software',
+      es: 'Software a medida',
+      en: 'Custom software',
+      short: { es: 'Software', en: 'Software' }
+    },
+    { key: 'web', es: 'Página web', en: 'Website', short: { es: 'Web', en: 'Web' } },
+    { key: 'ecommerce', es: 'E-commerce', en: 'E-commerce', short: { es: 'E-commerce', en: 'E-commerce' } },
+    { key: 'other', es: 'Otro', en: 'Other', short: { es: 'Otro', en: 'Other' } }
   ];
   protected readonly CONTACT_METHODS: ContactMethod[] = [
     { key: 'email', icon: 'mail', es: 'Correo', en: 'Email' },
     { key: 'whatsapp', icon: 'message', es: 'WhatsApp', en: 'WhatsApp' },
     { key: 'call', icon: 'phone', es: 'Llamada', en: 'Call' }
   ];
+
+  /** Recuadro de /contacto: los dos grupos de opciones caben en una sola fila. */
+  protected readonly compact = computed(() => this.density() === 'compact');
+  /** En compacto no se ofrece «Otro»: si no marcan nada, se entiende. El pie lo conserva. */
+  protected readonly needChips = computed(() =>
+    this.compact() ? this.NEEDS.filter((need) => need.key !== 'other') : this.NEEDS
+  );
+
+  protected needLabel(need: NeedChip): string {
+    return this.compact() ? need.short[this.lang()] : need[this.lang()];
+  }
 
   private readonly fb = inject(FormBuilder);
   protected readonly form = this.fb.nonNullable.group({
@@ -846,6 +896,7 @@ const LEAD_FORM_TEXT = {
     phoneErr: 'Ingresa un teléfono o WhatsApp.',
     needsLegend: '¿Qué necesitas?',
     contactLegend: '¿Cómo te contactamos?',
+    contactLegendShort: 'Contacto por',
     contactErr: 'Elige al menos una opción.',
     submit: 'Enviar mensaje',
     sending: 'Enviando…',
@@ -868,6 +919,7 @@ const LEAD_FORM_TEXT = {
     phoneErr: 'Enter a phone number or WhatsApp.',
     needsLegend: 'What do you need?',
     contactLegend: 'How should we reach you?',
+    contactLegendShort: 'Contact via',
     contactErr: 'Choose at least one option.',
     submit: 'Send message',
     sending: 'Sending…',
