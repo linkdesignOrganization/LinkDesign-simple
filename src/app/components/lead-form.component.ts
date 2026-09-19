@@ -213,11 +213,11 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     /* Variante compacta: el mismo formulario apretado para caber en el recuadro de /contacto sin
        que el recuadro crezca. Solo aire: ningún campo se quita ni se achica de fuente. */
     .cf-form--compact .cf-grid {
-      gap: 0.75rem 0.9rem;
+      gap: 1rem 0.9rem;
     }
 
     .cf-form--compact .cf-field {
-      gap: 0.2rem;
+      gap: 0.3rem;
     }
 
     .cf-form--compact .cf-field input,
@@ -226,12 +226,12 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     }
 
     .cf-form--compact .cf-field textarea {
-      min-height: 2.5rem;
+      min-height: 3.1rem;
     }
 
     .cf-form--compact .cf-chips-row {
       gap: 0.75rem 0.9rem;
-      margin-top: 0.8rem;
+      margin-top: 1.05rem;
     }
 
     .cf-form--compact .cf-chips__row {
@@ -243,11 +243,11 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     }
 
     .cf-form--compact .cf-chips-row + .cf-field {
-      margin-top: 0.8rem;
+      margin-top: 1.05rem;
     }
 
     .cf-form--compact .cf-submit {
-      margin-top: 0.85rem;
+      margin-top: 1.1rem;
       padding: 0.5rem 1rem;
     }
 

@@ -248,8 +248,10 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     .ct-card {
       display: flex;
       flex-direction: column;
-      gap: 1.1rem;
-      padding: clamp(1.5rem, 2.4vw, 2.1rem);
+      /* Un poco más pegado que antes (Robert, 19 sep): en una laptop de 681 px de alto el
+         recuadro terminaba a 1 px del borde del viewport. Cada card cede ~5 px por lado. */
+      gap: 0.9rem;
+      padding: clamp(1.25rem, 2vw, 1.75rem);
     }
 
     .ct-card + .ct-card {
@@ -322,12 +324,12 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 
     /* --- La tira: los dos paneles, uno debajo del otro --------------------------------- */
     .ct-panel > .ct-card:first-child {
-      padding-top: clamp(1.1rem, 1.8vw, 1.4rem);
+      padding-top: clamp(1rem, 1.6vw, 1.25rem);
     }
 
     .ct-window {
       overflow: hidden;
-      transition: height 380ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: height 620ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     /* Sin medida todavía (prerender y primer frame): se ve el panel de información entero. */
@@ -338,7 +340,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     .ct-strip {
       display: flex;
       flex-direction: column;
-      transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .ct-panel {
@@ -347,7 +349,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 
     /* El panel del formulario arranca pegado al interruptor, como el de información. */
     .ct-card--form {
-      padding-top: clamp(1.1rem, 1.8vw, 1.4rem);
+      padding-top: clamp(1rem, 1.6vw, 1.25rem);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -371,7 +373,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     .ct-info {
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
+      gap: 0.75rem;
       margin: 0;
       padding: 0;
       list-style: none;
