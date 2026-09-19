@@ -212,8 +212,17 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
        Flex column para poder alinear el botón a la derecha. */
     /* Variante compacta: el mismo formulario apretado para caber en el recuadro de /contacto sin
        que el recuadro crezca. Solo aire: ningún campo se quita ni se achica de fuente. */
+    /* Nombre y Empresa comparten fila (Empresa es opcional y corta); Correo y Teléfono van a
+       ancho completo, que son los que se escriben con más cuidado. Es el punto medio entre las dos
+       columnas, que se sentían apretadas, y todo a una fila, que no entra en el recuadro sin que
+       crezca (Robert, 19 sep). Las opciones siguen en dos columnas. */
     .cf-form--compact .cf-grid {
-      gap: 1rem 0.9rem;
+      gap: 0.8rem 0.9rem;
+    }
+
+    .cf-form--compact .cf-grid > .cf-field:nth-child(3),
+    .cf-form--compact .cf-grid > .cf-field:nth-child(4) {
+      grid-column: 1 / -1;
     }
 
     .cf-form--compact .cf-field {
@@ -231,7 +240,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
 
     .cf-form--compact .cf-chips-row {
       gap: 0.75rem 0.9rem;
-      margin-top: 1.05rem;
+      margin-top: 0.85rem;
     }
 
     .cf-form--compact .cf-chips__row {
@@ -243,11 +252,11 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     }
 
     .cf-form--compact .cf-chips-row + .cf-field {
-      margin-top: 1.05rem;
+      margin-top: 0.85rem;
     }
 
     .cf-form--compact .cf-submit {
-      margin-top: 1.1rem;
+      margin-top: 0.9rem;
       padding: 0.5rem 1rem;
     }
 

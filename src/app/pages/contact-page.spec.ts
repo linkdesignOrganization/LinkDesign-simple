@@ -39,9 +39,11 @@ describe('ContactPageComponent', () => {
     fixture.detectChanges();
 
     expect(sw.getAttribute('aria-checked')).toBe('true');
-    // Sube por el alto del panel de información; en pruebas no hay layout, así que es 0px, pero
-    // lo que importa es que pasó a desplazarse.
-    expect(strip().style.transform).toContain('translateY(-');
+    expect(sw.classList.contains('is-form')).toBe(true);
+    // La tira sube exactamente una ventana, y la ventana se mide en el browser con layout. En
+    // pruebas no hay layout (mide 0), así que a propósito no se desplaza: mejor quieta que a una
+    // distancia inventada. El desplazamiento real se verifica con navegador (ver el plan).
+    expect(strip().style.transform).toBe('translateY(0)');
 
     sw.click();
     fixture.detectChanges();

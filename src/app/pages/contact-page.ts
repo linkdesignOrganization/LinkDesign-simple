@@ -79,7 +79,8 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
                el formulario entra desde arriba. La ventana recorta y acompaña con su altura. -->
           <div class="ct-window" [style.height.px]="windowHeight()">
             <div class="ct-strip" [style.transform]="stripTransform()">
-              <div class="ct-panel" #panelInfo>
+              <div class="ct-panel" [style.min-height.px]="windowHeight()">
+                <div class="ct-panel__inner" #panelInfo>
           <article class="ct-card">
             <span class="ct-card__label">{{ t().channels }}</span>
             <ul class="ct-list">
@@ -155,9 +156,11 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
               </li>
             </ul>
           </article>
+                </div>
               </div>
 
-              <div class="ct-panel" #panelForm>
+              <div class="ct-panel" [style.min-height.px]="windowHeight()">
+                <div class="ct-panel__inner" #panelForm>
                 <article class="ct-card ct-card--form">
                   <app-lead-form
                     formLocation="contact_page"
@@ -167,6 +170,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
                     [pageContext]="formPageContext"
                   />
                 </article>
+                </div>
               </div>
             </div>
           </div>
@@ -347,6 +351,11 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
       flex: none;
     }
 
+    .ct-panel__inner {
+      display: flex;
+      flex-direction: column;
+    }
+
     /* El panel del formulario arranca pegado al interruptor, como el de información. */
     .ct-card--form {
       padding-top: clamp(1rem, 1.6vw, 1.25rem);
@@ -519,10 +528,15 @@ export class ContactPageComponent {
     return h > 0 ? h : null;
   });
 
-  /** La tira sube exactamente el alto del panel de información para dejar ver el formulario. */
-  protected readonly stripTransform = computed(() =>
-    this.panel() === 'form' ? `translateY(-${this.infoHeight()}px)` : 'translateY(0)',
-  );
+  /**
+   * La tira sube exactamente una ventana. Cada panel mide como mínimo la ventana (min-height),
+   * así el panel más corto se rellena con aire y NUNCA deja asomar la cabeza del otro por debajo,
+   * que era el error que Robert vio el 19 sep con el formulario más alto que la información.
+   */
+  protected readonly stripTransform = computed(() => {
+    const h = this.windowHeight();
+    return this.panel() === 'form' && h ? `translateY(-${h}px)` : 'translateY(0)';
+  });
 
   protected togglePanel(): void {
     this.panel.update((p) => (p === 'info' ? 'form' : 'info'));
