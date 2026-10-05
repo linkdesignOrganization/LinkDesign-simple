@@ -35,6 +35,7 @@ El algoritmo de scoring NO cambia (paridad con el CRM intacta); solo cambia el m
       → **Hecha: los cuatro gates dieron NO y el tROAS no se activó.** Ver la entrada del 13 ago al final.
 - [x] **4 sep 2026** (recordatorio en Calendar, **movido del 3 al 4** el 14 ago) — Revisión de las cuatro campañas, y sobre todo la **primera lectura de la nota de página de destino** tras el copy publicado el 14 de agosto: son tres semanas exactas. La línea base contra la que comparar y cómo leerla sin engañarse están en la última entrada del documento.
       → **Hecha el 7 sep 2026, sólo Costa Rica** (Argentina va en su propia sesión y su bitácora). La nota no se movió en ninguna de las cuatro; los criterios de las dos campañas dieron NO; el CRM aportó una coincidencia que vale un cliente. Ver la entrada del 7 sep al final.
+- [x] **17 sep 2026** — Revisión intermedia de CR pedida por Robert, sin cambios en Ads: «Búsqueda» trae WhatsApp a un tercio de lo normal y «Software» bajó a nota 2 el 15 sep; diagnóstico de por qué «Software» parece estancada (no es el anuncio, que nunca cambió). Ver la entrada del 17 sep al final.
 - [ ] **5 oct 2026, lunes 9:00** (recordatorio en Calendar, con aviso por correo una hora antes) — Revisión de «Búsqueda» y «Software» (CR) con datos del 5 sep – 2 oct: **primera lectura de la nota de página de destino tras los cambios del 8 sep** (cédula, horario, videos móviles), criterios de presupuesto de las dos campañas, estadísticas de subasta (las saca Robert, idealmente segmentadas por semana) y tasa de cierre por canal en el CRM. En Ads no se toca nada hasta entonces, a propósito. El guion completo está en el cierre de la entrada del 7 sep (cont.).
 - [ ] **Cada 2 semanas post-tROAS** — Ajustar el target ±10–15% mirando la cantidad de contactos (no el ratio total). Si el volumen de contactos cae >30%, bajar el target. *(No aplica todavía: no hay tROAS activo.)*
 
@@ -2237,6 +2238,162 @@ ficha, con una prueba que exige que sea el nombre del video con sufijo `-mobile`
 apunte a un archivo inexistente al agregar una ficha (mutación comprobada). Con esto, **todos** los
 videos de los dos sitios eligen archivo por tamaño de pantalla: carrusel de `/web`, pestañas y
 viewcases de `/software`, fichas y páginas de sistema. La tabla del portafolio ya lo hacía.
+
+---
+
+## 17 sep 2026 — Revisión intermedia de Costa Rica, y por qué «Software» parece estancada
+
+Pedida por Robert fuera de calendario; la cita formal sigue siendo el 5 oct. **No se tocó nada en
+Google Ads.** Se hizo desde Windows, cuya copia del repo estaba 19 commits atrás (todo lo del 8 al
+16 sep se hizo en la Mac): la primera lectura de esta bitácora fue de la versión vieja, y el plan de
+página de destino pareció sin ejecutar hasta leer `origin/main`. Se sincronizó con `pull --ff-only`,
+conservando los cambios sin commitear de otra sesión.
+
+### Verificaciones previas
+
+- **Nada cambió en las dos campañas desde el 19 ago** salvo las negativas diarias (233 por campaña en
+  30 días, las mismas en las cuatro). Búsqueda 10/día, Software 15/día, Maximizar valor sin objetivo,
+  estrategia `ENABLED` (no en aprendizaje).
+- **El cambio de marca argentino del 16 sep no tocó a Costa Rica**: los 11 assets con URL nueva
+  (`kravonia.ar`) y el logo nuevo están asociados sólo a «Búsqueda #2» y «Software #2»; ninguno a nivel
+  de cuenta ni de grupo. Verificado asset por asset.
+- **El WhatsApp de `/web` mide bien**, probado en vivo sin cookie de clic (sólo `_gcl_au`): el ícono
+  fijo y «Mandar WhatsApp» disparan `PFEECM2UquEc…` con value 7 (10 × 0,7).
+- Rezago cero: por fecha de clic y por fecha de conversión coinciden acción por acción.
+
+### 1. La ventana 7–17 sep (9 días hábiles; el 15 fue feriado)
+
+| | gasto | clics | CPC | WhatsApp | serios |
+|---|---:|---:|---:|---:|---:|
+| Búsqueda | 125,59 | 54 | 2,33 | **0** | 1 (correo, 8 sep) |
+| Software | 183,72 | 42 | 4,37 | 3 | 1 (correo, 17 sep, término «comparasoftware») |
+
+**CRM, Costa Rica.** Dos leads nuevos por WhatsApp, los dos con propuesta enviada: Antonio Salazar
+(9 sep, software interno; puede ser el WhatsApp de Software del 7 sep, coincidencia y no prueba) y
+CoopeTerrazú (11 sep, sitio web; no pudo venir por un WhatsApp de Búsqueda, que no registró
+ninguno). UTURN cerró como cliente el 10 sep, por el calendario del sitio y sin clic de anuncio. Se
+perdieron Despacho contable y Hojalatería Fuentes (WhatsApp). Ningún formulario de CR desde el
+7 jul. Los dos correos copiados no tienen lead todavía; el de hoy vino de alguien que buscaba el
+directorio `comparasoftware`, así que puede ser un cliente o un vendedor del directorio.
+
+**Tasa de cierre por canal, CR, sin las 15 cargas masivas**: WhatsApp 3 de 12 (25 %), correo 4 de 10
+(40 %), «Otro» (citas del sitio y referidos) 3 de 4. **Trampa del cálculo**: los perdidos se
+**archivan** (26 de los 31 archivados son `perdido`); filtrar por no archivados da cierres de 100 %
+en todos los canales. Tampoco sirve reconstruir estados pasados desde `statusHistory`: Expat Legal
+Advisors figura `ganado` y su historial termina en `propuesta_enviada`.
+
+**Search Console**: `/web` sigue subiendo en las consultas comerciales (posición ~50 → 35–45 entre el
+24 ago y el 16 sep). El salto aparente a posición 11–18 del 14 al 16 sep es la consulta «link» (39
+impresiones en posición 9,3): el ruido ya conocido, no un avance.
+
+### 2. «Búsqueda»: los WhatsApp cayeron a un tercio, y ya no es sólo azar
+
+Desde el 14 ago trae un WhatsApp cada ~33 clics; lo normal era uno cada ~11. Tasa base: mayo –
+12 ago con la partición corregida del 13 ago, 39 WhatsApp en 433 clics (9,0 %).
+
+| ventana | WhatsApp / clics | % | P con base 9,0 % | P con el peor mes (5,4 %) |
+|---|---:|---:|---:|---:|
+| 14 ago – 17 sep | 4 / 133 | 3,0 | 0,008 | 0,16 |
+| 10 ago – 17 sep | 6 / 161 | 3,7 | 0,010 | 0,24 |
+| 20 ago – 17 sep | 4 / 115 | 3,5 | 0,023 | 0,26 |
+| 17 ago – 14 sep | 4 / 113 | 3,5 | 0,026 | 0,28 |
+| 24 ago – 17 sep | 4 / 104 | 3,8 | 0,044 | 0,34 |
+
+Contra la tasa normal sobrevive a mover los bordes; contra el peor mes documentado (1–22 jul,
+5,4 %) no. Racha larga o cambio: todavía no se distingue. «Software» en la misma ventana, 7,1 %,
+estable. No es la medición (verificada en vivo). No se puede atribuir al copy del 14 ago: entre el
+13 y el 14 ago también se separaron las acciones, se fue atomsoluciones y el CTR bajó por subastas
+marginales. En plata pesa poco: a la tasa normal serían ~8 WhatsApp más en cinco semanas, ~2 al
+pipeline, ~0,5 clientes.
+
+La campaña ahora gasta todo su presupuesto (13,95 USD por día hábil contra un tope de 14) y pierde el
+51 % de las impresiones por presupuesto (antes 21 %). No cambia el criterio: manda serios por 100
+clics (1,5 desde el 14 ago; se pide ≥ 4). Y con el tope puesto la división entre presupuesto y
+ranking la hace la puja: el 16–17 sep bajó el CPC a 1,20–1,61 y la pérdida pasó entera a ranking.
+
+### 3. «Software»: nota 2 desde el 15 sep, y el diagnóstico del estancamiento
+
+**Lo nuevo**: la nota de calidad bajó de 3 a 2 el 15 sep, por la relevancia del anuncio (Por encima →
+Promedio); página y CTR esperado siguen Por debajo. Sin ningún cambio nuestro. El 16 y el 17 sep el
+clic costó 7,49 y 7,45. Son dos días: a vigilar.
+
+Robert preguntó si el estancamiento es por un cambio en la página o en el anuncio. La historia
+completa desde febrero:
+
+| régimen | clics | CPC | WhatsApp / 100 | serios / 100 | contactos / 100 | USD por serio |
+|---|---:|---:|---:|---:|---:|---:|
+| 1 feb – 6 jun · sitio viejo · amplia | 489 | 2,55 | 4,6 | 4,7 | 9,3 | 54 |
+| 8 – 14 jun · sitio nuevo · amplia | 27 | 4,31 | 14,8 | 3,7 | 18,5 | 116 |
+| 15 jun – 22 jul · frase | 58 | 6,61 | 3,4 | 3,4 | 6,9 | 192 |
+| 23 jul – 17 sep · amplia | 205 | 4,13 | 4,9 | 2,4 | 7,3 | 169 |
+
+**Lo que no cambió:**
+
+- **El anuncio.** Es el mismo RSA (`797078650469`) con los mismos 15 títulos y 4 descripciones, todos
+  con impresiones desde la semana del 9 feb hasta hoy. Nunca se editó.
+- **La keyword.** El criterio amplio `1821632688` es el mismo de febrero: la «recreación» del 23 jul
+  reusó el criterio, porque Google asigna el id por texto y concordancia (la frase quedó como
+  `296075458926`, REMOVED). **Corrección a las entradas del 23 jul y del 13 ago**: el QS y su historia
+  no arrancaron de cero, así que no había reaprendizaje de la keyword que esperar. El argumento
+  «subir ahora es pagar el aprendizaje al precio caro» pierde esa premisa; la decisión de no subir
+  tenía otras razones y sigue en pie.
+- **La nota de calidad**: 3, con página y CTR esperado Por debajo, desde la semana del 23 feb, con el
+  sitio viejo (sólo dos semanas de mayo en 5). El sitio nuevo no la empeoró.
+- **Los WhatsApp por visita**: 4,6 cada 100 con el sitio viejo, 4,9 ahora.
+
+**Lo que sí cambió:**
+
+1. **El precio de cada visita.** 2,84 en abril–mayo, ~4,11 en agosto–septiembre (+45 %), con el mismo
+   anuncio, la misma keyword y la misma nota. La subida empezó en primavera sin que tocáramos nada
+   (2,16 en marzo, 2,85 en mayo, ~3,5 la última semana de mayo y la primera de junio, todavía con el
+   sitio viejo). Hoy además salimos primeros más seguido (primera posición absoluta 37–40 % → ~50 %) y
+   la campaña gasta todo el tope: ~300 USD/mes en marzo–mayo contra ~450 desde agosto, por las mismas
+   ~110 visitas al mes. Si es la competencia o nuestra puja lo dirán las estadísticas de subasta
+   (pedidas, abajo).
+2. **Los contactos serios por visita**, a la mitad (4,7 → 2,4 cada 100), mientras los WhatsApp
+   siguen igual: no se pasaron a WhatsApp, desaparecieron. Con pocos casos (5 en 205 clics contra
+   ~9,6 esperables; P ≈ 0,08). De los 23 serios del sitio viejo, 14 fueron correos copiados, 8
+   reuniones o formularios «hot» (value 30) y 1 formulario «warm». El mecanismo está en el código
+   viejo (`webOld/LinkDesign2.0`, `software.component.html`): **`/software` mostraba el correo en la
+   barra superior del hero, con botón de copiar, y además contaba como conversión cualquier copia
+   manual del texto** (`(copy)="handleEmailCopy()"`, value 25). El sitio nuevo, desde el 8 jun, ofrece
+   arriba «Agendar reunión» y «Mandar mensaje», WhatsApp fijo en la barra desde el 1 jul, y el correo
+   sólo al pie, contado sólo por el botón. Parte de la caída es de medición (las copias manuales ya no
+   cuentan) y parte es que el correo dejó de estar a la vista.
+3. **Lo que prometía el anuncio.** Hasta el 8 jun «Software» llevaba los sitelinks «Sitios web
+   corporativos» (a `/corporate`) y «Sitios web Creativos» (a `/weblab`), y hasta el 10 ago los textos
+   destacados de web («Expertos en servicios web»…). No desviaban tráfico —el 97,5 % de los clics caía
+   en `/software`— pero anunciaban páginas web. En el CRM, **los 17 leads de CR de marzo a mayo fueron
+   de sitios web o e-commerce (y una transferencia de dominio), ninguno de software**; los tres de
+   software interno de toda la historia del CRM llegaron después del cambio: La Guacamaya (23 jun,
+   perdido), Boston Scientific (21 jul, en espera) y Antonio Salazar (9 sep).
+
+El cambio de sitio quedó fechado por los datos: el scroll de las dos campañas cae a 1 en toda la
+semana del lunes 8 jun y vuelve el 15, tras «alinear conversiones al modelo del legacy» del 13 jun.
+
+**Conclusión.** No fue el anuncio: no cambió nunca, y las extensiones del 14 ago subieron el CTR
+(8,4 % → 10,1 %). La página sí cambió, el 8 jun, y con ella desaparecieron la mitad de los contactos
+serios, en parte de verdad y en parte por cómo se medían. El clic, además, cuesta 1,6 veces más, y
+esa subida empezó antes del sitio nuevo. Las dos cosas pesan parecido en el costo por contacto serio
+(54 → 169 USD), pero la del precio es firme (cientos de clics) y la de los contactos es frágil. Y un
+matiz de negocio: en el CRM «Software» nunca fue una fuente de proyectos de software; en primavera,
+con el anuncio mezclando web y el correo arriba, lo que entraba eran sitios web.
+
+### Estadísticas de subasta pedidas a Robert
+
+Campaña «Software», idealmente una sola descarga segmentada por mes del 1 feb al 18 sep 2026; si la
+interfaz no lo permite, cuatro rangos: 1 mar – 31 may (sitio viejo, clic 2,16–2,85), 23 jul – 13 ago,
+14 ago – 8 sep y 9 – 18 sep. La pregunta: si Softland, Access Corp, Softdial, Bitcode o Alegra ya
+estaban en primavera, o si entraron o se pusieron más agresivos cuando el clic subió.
+
+### Para la revisión del 5 oct, además de lo ya listado
+
+- «Software»: si la nota volvió a 3 y el clic a ~4 USD; con las estadísticas de subasta, separar
+  mercado de puja.
+- «Búsqueda»: WhatsApp por 100 clics; si sigue por debajo de 4 con siete semanas, deja de ser racha.
+- Opción, no recomendación: devolver el correo a la vista arriba en `/software`, como en el sitio
+  viejo. Es un cambio visual: se propone y se espera. Hacerlo antes del 5 oct ensuciaría la lectura de
+  la nota.
 
 ## 18 sep 2026 — El formulario llegó a cero, y ya no es una sospecha: es el canal que eligen
 
