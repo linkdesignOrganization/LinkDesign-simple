@@ -3,6 +3,7 @@
 - [Accesos propios permanentes](accesos-propios-permanentes.md) — las credenciales de Ads, Search Console, DNSimple y Meta se conservan a propósito; no proponer revocarlas
 - [⏳ Plan nota de página de destino, en curso](plan-nota-pagina-destino-en-curso.md) — aprobado el 7 sep 2026, se ejecuta el 8 sep: cédula jurídica y horario en el pie, videos móviles; el plan vive en `docs/plan-nota-pagina-destino.md`; faltan razón social y cédula de Robert; **teléfono descartado** (las llamadas no son canal)
 
+- [Corte de sitio del 8 jun 2026](corte-sitio-8-jun-2026.md) — antes era LinkDesign2.0: el correo copiado a mano contaba, estaba arriba en `/software`, y «Software» anunciaba web; no comparar tasas de contacto de antes y después sin eso
 - [Google Ads conversion setup](google-ads-conversion-setup.md) — estrategia de puja (Maximizar valor de conversión), Count:One y las acciones de conversión del sitio
 - [Qué acciones pujan de verdad](google-ads-objetivos-de-puja.md) — medir no es pujar: mirar `conversion_goal_campaign_config` PRIMERO; Argentina usa un objetivo personalizado y toda acción nueva hay que agregarla a mano o no puja
 - [Acceso a la API de Google Ads](google-ads-api-access.md) — nivel Basic, service account y scripts propios en `~\.google-ads\` (sin MCP)
@@ -16,7 +17,7 @@
 - [Sitios gemelos LinkDesign y Kravõnia](sitios-gemelos-linkdesign-kravonia.md) — dos sitios fork con la misma arquitectura (CR y Argentina); un cambio en uno suele aplicar al otro
 - [SSG + hidratación](hidratacion-y-prerender.md) — es SSG sobre SWA y así corresponde (Azure no soporta SSR de Angular); desde 2026-08-17 sí hidrata: CLS 0,389 → 0,0006. Verificar con `ngh=` por curl
 - [El LCP lo fijan los videos](lcp-dominado-por-videos.md) — ~6 s en 4G móvil por el carrusel, no por el renderizado; pendiente, y el `preload="metadata"` NO se toca
-- [Archivo del caso Azure SWA](azure-swa-case-tracking-file.md) — el tracking del caso de soporte por sobrefacturación vive en `LinkDesign\webOld\LinkDesign2.0`, no en este repo
+- [Archivo del caso Azure SWA](azure-swa-case-tracking-file.md) — el tracking del caso de soporte por sobrefacturación vive en `LinkDesign\webOld\LinkDesign2.0`, no en este repo; el vigilante diario deja `AZURE-SWA-ALERTA.md` ahí si algo cambió, y desde el 2026-09-24 acumula los avisos hasta que se borra
 - [Google Ads de Zacate Tierra Fertil](zacate-tierra-fertil-ads.md) — cuenta 6593270911: CPA ~1.1, presupuesto crónicamente corto (caso inverso a LinkDesign), keyword "cesped" QS 3 con 76% del gasto
 - [Deploy de LinkDesign-simple en Azure](project-linkdesign-azure-deploy.md) — SWA Standard en CEFSA-prod, CI/CD GitHub Actions; gotchas: .npmrc legacy-peer-deps y mime video/mp4
 - [Scroll de navegación global](scroll-de-navegacion.md) — nueva ruta arriba, back con reintentos; NUNCA parches de scrollTo por página (src/app/scroll-restoration.ts, idéntico en ambos sitios)
