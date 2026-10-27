@@ -1,7 +1,7 @@
 # Memory Index
 
 - [Accesos propios permanentes](accesos-propios-permanentes.md) — las credenciales de Ads, Search Console, DNSimple y Meta se conservan a propósito; no proponer revocarlas
-- [⏳ Plan nota de página de destino, en curso](plan-nota-pagina-destino-en-curso.md) — aprobado el 7 sep 2026, se ejecuta el 8 sep: cédula jurídica y horario en el pie, videos móviles; el plan vive en `docs/plan-nota-pagina-destino.md`; faltan razón social y cédula de Robert; **teléfono descartado** (las llamadas no son canal)
+- [Nota de página de destino: vía agotada](nota-pagina-destino-agotada.md) — copy, cédula/horario y videos livianos no la movieron (Por debajo en las 4 keywords, jun–oct 2026); no proponer cambios de página «para la nota»; **teléfono descartado** (las llamadas no son canal)
 
 - [Corte de sitio del 8 jun 2026](corte-sitio-8-jun-2026.md) — antes era LinkDesign2.0: el correo copiado a mano contaba, estaba arriba en `/software`, y «Software» anunciaba web; no comparar tasas de contacto de antes y después sin eso
 - [Google Ads conversion setup](google-ads-conversion-setup.md) — estrategia de puja (Maximizar valor de conversión), Count:One y las acciones de conversión del sitio
@@ -9,9 +9,9 @@
 - [Acceso a la API de Google Ads](google-ads-api-access.md) — nivel Basic, service account y scripts propios en `~\.google-ads\` (sin MCP)
 - [Estadísticas de subasta: sólo en la UI](auction-insights-solo-ui.md) — la API tiene `auction_insight_*` pero el token no está en la lista blanca (cerrada); la fila «Usted» sale con `top_impression_percentage`, no con `search_top_impression_share`; el «ranking superior» es derivado; foto de competidores de sep 2026
 - [Acceso a la Search Console API](search-console-api-access.md) — misma service account, permiso Completo, módulo `gsc.py`; ojo: país es `cri` no `crc`
-- [Estructura de campañas Google Ads](google-ads-estructura-campanas.md) — dos mercados espejo: Búsqueda/Software (CR) y Búsqueda #2/Software #2 (Argentina, Kravõnia); horario L-V 8-17; ~225 negativas en dos niveles
+- [Estructura de campañas Google Ads](google-ads-estructura-campanas.md) — dos mercados espejo: Búsqueda/Software (CR) y Búsqueda #2/Software #2 (Argentina, Kravõnia); horario L-V 8-17; ~225 negativas en dos niveles; **«Software» desde el 26 oct 2026: 10/día con estrategia de cartera y techo de CPC 4,50**
 - [Techo y fallas del SEO orgánico](seo-organico-techo-y-fallas.md) — comparado con Zacate: el mercado es 5× más chico y la competencia es del propio oficio; techo 50–180 visitas/mes. Arreglable: `/corporate` y `/weblab` en 404 sin 301, 15 de 40 URLs sin rastrear, y el 51% de las apariciones son ruido de la palabra «link». **No** es contenido, ni antigüedad, ni técnico
-- [El CRM como fuente de verificación](crm-como-fuente-de-verificacion.md) — Ads dice volumen y costo; solo el CRM sabe qué canal produce clientes. Cualquier conclusión sobre calidad de leads se verifica ahí
+- [El CRM como fuente de verificación](crm-como-fuente-de-verificacion.md) — Ads dice volumen y costo; solo el CRM sabe qué canal produce clientes. Cualquier conclusión sobre calidad de leads se verifica ahí; **las citas no: viven en las confirmaciones de cal.com en Gmail** (26 oct 2026, el CRM no carga ninguna)
 - [CRM repo y scoring compartido](crm-repo-y-scoring-compartido.md) — el CRM es un repo hermano; el lead scoring está duplicado a mano **y desde 2026-08-11 candado por 22 vectores compartidos (idénticos en los 3 repos)**; regla: ESTE sitio es la fuente de verdad (alimenta el value de Ads), si hay divergencia se alinea el CRM
 - [Imagen OG y el recorte de WhatsApp](og-image-recorte-whatsapp.md) — WhatsApp recorta al cuadrado central (630 de 1200), así que el logotipo no puede pasar de ~45% del ancho; desde 2026-08-11 la tarjeta muestra el logotipo «Link Design» y no el monograma; ojo: `SeoService.defaultImage` pisa el `og:image` del index.html
 - [Sitios gemelos LinkDesign y Kravõnia](sitios-gemelos-linkdesign-kravonia.md) — dos sitios fork con la misma arquitectura (CR y Argentina); un cambio en uno suele aplicar al otro

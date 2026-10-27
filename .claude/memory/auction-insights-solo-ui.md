@@ -1,8 +1,11 @@
 ---
 name: auction-insights-solo-ui
-description: Las estadísticas de subasta (auction insights) no salen por API con nuestro token; la fila «Usted» sí, con las métricas correctas; cómo leer las tablas cuando Robert las pasa por captura
+description: "Las estadísticas de subasta (auction insights) no salen por API con nuestro token; la fila «Usted» sí, con las métricas correctas; cómo leer las tablas cuando Robert las pasa por captura"
 metadata:
+  node_type: memory
   type: project
+  originSessionId: 947b50cf-5b26-4942-9ad5-08b88d2caf4c
+  modified: 2026-10-27T03:31:15.915Z
 ---
 
 Las métricas `metrics.auction_insight_*` existen en la API (v24, en `campaign`, `ad_group` y
@@ -37,3 +40,10 @@ métrica equivocada.
   «Búsqueda». Softland, Alegra y Qupos aparecen por la familia ERP/CRM de la amplia, ya medida y
   aceptada el 13–14 ago. Con presupuesto topado, la pérdida por presupuesto y la de ranking se
   intercambian semana a semana según la puja: no leer la primera como demanda represada.
+- Foto de oct 2026 (7 sep – 23 oct, bitácora del 26 oct §8): en las dos campañas **el clic lo sube la
+  puja propia, no los rivales**. «Software»: CPC 2,16–2,85 (primavera) → 3,94 → 4,90 con superior
+  absoluta propia 38 → 50 → 56 %, mientras Softland, Access Corp y Bitcode nos pasan menos que en
+  agosto y Softdial bajó del 10 %; entraron SaaS (deel, pipedrive, monday, odoo) por «crm»/«erp» con
+  solape de 2–6 %. «Búsqueda»: volvió atomsoluciones.com y entró **lovable.dev** (constructor con IA,
+  10 %); posición propia igual. Para comparar contra primavera, la tabla de «Software» del 1 mar –
+  31 may 2026 ya está en la bitácora: no volver a pedirla.

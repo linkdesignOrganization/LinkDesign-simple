@@ -2465,3 +2465,441 @@ Hecho en los tres repos a la vez, vectores compartidos actualizados. **Efecto me
 value:** solo el lead que escribía empresa y estaba a menos de 10 puntos de un corte baja una
 categoría (cold 36 → nurture 30, warm 48 → cold 36, hot 60 → warm 48); los demás no se mueven. Al
 comparar valor por costo antes y después de esta fecha, separar este efecto del de comportamiento.
+
+## 26 oct 2026 — La revisión del 5 oct, tres semanas tarde: «Búsqueda» cruza su umbral, la nota no se movió y las citas de cal.com no llegan al CRM
+
+Pedida por Robert («ya toca revisar según la bitácora»). La cita del lunes 5 oct no se hizo; se hace
+hoy con **siete semanas desde el 7 sep** (35 días hábiles; el 15 sep fue feriado). Sólo Costa Rica,
+como las dos revisiones anteriores. **No se tocó nada en Google Ads.**
+
+### Verificaciones previas
+
+- Repo al día con `origin/main` antes de leer esta bitácora (lección del 17 sep). `verificar_acceso.py`
+  en verde en sus cinco escalones.
+- **Nada cambió en las campañas**: `change_event` del 27 sep al 26 oct no tiene un solo cambio fuera
+  de las negativas de grupo. Búsqueda 10/día, Software 15/día, Maximizar valor sin objetivo, estrategia
+  `ENABLED`.
+- **Las negativas diarias se cortaron el 6 oct.** En la ventana de 30 días hay tres tandas (29 sep 36,
+  1 oct 52, 6 oct 64, repartidas parejo en las cuatro campañas) y ninguna después; en septiembre eran
+  ~233 por campaña al mes. Las agrega Robert a mano, así que no es una rutina rota. Los términos
+  visibles del 5–23 oct siguen limpios (§ laterales).
+- **El sitio no cambia desde el 22 sep** (último commit en `src/`): la ventana 22 sep – 23 oct está
+  libre de cambios de página. Antes de eso entraron, dentro de la ventana, el scoring corregido (9 sep),
+  el hub y las fichas reportando agendar y WhatsApp (9 sep), cédula, horario y videos móviles (10 sep)
+  y el formulario en `/contacto` (19 sep).
+- Rezago cero otra vez: por fecha de clic y por fecha de conversión coinciden acción por acción. La
+  última semana (19–23 oct) igual queda como provisional.
+- Corrección menor: la pérdida por presupuesto de «Búsqueda» en el 14 ago – 4 sep da hoy 21,4 % (la
+  tabla del 7 sep dice 19,6 %). La cuota también se revisa con el tiempo; no cambia ningún veredicto.
+
+### 1. La nota de página de destino: Por debajo en las cuatro, todas las semanas. Esta vía se agotó
+
+| keyword | QS 7 sep | QS hoy | anuncio | CTR esp. | página |
+|---|---:|---:|---|---|---|
+| Búsqueda (CR) | 5 | **5** | Por encima | Promedio | **Por debajo** |
+| Software (CR) | 3 | **3** (2 las semanas del 14 y 21 sep) | Por encima | Por debajo | **Por debajo** |
+| Búsqueda #2 (AR) | 6 | 6 | Promedio | Por encima | **Por debajo** |
+| Software #2 (AR) | 4 | 4 | Promedio | Promedio | **Por debajo** |
+
+`historical_landing_page_quality_score` da `BELOW_AVERAGE` en **todas** las semanas-keyword del 27 jul
+al 19 oct, sin una excepción, y ya son seis semanas desde cédula, horario y videos móviles (Búsqueda #2
+sola juntó ~5.600 impresiones). El 7 sep quedó escrito qué decir si pasaba esto: **la nota no se mueve
+con copy, datos legales ni peso de la página, y esa vía está agotada.** No conviene hacer más cambios
+de página con la nota como objetivo; lo que una página nueva logre se mide en contactos, no acá.
+
+El QS 2 de «Software» las semanas del 14 y 21 sep fue la relevancia del anuncio (Por encima →
+Promedio), sin cambio nuestro, y volvió sola el 28 sep.
+
+### 2. «Búsqueda»: cruza el umbral de leads serios por primera vez desde julio, con letra chica
+
+| ventana | háb. | clics | costo | CPC | CTR | perd. presup. | perd. rank | WhatsApp | serios | serios/100 | WhatsApp/100 | USD/serio |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 14 ago – 4 sep | 16 | 79 | 202,34 | 2,56 | 7,5 % | 21,4 % | 37,4 % | 4 | 1 | 1,3 | 5,1 | 202 |
+| 7 sep – 4 oct | 20 | 95 | 305,97 | 3,22 | 9,5 % | 51,4 % | 14,1 % | 7 | 5 | 5,3 | 7,4 | 61 |
+| 5 – 23 oct | 15 | 76 | 203,07 | 2,67 | 10,5 % | 41,6 % | 24,8 % | 5 | 4 | 5,3 | 6,6 | 51 |
+| **7 sep – 23 oct** | 35 | **171** | **509,04** | **2,98** | 9,9 % | **47,5 %** | 18,4 % | **12** | **9** | **5,3** | **7,0** | **57** |
+
+| criterio (7 sep) | umbral | medido | veredicto |
+|---|---|---|---|
+| volver a 15/día | ≥ 4 serios por 100 clics | **5,3** (9 en 171) | **SÍ en Ads**, frágil: ver abajo |
+| demanda represada | pérdida por presupuesto > 35 % | **47,5 %** | SÍ en el número, **NO en el fondo** |
+| WhatsApp (racha o cambio, 17 sep) | — | 10,3 por 100 desde el 18 sep | **Era racha. Cerrado.** |
+
+**Los serios son 2 correos y 7 clics de «Agendar reunión»**, y la reunión es el clic que abre cal.com,
+no una cita tomada. Moviendo los bordes, el número vive en el umbral: 14 ago – 23 oct da 4,0;
+22 sep – 23 oct, 4,7; y el 18 sep aportó **3 reuniones en un solo día** (6 clics, value 44 cada una,
+ninguna reserva en cal.com ese día), que con toda probabilidad son una sola persona volviendo por el
+anuncio. Sin ese día: 6 en 171, **3,5**. Lo que dice cal.com sobre las otras cuatro está en el §4.
+
+**La pérdida por presupuesto subió por la puja, no por la demanda.** Es la firma de la puja propia
+anotada el 17 sep: CPC 2,56 → 2,98, pérdida por ranking 37 → 18 %, pérdida por presupuesto 21 → 47 %,
+posición plana (superior 82,9 → 83,0 %, superior absoluta 49,8 → 49,9 %), y las subastas elegibles no
+crecieron (~840 → ~720 por semana). Con el tope puesto, la puja decidió pagar más por clic y quedarse
+sin plata más seguido. El caso extremo es la semana del 28 sep: 12 clics a **7,31** (9,47 el 28; 12,93
+el 2 oct, dos clics de «diseñadores de paginas web costa rica» por 25,86) y un tercio de las subastas
+habituales. Fue una sola semana, coincide con el cierre de mes y no se repitió en octubre.
+
+**WhatsApp: la caída del 17 sep era racha.** La prueba limpia es la ventana posterior a formular la
+hipótesis: del 18 sep al 23 oct, 12 en 117 clics (10,3 %), contra la tasa base de 9,0 %. Moviendo los
+bordes queda entre 6,6 y 9,4 %. Se cierra la pregunta.
+
+### 3. «Software»: el veredicto no cambia; el clic sigue subiendo y aparecen leads de software interno
+
+| ventana | háb. | clics | costo | CPC | CTR | perd. presup. | perd. rank | sup. abs. | WhatsApp | serios | serios/100 | ratio |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 14 ago – 4 sep | 16 | 84 | 330,87 | 3,94 | 10,1 % | 44,5 % | 30,1 % | 50,2 % | 6 | 2 | 2,4 | 0,54 |
+| 7 sep – 4 oct | 20 | 82 | 421,54 | 5,14 | 6,2 % | 37,2 % | 31,9 % | 57,2 % | 6 | 3 | 3,7 | 0,43 |
+| 5 – 23 oct | 15 | 68 | 313,69 | 4,61 | 6,6 % | 33,2 % | 38,2 % | 53,3 % | 4 | 2 | 2,9 | 0,47 |
+| **7 sep – 23 oct** | 35 | **150** | **735,23** | **4,90** | 6,4 % | 35,4 % | 34,8 % | 55,5 % | **10** | **5** | **3,3** | **0,45** |
+
+| criterio | umbral | medido | veredicto |
+|---|---|---|---|
+| 20/día porque el QS se recupera | CPC ≤ 3 | **4,90** con QS 3 | **NO** |
+| gate del 23 jul (20/día) | perd. presupuesto > 35 % **y** ratio ≥ 1,2 | 35,4 % ✓ (justo) · **0,45** ✗ | **NO** |
+
+- **El clic sube otra vez**: 3,94 → 4,90 (+24 %) y estamos más arriba (superior absoluta 50 → 55,5 %).
+  CPC arriba con posición arriba es pagar más para salir primero; si además los rivales empujan, sólo
+  lo dicen las estadísticas de subasta (pedidas, abajo). Hay clics sueltos de 8–10 USD entre el 21 sep
+  y el 1 oct, y uno de **24,89** el 28 sep: el mismo cierre de mes que en «Búsqueda».
+- **El CTR bajó de 10,1 a 6,4 %** sin cambio de anuncio. La amplia está mostrando más «crm» (61
+  impresiones), «erp» (45) y «erp costa rica» (17), todas sin clic, y las subastas elegibles de octubre
+  subieron a ~1.350 por semana. No cuesta dinero ni toca el QS (7 sep).
+- **Correo: 4 clics de copiar** (17, 23 y 29 sep, 8 oct), todos desde computadora y tres a la misma
+  hora que un WhatsApp de la campaña. Ninguno tiene lead en el CRM; **contra la bandeja de hola@**, sólo
+  el del 17 sep (clic de las 10, término «comparasoftware») tiene un correo de prospecto nuevo: a las
+  10:37 el **C.T.P. de Matapalo** (MEP) pidió una proforma de software y hardware para un laboratorio
+  que simula un hotel de 35 habitaciones, y Robert respondió con un pliego de preguntas. **Probable de
+  «Software»**, con el mismo argumento que el hotel (copias raras, único correo nuevo del día); los
+  clics de computadora de ese día figuran en San José, Uruca y San Isidro, pero una red del MEP puede
+  salir por San José. Los días 23 y 29 sep y 8 oct no trajeron correos de prospectos (sólo clientes,
+  una encuesta de CONARE y un freelancer ofreciendo servicios).
+- **Lo nuevo del CRM: cuatro leads de «Software Interno» desde el 9 sep**, cuando en toda la historia
+  anterior había tres. Antonio Salazar (WhatsApp 9 sep, en espera; además reservó en cal.com el
+  10 sep), Finca ganadera (WhatsApp 1 oct, perdido), Grupo ACA DECR (WhatsApp 20 oct, nuevo y
+  archivado en el CRM, aunque el 26 oct reservó en cal.com para cotizar «control de proyectos») y
+  BALBECK (un conocido, no viene de Ads). **Cruzados con la hora del primer WhatsApp que dio Robert**
+  (mismo método que en «Búsqueda», §4): **Antonio Salazar vino de «Software»** (28 ago 16:09; la visita
+  paga de `/software` deja el sitio a las 16:08, Ads tiene un WhatsApp de «Software» desde computadora
+  con clic de las 15, y a las 16:09 entra una visita con referrer `l.wl.co`, el redirector de enlaces
+  de WhatsApp). **Finca ganadera vino de «Software»** (25 sep 8:29; WhatsApp de «Software» con clic de
+  celular de las 8). **Grupo ACA no vino de un anuncio** (19 oct 17:06; ningún contacto de Ads ese día
+  ni visita paga después de las 15; dos visitas sin anuncio a `/en/desarrollo-de-software-costa-rica`
+  dejan el sitio a las 16:57 y 16:59). Matiza la conclusión del 17 sep («"Software" nunca fue una
+  fuente de proyectos de software»): ahora sí entran consultas de software, aunque ninguna cerró.
+
+### 4. Las citas de cal.com no llegan al CRM
+
+Las confirmaciones de cal.com del Gmail de hola@ (7 sep – 26 oct) traen invitado, zona horaria,
+teléfono y el campo «¿Sobre qué te gustaría hablar?». Son **21 reservas en pie de 16 personas** (más
+una cancelada y una reprogramación), todas de Costa Rica salvo dos clientes con zona de Nueva York y
+Bruselas; ninguna argentina. Buscadas en `leads` por `contactName` (no sólo por empresa: una primera
+pasada por empresa dio mal dos personas), **el CRM tiene a 12 de las 16**: 7 como clientes y 5 como
+prospectos, éstos entrados por WhatsApp o Email. **Desde UTURN (3 sep) no entró ni un lead por cita
+(«Otro»).**
+
+| grupo | personas | reservas | qué pidieron |
+|---|---:|---:|---|
+| clientes actuales (Expat Legal Advisors, Pacific Star, Xceed Sports and Travel, Quality Flooring, Deluxe Surfaces, UTURN, Jubilados en Acción, y la reserva del 19 oct, cliente antiguo según Robert, que no figura en el CRM) | 8 | 13 | propuestas, «Herramienta de cotización», «Herramienta de IA para búsqueda en documentos», «Página web, proyecto especial», «Sitio web de AJA» y «Contrato» |
+| prospectos con lead en el CRM (CoopeTerrazú, Antonio Salazar, BLD, Castro Carazo, Grupo ACA) | 5 | 5 | diseño y desarrollo web, portal de universidad, control de proyectos |
+| prospectos **sin** lead en el CRM | 2 | 2 | «Diseño página web» (6 oct), «Sitio Web» (5 oct) |
+| sin identificar ni en el CRM (tema vacío, correo gratuito) | 1 | 1 | — (28 sep) |
+
+Las reservas del 12 y 14 oct («Sitio web de AJA», después «Contrato») son del contacto de **Jubilados
+en Acción**, lead de Email del 24 mar que pasó a cliente en octubre: un cierre que el CRM sí registra.
+
+**Cruce con los clics de «Agendar reunión» de Ads** (Costa Rica, por día de clic contra día de
+creación de la reserva en hora local):
+
+| clic | campaña | reserva ese día |
+|---|---|---|
+| 18 sep ×3 | Búsqueda | ninguna (la siguiente, el 19, es de un cliente actual desde Bruselas) |
+| 6 oct | Búsqueda | **sí: prospecto nuevo, «Diseño página web», sin lead en el CRM** |
+| 7 oct | Búsqueda | ninguna |
+| 21 oct | Búsqueda | ninguna |
+| 22 oct | Software | sí, pero es un cliente actual (UTURN, que ya había reservado el 1 y el 7 sep) |
+| 23 oct | Búsqueda | sí, pero es un cliente actual (Pacific Star, volviendo por el anuncio) |
+
+**De 8 clics de «Reunión» en Costa Rica, uno es la cita de un prospecto nuevo** y dos son de clientes
+actuales que volvieron por el anuncio. Con eso, los serios
+verificables de «Búsqueda» en la ventana son **3 en 171 clics** (los 2 correos, que no tienen lead de
+Email en el CRM esos días, y esa cita): **1,8 por 100, debajo del umbral de 4**. El 5,3 de Ads mide
+clics en el botón, no citas.
+
+**El camino que sí produce citas pasa por WhatsApp.** Cuatro de los cinco prospectos que sí están en
+el CRM entraron como WhatsApp y después reservaron (el enlace de cal.com se manda por el chat). De
+dónde venía cada WhatsApp no se puede saber desde los datos: de las siete reservas de personas nuevas
+de la ventana (sin contar la del 6 oct), tres caen el mismo día que un WhatsApp de «Búsqueda» (21 y
+28 sep, 5 oct), pero esa campaña registra WhatsApp en 12 de los 35 días hábiles, así que por azar se
+esperaban ~2,4 (P ≈ 0,45). **Ese cruce no dice nada**; una primera versión de este párrafo eligió seis
+reservas a dedo (una de ellas resultó ser de un cliente) y lo leyó como indicio. Lo resuelve Robert en
+minutos, mirando si esas personas le escribieron primero por WhatsApp y si llegaron por Google.
+
+**Verificado con las visitas del sitio (misma sesión, a pedido de Robert).** `sitesessions` no registra
+botones, pero su `entryGclid` se cruza con `click_view.gclid` (un día por consulta): las 37 visitas
+pagas de los cinco días aparecen en Ads, cada una en la campaña de su página de entrada. Además, una
+visita con cookie de anuncio que toca «Agendar» genera una «Reunión» en Ads, y ninguno de los cinco
+días tiene una: si alguna vino de un anuncio, reservó por el camino WhatsApp → enlace de cal.com.
+
+| reserva | visitas cerca de la hora | lectura |
+|---|---|---|
+| reserva | WhatsApp de Ads ese día (`segments.hour`, hora del clic) | visitas cerca de la hora | lectura |
+|---|---|---|---|
+| 7 sep 09:45, CoopeTerrazú | **ninguno de «Búsqueda»**; uno de «Software», clic de las 8 | pagas de «Software» 08:28 y 08:50–08:53; orgánica de Bing 09:28 | no vino de «Búsqueda» |
+| 21 sep 15:38, BLD | «Búsqueda», clic de las 12 | paga de «Búsqueda» 12:48–12:51; directa a `/contacto` 15:35 | **confirmado**: escribió a las 12:49 |
+| 28 sep 10:09 | «Búsqueda», clic de las 10 | paga de «Búsqueda» 10:01–10:03 (4 páginas) | **confirmado**: escribió a las 10:01 |
+| 5 oct 17:32 | «Búsqueda», clic de las 14 | paga de «Búsqueda» 14:27–14:32; ninguna a la hora de reservar | **confirmado**: escribió a las 14:30 |
+| 19 oct 13:40 | ninguno | ninguna paga cerca | cliente antiguo (Robert) |
+
+**CoopeTerrazú** escribió por primera vez por WhatsApp el 7 sep a las 9:33 (dato de Robert) y reservó a
+las 9:45. «Búsqueda» no registró WhatsApp ese día, así que no vino de ahí. El único que contó Ads es de
+«Software», con el clic entre las 8 y las 9: si nadie más escribió esa mañana, CoopeTerrazú entró por
+el anuncio de «Software» a `/software` y escribió unos 40 minutos después. Si no, entró por la visita
+orgánica de Bing de las 9:28.
+
+**Las tres confirmadas por Robert (26 oct) con la hora de su primer WhatsApp**, que cae al minuto de la
+visita paga de «Búsqueda»: BLD 12:49 (visita 12:48), la del 28 sep 10:01 (visita 10:01), la del 5 oct
+14:30 (visita 14:27). **Tres WhatsApp de «Búsqueda» que Ads contó terminaron en cita.**
+
+**«Búsqueda» recontada con citas: 4 citas de prospectos nuevos en 171 clics** (1 por el botón, 3 por
+WhatsApp), **127 USD por cita**.
+
+**Las dos copias de correo, contra la bandeja de hola@** (el CRM no tenía leads de Email esos días, y se
+descartaron antes por eso: error, el CRM tampoco carga todos los correos):
+
+- **8 sep, clic de las 9**: a las 10:07 entró «Cotización de software» del Hotel Paraíso Verde
+  (Guanacaste), un sistema de control de ingreso de personal, proveedores y vehículos; Robert respondió
+  el 17 sep. No está en el CRM. **Vino de «Búsqueda», casi seguro.** La copia de correo de Ads es de un
+  clic **desde celular** entre las 9 y las 10 (`segments.hour` + `segments.device` sobre `campaign`),
+  que también hizo scroll. Las dos visitas pagas de «Búsqueda» desde celular ese día son, según
+  `click_view.location_of_presence`, **Sardinal, Guanacaste** (1,0 min activo, dejó la página a las
+  10:08) y Puntarenas (0 min, 10:09): el scroll y la copia sólo caben en la primera. Guanacaste es el 5 %
+  de los clics de las dos campañas en la ventana (15 de 321), así que el único clic de Guanacaste del
+  día, el que copió el correo una hora antes del pedido de un hotel de Guanacaste, no es azar. Que la
+  página siguiera abierta hasta las 10:08 encaja con alguien que escribió desde la computadora con el
+  celular al lado. «Software» queda descartada: sus visitas de ese día son de Heredia y Alajuela, sin
+  copia. Ese día `sitesessions` guardó 14 de los 15 clics de Costa Rica (los 26 de `click_view`
+  incluyen Argentina); una primera versión de este párrafo dejó la campaña como incierta por leer mal
+  las horas (ver la nota de método abajo).
+- **22 sep, clic de las 12**: ningún correo de prospecto nuevo del 22 al 25 sep. La misma hora tiene
+  un WhatsApp de «Búsqueda» y una sola visita paga de `/web` (12:56–12:59, 12 páginas): probablemente
+  la misma persona copió el correo y tocó WhatsApp. **No escribió**: Robert no tiene ningún primer
+  mensaje ese día (26 oct).
+
+**Nota de método: la hora de `sitesessions` no es la entrada.** El sitio envía la sesión en el primer
+`visibilitychange→hidden` o `pagehide` (`session-language.service.ts`), así que `createdAt` es **la
+primera vez que la persona deja la página** (se va a WhatsApp, a Gmail, a cal.com o cierra), y
+`updatedAt` la última. Lo confirma Ads: la visita de «Software» que figura a las 09:39 es de un clic de
+las 8. Leídas así, las confirmaciones de WhatsApp quedan más firmes: BLD dejó la página a las 12:48 y
+escribió a las 12:49; la del 28 sep, 10:01 y 10:01; la del 5 oct, 14:27 y 14:30.
+
+**Contactos útiles de «Búsqueda» en la ventana: 5** (4 citas confirmadas y el pedido del hotel), **~100
+USD cada uno**. Con los 2 correos son 6 serios, 3,5 por 100: el umbral escrito
+(≥ 4) sigue sin cumplirse, pero ahora se ve que medía un proxy equivocado. Contaba como serio el clic de
+«Agendar» (1 cita de 7) y dejaba afuera el WhatsApp (3 citas de 12).
+
+**El value de las conversiones está al revés para citas.** `CONTACTO_BASE_VALUE` en `ads.service.ts`
+da `scheduleMeeting: 60`, `emailCopy: 50` y `whatsapp: 10` (×0,7–1,0 por sesión): la «Reunión» vale seis
+veces un WhatsApp y en citas rinde la mitad (14 % contra 25 %). La comparación directa entre las dos
+tasas no es significativa con 7 y 12 casos, pero contra la escala sí lo es. Aun suponiendo que el
+WhatsApp rindiera sólo 10 % (se midió 25 %), para valer seis veces más la «Reunión» tendría que rendir
+60 %, y sacar 1 de 7 con 60 % tiene P ≈ 0,02. En la ventana la puja de «Búsqueda» aprendió con 318 de
+value de «Reunión» (132 de ellos de una sola persona el 18 sep, que no reservó) contra 89 de
+WhatsApp: **está buscando gente que toca «Agendar», y esa gente casi nunca agenda.** El correo (50) no
+entra en esto: se calibró contra cierres el 7 sep y no hay dato nuevo que lo mueva.
+
+**Consecuencias para lo que se viene midiendo:**
+
+- El criterio de «Búsqueda» en el §2 pasa en Ads y **no pasa verificado**. Puede cambiar si las citas
+  que llegaron por otro camino vinieron de un anuncio de «Búsqueda». Las candidatas eran cinco
+  (CoopeTerrazú, BLD, 28 sep, 5 oct y 19 oct); la del 19 oct es un cliente antiguo (Robert) y
+  CoopeTerrazú queda descartada abajo. Hacían falta cuatro para llegar a ~7 serios en 171 clics (4,1
+  por 100).
+- **El CRM pierde poco, pero no ve el paso de la cita.** Faltan 4 de 16 personas (2 prospectos, un
+  cliente antiguo y 1 sin identificar). Lo que no se puede leer es qué prospectos llegaron a reunión: el lead guarda el primer
+  canal (WhatsApp, Email), y la cita que vino después no cambia nada.
+- La acción «Contacto Reunión» tiene value 42–54 y casi nunca es una cita. No se toca hoy; con la
+  escala vigente pesa poco en la puja (8 en siete semanas), pero conviene saberlo antes de pensar en
+  tROAS.
+
+### 5. CRM: tasas de cierre y formularios
+
+Costa Rica, sin las 15 cargas masivas y **sin excluir archivados** (trampa del 17 sep), foto de hoy:
+
+| canal | leads | ganados | perdidos | abiertos | cierre sobre resueltos |
+|---|---:|---:|---:|---:|---:|
+| WhatsApp | 18 | 3 | 10 | 5 | **23 %** |
+| Email | 15 | 5 | 5 | 5 | **50 %** |
+| Otro (citas y referidos) | 8 | 4 | 1 | 3 | 80 % |
+
+La brecha WhatsApp / correo se mantiene en la dirección de la escala vigente (10 contra 50). **Values:
+sin cambios.**
+
+**Formularios de Costa Rica: cero desde el 7 jul**, también después del formulario en `/contacto` del
+19 sep (cinco semanas). Argentina sí recibió cinco desde el 29 sep, tres desde `contact_page`; eso es
+materia del experimento de `PLAN-FORMULARIO-CONTACTO.md` (lectura ~19 dic) y de la bitácora de
+Kravõnia.
+
+Sesiones pagas de CR en `sitesessions` (con `entryGclid`): 31–47 por semana, mitad `/web` y mitad
+`/software`, 0,7–1,6 minutos activos; el bajón a 24–31 de las semanas del 21 y 28 sep es el mismo de
+los clics caros. Coincide con Ads.
+
+### 6. Search Console: `/web` sigue subiendo despacio
+
+Costa Rica, por semana: 78–155 impresiones y posición media de 47 a **35,5** (semana del 19 oct), cero
+clics. La consulta principal es «diseño web costa rica» (92 impresiones en la ventana, posición 43). El
+pico de posición 19 de la semana del 14 sep es otra vez ruido de «link». Google sigue leyendo la página;
+no es tráfico todavía.
+
+### 7. Las acciones viejas siguen pujando con cero conversiones
+
+«Contacto» (`6925111133`) y «Contacto Argentina» (`7650100714`): **cero conversiones por fecha de
+conversión desde el 14 ago en las cuatro campañas**, y las dos siguen `primary_for_goal = true`. Era el
+pendiente 7 de este día y está sin hacer.
+
+Un detalle que la operación preparada el 9 sep no contempla: las campañas argentinas pujan por el
+**objetivo personalizado** `6458009700`, que lista a «Contacto Argentina» explícitamente. Pasarla a
+secundaria no la saca de ese objetivo; para sacarla de la puja argentina hay que quitarla de la lista
+(`CustomConversionGoalService`, reemplazando la lista completa). En Costa Rica sí alcanza con
+`primary_for_goal = false`: «Búsqueda» y «Software» pujan por la categoría `CONTACT/WEBSITE` de la
+campaña, sin objetivo personalizado. Con diez semanas en cero, el efecto sobre la puja es casi nulo en
+los dos mercados; es limpieza.
+
+### Hallazgos laterales, sin acción
+
+- **Términos, 5–23 oct (sin negativas nuevas)**: lo visible sigue en el rubro. En «Búsqueda», 60 % del
+  costo visible y la cabeza es «paginas web costa rica» (5 clics, 28,39). En «Software», 37 % visible;
+  los términos ajenos con clic son pocos y baratos («soluciones360» 12,88 y
+  «bestsoftwaredevelopmentcompany» 9,50 en toda la ventana; «link design», marca propia, 5 clics por
+  1,48). Cortar las negativas no se nota todavía.
+- Dispositivo, 7 sep – 23 oct: «Búsqueda» escritorio 2,82 / móvil 3,42 (el móvil dejó de ser más
+  barato); «Software» 5,05 / 4,33.
+
+### 8. Estadísticas de subasta (Robert las pasó el mismo 26 oct)
+
+La fila «Usted» cuadra con la API: «Software» 29,86 / 82,65 / 55,63 % (API 29,8 / 82,6 / 55,5) y
+«Búsqueda» 34,35 / 83,00 / 49,85 % (API 34,2 / 83,0 / 49,9), en cuota / parte superior / superior
+absoluta.
+
+**«Software»: el clic lo encareció nuestra puja, no los rivales.** Cuota · arriba nuestro · superior
+absoluta de cada uno:
+
+| | 1 mar – 31 may | 19 ago – 4 sep | 7 sep – 23 oct |
+|---|---|---|---|
+| CPC propio | 2,16–2,85 | 3,94 | **4,90** |
+| propia: cuota · superior absoluta | 20,1 · 38,4 | 25,4 · 49,9 | **29,9 · 55,6** |
+| softland.com | 11,5 · 67,9 · 52,8 | 14,3 · 62 · 23 | 16,1 · **52,6** · 36,6 |
+| accesscorp.com | no estaba | 11,1 · 69 · 49 | < 10 · **63,6** · 46,1 |
+| softdialcr.com | 10,4 · 41,8 · 21,2 | 11,4 · 59 · 61 | no figura (< 10 %) |
+| bitcode-enterprise.com | < 10 · 27,0 · 15,9 | 12,8 · 18 · 12 | 12,4 · **13,8** · 10,9 |
+| novussoftware.la | < 10 · 28,3 · 14,4 | < 10 · 32 · 13 | < 10 · 22,4 · 13,8 |
+
+Los rivales nos pasan menos que en agosto y nosotros salimos primeros más que nunca: CPC arriba con
+posición arriba es la firma de la puja propia. Contra la primavera, pagamos el doble por clic por salir
+primeros 56 % de las veces en vez de 38 %, con la misma keyword y QS 3, y eso no compró contactos
+mejores. Responde la pregunta del 17 sep: los rivales de hoy ya estaban en primavera salvo Access Corp,
+y no son los que subieron el precio. Entraron además SaaS por las búsquedas genéricas de la amplia
+(«crm», «erp»): deel.com (arriba nuestro 75 %), pipedrive, monday y odoo, con solapes de 2–6 % y sin
+efecto en el costo. **Sin acción**: si algún día se quiere bajar el clic de «Software», la palanca es la
+estrategia de puja, y no se toca junto con el cambio de value del punto 7.
+
+**«Búsqueda»: más competidores, misma posición.** Volvió atomsoluciones.com (cuota 12,1 %, solape 18 %,
+arriba nuestro 35 %; en agosto se había ido) y entró **lovable.dev**, un constructor de sitios con IA
+(10,4 %, solape 14 %, arriba 33 %), además de godaddy, hostinger, uplinecr e indexaweb bajo el 10 %. Nos
+pasan un tercio de las veces que coinciden; el único local que nos gana más de la mitad sigue siendo
+pixelcr.com (56 %, solape 12 %; antes 50 y 46). La superior absoluta propia no se movió (50,0 → 49,9 %);
+la cuota bajó de 42,7 a 34,4 % por presupuesto (perdida 21 → 47 %) mientras el CPC subía de 2,56 a 2,98
+y la pérdida por ranking bajaba de 37 a 18 %: otra vez la puja propia, con algo más de competencia.
+**Sin acción.** A vigilar en la próxima: lovable.dev, la primera herramienta de IA para hacer sitios
+que compite por «páginas web».
+
+### Decisiones — pendientes de Robert (26 oct 2026)
+
+Lo que los datos recomiendan, a falta de su decisión:
+
+1. **«Búsqueda» 10 → 15/día: no, por ahora.** Recontada con contactos útiles da 5 en 171 (2,9 por
+   100), debajo del umbral de 7; pero el umbral medía un proxy (§4). Trae 4 citas nuevas y el pedido
+   de cotización del Hotel Paraíso Verde en siete semanas, ~100 USD por contacto útil. El presupuesto conviene decidirlo **después** del punto 7 y con cuatro
+   semanas de lectura, porque los dos cambios juntos no se separan. La pérdida por presupuesto de 47 % no suma a
+   favor: es la puja pagando más caro el clic, no demanda represada.
+2. **«Software» sin cambios.** El gate sigue en NO (ratio 0,45) y el clic subió a 4,90. Lo bueno, los
+   leads de software interno, se vigila en el CRM.
+3. **Nota de página de destino: vía agotada.** No hacer más cambios de página con ese objetivo.
+4. **«Contacto» (`6925111133`) a secundaria: aplicado el 26 oct** con el OK de Robert
+   (`primary_for_goal = false` con máscara explícita, prueba en seco y lectura de vuelta; «Búsqueda» y
+   «Software» siguen pujando por `CONTACT/WEBSITE` sin ella). Cierra el pendiente 7 del 7 sep en Costa
+   Rica. Para «Contacto Argentina» hace falta quitarla del objetivo personalizado `6458009700`; quedó
+   anotado en la bitácora de Kravõnia.
+5. **Cargar las citas de cal.com en el CRM**: las 4 personas sin lead (2 prospectos, un cliente
+   antiguo y 1 sin identificar) y, de acá en adelante, cada reserva, a mano o con un webhook de cal.com hacia el CRM,
+   de forma que quede cuáles prospectos llegaron a reunión. Sin eso, ninguna revisión puede verificar
+   la calidad de los leads.
+6. **Estadísticas de subasta: hechas** (§8). El clic de las dos campañas lo sube la puja propia, no
+   los rivales; sin acción.
+7. **`scheduleMeeting` de 60 a 10: aplicado el 26 oct** con el OK de Robert, en los dos sitios
+   (`CONTACTO_BASE_VALUE` en `ads.service.ts`), al nivel del WhatsApp y sin tocar `emailCopy` (50) ni
+   el scroll (1) ni `LEAD_SCORE_ADS_VALUE`. Prueba nueva `ads.service.spec.ts` (agendar = WhatsApp,
+   correo = 5 × WhatsApp), vista fallar antes del cambio («expected 60 to be 10»); suites completas en
+   verde (Link Design 217, Kravõnia 223). Rige desde el deploy de ese día. Al leer después: el value
+   total de «Búsqueda» baja por aritmética, así que se mide en citas y no en ratio valor/costo; en
+   Kravõnia se hizo por paridad, sin revisar sus citas.
+
+8. **Bajar la inversión (Robert lo planteó el 26 oct): por «Software», no por «Búsqueda».** En la
+   ventana, «Búsqueda» costó 509 USD y trajo 5 contactos útiles (~100 cada uno); «Software» costó 735 y
+   trajo 2 (Finca ganadera, confirmada, y la proforma del C.T.P. de Matapalo, probable), ~370 cada uno,
+   pero son consultas de software, que es su trabajo; Antonio Salazar, de la ventana anterior, también
+   vino de ahí. La regla acordada era: si ninguno de los tres leads de software interno venía de
+   «Software», 5/día o pausa; si venían dos o tres, 10/día. Vinieron dos (Antonio Salazar y Finca
+   ganadera; Grupo ACA llegó sin anuncio). CoopeTerrazú sería un tercero si nadie más escribió el 7 sep
+   entre las 8 y las 9:30 (el WhatsApp de «Software» de ese día es de una tablet, clic de las 8).
+
+   **Antes de recomendar, Robert pidió estar seguros** (implicaciones con la subasta, o cambiar de
+   estrategia). Lo que se midió:
+
+   - **Bajar el presupuesto solo tiene efecto impredecible en esta cuenta.** «Búsqueda» 15 → 10 el
+     23 jul abarató el clic (3,29 → 2,55) con las mismas visitas; «Búsqueda» a 7,50 del 3 al 7 jul lo
+     disparó (6,50–9,70). Y en «Software» las semanas con más pérdida por presupuesto son las de CPC más
+     alto: con menos plata, la puja puede concentrarse en clics más caros.
+   - **Los clics caros salen el doble por contacto.** Días por tercil de CPC, 23 jul – 23 oct, contactos
+     de Ads (WhatsApp, correo, reunión, formulario):
+
+     | | baratos | medios | caros |
+     |---|---|---|---|
+     | «Software»: CPC · contactos/100 · USD/contacto | 2,91 · 7,3 · 40 | 4,29 · 8,3 · 52 | 7,11 · 10,0 · 71 |
+     | «Búsqueda»: idem | 1,77 · 10,5 · 17 | 2,59 · 10,3 · 25 | 4,77 · 13,8 · 35 |
+
+     La tasa de contacto sube algo en los días caros (no significativo: 9 contra 8 contactos en
+     «Software») y el costo por contacto casi se duplica. `segments.slot` no sirve para separar
+     posiciones: el 98 % de los clics ya es `SEARCH_TOP`.
+   - **El techo de CPC sin cambiar de estrategia existe sólo en cartera**:
+     `bidding_strategy.maximize_conversion_value.cpc_bid_ceiling_micros` (en `campaign` no hay campo
+     equivalente). Validado con `validate_only` el 26 oct: Google acepta una estrategia de cartera
+     «Maximizar valor de conversión» con techo de 4,50.
+   - **Descartado cambiar de tipo de estrategia**: Maximizar clics o CPC manual con concordancia amplia
+     abren la puerta al ruido (5.600 negativas por campaña lo muestran); tROAS no tiene señal y en
+     Zacate un objetivo «flojo» fijó el precio; frase duplicó el CPC en junio.
+
+   **Propuesta final: «Software» 15 → 10/día y techo de CPC de 4,50 con una estrategia de cartera
+   Maximizar valor de conversión.** Proyección con el perfil de los días baratos y medios (CPC ~3,56,
+   7,7 contactos por 100 clics): ~304 USD/mes, ~85 clics y ~6,6 contactos de Ads al mes, contra ~465,
+   ~105 y ~8,7 hoy, y contra ~68 clics y ~5,7 contactos si sólo se baja el presupuesto. Costos
+   aceptados: la superior absoluta propia bajaría de 56 % hacia el 38 % de la primavera (Softland y
+   Access Corp arriba más seguido), una o dos semanas de reaprendizaje por pasar a cartera, y
+   magnitudes medidas con contactos de Ads y no con útiles verificados. Si los clics bajan de ~60 al
+   mes, subir el techo a 5. «Búsqueda» queda con su presupuesto; el techo también le serviría (mismo
+   patrón), pero va en la revisión siguiente para no mezclarlo con el cambio de value de «Agendar».
+
+   **Aplicado el 26 oct 2026 con el OK de Robert**, por API, con prueba en seco antes de cada paso y
+   lectura de vuelta después: (1) estrategia de cartera «Software CR - Maximizar valor, techo CPC 4,50»
+   (`customers/6364218319/biddingStrategies/12289262293`, `MAXIMIZE_CONVERSION_VALUE`,
+   `cpc_bid_ceiling_micros = 4500000`, sin objetivo); (2) «Software» asignada a esa estrategia; (3)
+   presupuesto de «Software» 15 → 10/día (no compartido, una sola campaña). «Búsqueda» y las
+   campañas argentinas no se tocaron. **Cómo leerlo en la próxima revisión**: las primeras una o dos
+   semanas pueden mostrar «aprendizaje»; medir desde el 9 nov clics por mes (alarma bajo ~60), CPC
+   (esperado ~3,5), superior absoluta (esperada hacia el 38 % de primavera) y, sobre todo, contactos
+   útiles verificados con el método del §4 (hora del primer WhatsApp, bandeja de hola@, cal.com). «Búsqueda» no se toca: es lo más eficiente de la cuenta y bajarla a
+   7,50 en julio llevó el clic a 6,50–9,70. Las dos medidas (este recorte y el value de «Agendar») caen
+   en campañas distintas y se leen por separado. **Pendiente del OK de Robert.**
+
+**Próxima revisión: lunes 23 nov 2026, 9:00** (recordatorio en Calendar con aviso por correo y el
+guion en la descripción), o antes si el punto 1 se resuelve y se sube el
+presupuesto (entonces cuatro semanas desde el cambio).
