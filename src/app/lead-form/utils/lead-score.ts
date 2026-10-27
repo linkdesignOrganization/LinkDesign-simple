@@ -38,8 +38,8 @@ export interface LeadScoreResult {
  * Escala ×2 desde jul 2026 para ampliar el contraste contra SCROLL (value 1)
  * en Smart Bidding — ver docs/bitacora-ads-values-troas.md.
  * - `suspicious` → null: NO disparar conversión (señales muy negativas).
- * - Techo (`hot` = 60) iguala al evento "Agendar" del sitio, considerado
- *   la conversión más caliente posible.
+ * - Techo (`hot` = 60): el formulario es la conversión más caliente del sitio.
+ *   Hasta el 26 oct 2026 igualaba al evento "Agendar", que bajó a 10.
  */
 export const LEAD_SCORE_ADS_VALUE: Record<LeadScoreCategory, number | null> = {
   suspicious: null,

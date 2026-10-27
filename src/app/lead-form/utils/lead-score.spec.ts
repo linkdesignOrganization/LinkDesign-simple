@@ -86,7 +86,7 @@ describe('sessionQualityFactor (Opción A: solo penaliza, techo 1.0)', () => {
 });
 
 describe('modulateValueBySession (tabla Opción A acordada)', () => {
-  it('agendar (base 60): floja → 42, excelente → 60', () => {
+  it('base 60 (techo del formulario): floja → 42, excelente → 60', () => {
     expect(modulateValueBySession(60, poor)).toBe(42);
     expect(modulateValueBySession(60, ideal)).toBe(60);
   });

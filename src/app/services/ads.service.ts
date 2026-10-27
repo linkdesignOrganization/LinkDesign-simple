@@ -29,7 +29,7 @@ export const ADS_CONVERSIONS = {
   CONTACTO_WHATSAPP: 'AW-16767245191/PFEECM2UquEcEIe3n7s-',
   /** "Contacto Correo": click en copiar el correo (value base 50, modulado). */
   CONTACTO_CORREO: 'AW-16767245191/U_F7CMiVquEcEIe3n7s-',
-  /** "Contacto Reunión": click en agendar reunión (value base 60, modulado). */
+  /** "Contacto Reunión": click en agendar reunión (value base 10, modulado). */
   CONTACTO_REUNION: 'AW-16767245191/WVgrCMuVquEcEIe3n7s-',
   /** "Contacto Formulario": envío del formulario (value por scoring; lo dispara LeadFormService). */
   CONTACTO_FORMULARIO: 'AW-16767245191/VGKrCL6XquEcEIe3n7s-',
@@ -39,9 +39,11 @@ export const ADS_CONVERSIONS = {
 
 /**
  * Values base (USD) de cada click de contacto, ANTES de modular por calidad de
- * sesión. Reflejan la intención intrínseca del canal:
- *   agendar (60) > copiar correo (50) > WhatsApp (10).
- * Escala ×2 desde jul 2026 para ampliar el contraste contra SCROLL (value 1)
+ * sesión:
+ *   copiar correo (50) > agendar (10) = WhatsApp (10).
+ * Agendar valía 60 hasta el 26 oct 2026: el clic abre el calendario y casi nunca
+ * termina en cita, mientras que el WhatsApp sí lleva a citas. El correo se calibró
+ * contra cierres. Escala ×2 desde jul 2026 para ampliar el contraste contra SCROLL (value 1)
  * en Smart Bidding — ver docs/bitacora-ads-values-troas.md.
  * El value final se multiplica por `sessionQualityFactor` (0.7–1.0): una sesión
  * floja baja el value, una excelente lo deja en el base (techo = base, para que
@@ -50,7 +52,7 @@ export const ADS_CONVERSIONS = {
 export const CONTACTO_BASE_VALUE = {
   whatsapp: 10,
   emailCopy: 50,
-  scheduleMeeting: 60
+  scheduleMeeting: 10
 } as const;
 
 /**
@@ -111,7 +113,7 @@ export class AdsService {
     );
   }
 
-  /** Click en "Agendar reunión" (value base 60, modulado por calidad de sesión). */
+  /** Click en "Agendar reunión" (value base 10, modulado por calidad de sesión). */
   scheduleMeeting(): void {
     this.clicks.record('Agendar reunión');
     this.fireConversion(
