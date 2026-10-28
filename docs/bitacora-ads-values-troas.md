@@ -2900,6 +2900,9 @@ Lo que los datos recomiendan, a falta de su decisión:
    7,50 en julio llevó el clic a 6,50–9,70. Las dos medidas (este recorte y el value de «Agendar») caen
    en campañas distintas y se leen por separado. **Pendiente del OK de Robert.**
 
+   **Corregido el 27 oct a la noche: el techo de «Software» pasó de 4,50 a 10,00.** Los prospectos
+   verificados de «Software» entraron por clics de más de 4,50; ver la entrada «27 oct 2026 (noche)».
+
 **Próxima revisión: lunes 23 nov 2026, 9:00** (recordatorio en Calendar con aviso por correo y el
 guion en la descripción), o antes si el punto 1 se resuelve y se sube el
 presupuesto (entonces cuatro semanas desde el cambio).
@@ -2976,3 +2979,111 @@ tienen `ref`: su visita sigue saliendo solo por el método del §4 del 26 oct.
   `ref` en la URL → pregunta oculta → webhook firmado → cita con su visita y su lead → cancelación.
   Para Link Design falta solo crear el webhook (la pregunta oculta ya está).
 - «Llegó por» está en la ficha de leads, no en la de clientes.
+
+## 27 oct 2026 (noche) — Los prospectos entraron por los clics caros: el techo de «Software» sube a 10 y «Búsqueda» queda sin techo
+
+Robert preguntó si «Búsqueda» no debería tener también un techo de CPC, como «Software» y las dos
+campañas argentinas, y si conviene en Costa Rica la línea «¿Buscas trabajo?» que se puso en Kravõnia.
+Revisar la primera pregunta mostró que el techo de 4,50 que «Software» tiene desde el 26 oct se
+decidió con una medida que no veía a los prospectos.
+
+### El método del 26 oct medía mal los clics caros
+
+La decisión 8 del 26 oct comparó **días** por tercil de CPC contra **contactos de Ads**. Las dos cosas
+desdibujan el resultado: un día mezcla horas baratas y caras, y los contactos de Ads cuentan el botón
+«Agendar» (1 cita cada 7 clics) y repiten a la persona que toca dos botones. Hecho de nuevo por hora
+(`segments.hour`; una hora con un solo clic da el precio exacto de ese clic) y sólo con WhatsApp y
+correo, en «Búsqueda» (23 jul – 25 oct, corte en 3,50): **horas con contacto, 10,1 por 100 clics en las
+caras contra 3,4 en las baratas** (Fisher p ≈ 0,03). Google paga más cuando predice que la persona va a
+escribir, y en «Búsqueda» acierta.
+
+La prueba que decide es el precio del clic de cada prospecto verificado (los del §4 del 26 oct):
+
+| campaña | prospecto | precio del clic |
+|---|---|---|
+| Búsqueda | Hotel Paraíso Verde (correo, 8 sep, 9h) | **3,62** (exacto) |
+| Búsqueda | BLD (WhatsApp → cita, 21 sep, 12h) | **5,56** (exacto) |
+| Búsqueda | cita del 5 oct (WhatsApp, 14h) | **6,21** (exacto) |
+| Búsqueda | cita del 28 sep (WhatsApp, 10h) | ~13,64 (promedio de 2; ese día, 9,47) |
+| Búsqueda | cita del 6 oct («Agendar», 16h) | ~3,08 (promedio de 2) |
+| Software | Finca ganadera (WhatsApp, 25 sep, 8h, celular) | **16,13** (exacto) |
+| Software | C.T.P. de Matapalo, probable (correo, 17 sep, 10h) | ~7,21 (promedio de 2) |
+| Software | Antonio Salazar (WhatsApp, 28 ago, 15h) | ~5,31 (promedio de 3) |
+| Software | CoopeTerrazú, sólo posible (WhatsApp, 7 sep, 8h, tablet) | 1,62 |
+
+- **«Búsqueda»: 4 de 5 por encima de 3,50.** En el 7 sep – 23 oct los clics de más de 3,50 fueron 43 de
+  171 y costaron 298 USD (4 prospectos, ~75 cada uno); los baratos, 128 clics y 212 USD (1). Que 4 de 5
+  caigan en un cuarto de los clics por azar tiene P ≈ 0,016. Por dólar la diferencia no es concluyente
+  con cinco casos, pero apunta a favor de los caros. **Sin techo**: el que se proponía (3,50) habría
+  dejado afuera los clics de cuatro de los cinco.
+- **«Software»: los tres confirmados o probables, por encima de 4,50**; el único barato es el posible.
+  14 ago – 23 oct: por encima de 4,50, 90 clics y 683 USD; por debajo, 144 clics y 383 USD.
+- **«Búsqueda #2» (Argentina) da lo contrario**: de los 8 prospectos confirmados del 27 oct, 5 llegaron
+  por clics de menos de 3,50 (FENK 1,52, Hamburguesería 1,44, formularios 1,80, 1,05 y 1,46) y los tres
+  caros son promedios de 2–4 clics (Victoria ~4,12, silnett ~4,07, el formulario partido entre el 25 sep
+  y el 1 oct ~5,3–5,9). Caros: 108 clics, 613 USD, ~204 por prospecto; baratos: 297 clics, 530 USD, ~106.
+  **Su techo de 3,50 se sostiene.** «Software #2» tiene un solo prospecto: no se puede juzgar.
+
+En la cuenta las horas de `segments.hour` van en `America/Costa_Rica`; la tabla de la bitácora de
+Kravõnia las da en hora argentina (+3).
+
+### Por qué no se quitó el techo entero
+
+Robert: sin techo puede volver a pasar que un clic se lleve el día. Sin techo (23 jul – 25 oct, 15/día)
+hubo **15 clics sueltos de más de 10, uno por semana**, y un solo día con un único clic (28 sep, 24,89).
+Con 10/día la campaña dispone de ~14 por día hábil (sólo corre entre semana; con 15 gastó una mediana
+de 21,26 por día con clics), así que cada uno de esos clics se lleva casi el día. El mes no cambia
+(Google no pasa de ~304); lo que el clic caro le quita al día son clics. Por encima de 10 hubo 19 clics
+(6 %), 271 USD (19 %) y un prospecto, Finca ganadera.
+
+Lo de julio era otra cosa: 5,60 por día con frase y un clic promedio de 7,40, más caro que el día
+entero, todos los días.
+
+Opción elegida: **techo = un día de presupuesto**. Deja afuera el 6 % de los clics en vez del 37 % y
+conserva el rango de 5–8 de Antonio Salazar y el C.T.P.; un clic como el de Finca ganadera (16) no se
+compra a ese precio.
+
+### Aplicado (27 oct, 22:35 CR), por API, con el OK de Robert
+
+Estrategia de cartera `12289262293`: `cpc_bid_ceiling_micros` 4.500.000 → **10.000.000** y nombre
+**«Software CR - Maximizar valor, techo CPC 10,00»**. Misma estrategia (no hubo otro pase de
+estrategia), prueba en seco y lectura de vuelta: `MAXIMIZE_CONVERSION_VALUE`, sin objetivo de ROAS, una
+campaña, presupuesto de «Software» 10,00 sin cambio. «Búsqueda» no se tocó y queda sin techo. Fuera de
+horario: **el 28 oct es el primer día entero con el techo nuevo.**
+
+### Cómo se lee
+
+- La proyección del 26 oct (~85 clics al mes a ~3,56) y su alarma («si los clics bajan de ~60, subir
+  el techo a 5») quedan sin efecto. Con 10/día y un clic de ~5 se esperan ~60 clics al mes.
+- **23 nov**: prospectos verificados por campaña (citas con `ref`, `firstContactAt` de WhatsApp y
+  correo, bandeja de hola@) y el precio del clic de cada uno; cuántos clics de más de 10 quedaron
+  afuera no se ve, pero sí cuántas semanas con un solo clic por día.
+- **Método, para cualquier techo futuro**: mirar el precio del clic de cada prospecto verificado, por
+  hora, antes de decidir. Los terciles por día con contactos de Ads dieron la dirección contraria.
+
+### «¿Buscas trabajo?» en Costa Rica: publicada el 27 oct a las 23:17
+
+En Costa Rica no aparece el problema de Argentina. Desde el 14 ago hubo 7 «copiar correo» (5 de
+«Software», 2 de «Búsqueda»); de los 6 cotejados con la bandeja el 26 oct, 2 son prospectos (Hotel
+Paraíso Verde y el C.T.P.) y ninguno es una postulación. El del 17 ago no se cotejó, y esta noche el
+conector de Gmail estaba sin cuota para buscar postulaciones que llegan sin anuncio. Se recomienda igual,
+por prevención y por paridad entre los sitios: un correo copiado vale 35–40 (cuatro WhatsApp) y entra
+menos de uno por semana, así que una sola postulación pesaría mucho en la puja. El código de Kravõnia
+(`COMPANY_JOBS`, `3276cbf`) se portó tal cual.
+
+**Publicada (deploy `c1344d0`)**, después de que Robert creó el alias `talento@linkdesign.cr` en la
+consola de Workspace. «¿Buscas trabajo? Escribe a talento@linkdesign.cr» (en inglés «Looking for a
+job? Write to…») en el pie de todas las páginas internas, debajo de los canales, y en el recuadro
+Información de `/contacto`, como enlace `mailto:` sin botón de copiar. Tres pruebas nuevas; la de que
+tocarla **no** llama a `AdsService.emailCopy` se vio fallar al pegarle `copyEmail()` al enlace. Suite
+229 de 229 (una primera corrida dio un rojo intermitente en `app.spec.ts`, el menú de `/software`, que
+pasó solo y en la segunda corrida completa), build con prerender OK, revisada con navegador a 1366 y
+390 px y comprobada en producción con `curl` en `/contacto`, `/software`, `/web` y `/en/contacto`.
+
+**Prueba del alias, a medias**: un correo de hola@ a talento@ (23:04) no rebotó, pero Gmail no
+muestra en Recibidos un correo enviado al propio alias, así que la entrega no se pudo ver desde esa
+cuenta (en Kravõnia sí, porque la prueba salió de otro dominio). La primera postulación lo confirma;
+si Robert quiere certeza antes, basta un correo desde cualquier cuenta de afuera.
+
+**En la revisión del 23 nov**: cada «copiar correo» de las dos campañas contra la bandeja, y cuántas
+postulaciones llegan a `talento@` y cuántas siguen llegando a `hola@`.
