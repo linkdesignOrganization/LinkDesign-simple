@@ -2903,3 +2903,73 @@ Lo que los datos recomiendan, a falta de su decisión:
 **Próxima revisión: lunes 23 nov 2026, 9:00** (recordatorio en Calendar con aviso por correo y el
 guion en la descripción), o antes si el punto 1 se resuelve y se sube el
 presupuesto (entonces cuatro semanas desde el cambio).
+
+## 27 oct 2026 — Cada conversión queda unida a su visita, y cada cita a su visita y a su lead
+
+**Por qué.** La revisión del 26 oct emparejó a mano los clics de Ads con las personas: hora de la
+conversión (`segments.hour`), ciudad (`click_view.location_of_presence`), dispositivo, la hora del
+primer WhatsApp que Robert miró en el celular y las confirmaciones de cal.com en Gmail. Funcionó,
+pero cuesta horas y depende de que haya pocos contactos por día. Robert pidió que la próxima vez sea
+directo. **Nada de esto toca Google Ads** (campañas, conversiones, values, pujas): la medición de
+«Software» que arrancó el 26 oct sigue limpia.
+
+### Qué quedó en producción
+
+- **La visita registra qué botón tocó y cuándo** (beacon de sesiones v3; LinkDesign `0b11068`,
+  Kravõnia `e337251`, CRM `8eeba26`). En `sitesessions`: `contactActions` (mapa
+  `a<atMs>` → `{type: whatsapp|emailCopy|scheduleMeeting, at, path}`, con la hora corregida por el
+  reloj del CRM), `entryCampaignId` (el `gad_campaignid` que Google agrega a cada clic: la campaña
+  sin pasar por `click_view`, que exige un día por consulta y solo guarda 90 días), `entryDevice`
+  (mobile/tablet/desktop, como `segments.device`) y `enteredAt` (la llegada real; **`createdAt`
+  sigue siendo el primer beacon**). El beacon sale en el acto al tocar un botón.
+- **Los enlaces de «Agendar» llevan el número de la visita** (`?ref=<sessionId>`), y los dos
+  eventos de cal.com de Link Design tienen la pregunta oculta `ref` (27 oct, por Chrome). De paso se
+  corrigió «Nomre y apellido» → «Nombre y apellido» en el formulario en español, que veía cada
+  persona que reservaba.
+- **El CRM recibe las citas de cal.com** (`POST /api/public/calcom/:site`, firma HMAC del cuerpo
+  crudo, colección `appointments`). Secretos en las app settings del App Service
+  (`CALCOM_WEBHOOK_SECRET_CR` y `_AR`), cargados por Azure CLI con autorización de Robert. El tema
+  de la reunión es la pregunta de fábrica `title` con otra etiqueta (verificado en los dos eventos).
+- **Cita → lead, con la regla de Robert: el primer canal manda.** Si quien agenda ya está en el CRM
+  (por correo, teléfono, nombre completo, dominio de correo de empresa o una cita anterior), su
+  ficha no se toca y la cita queda enlazada por `leadId` solo para medir. Una persona nueva nace
+  como lead con el canal nuevo **«Cita en el sitio»** (agregado también al setting
+  `originChannelOptions` de producción).
+- **WhatsApp y correo, opción A** (la elegida por Robert): el lead tiene `firstContactAt`, la hora
+  del primer mensaje o del correo, que se anota a mano en la ficha. Con ella, «Llegó por» busca la
+  visita que tocó ese botón en los 15 min previos (WhatsApp) o en las 48 h previas (correo).
+  Descartada la opción B (código en el mensaje prellenado de WhatsApp): cambia la primera impresión
+  en el canal que más citas trae de «Búsqueda».
+
+### Carga de las citas anteriores al webhook
+
+25 reservas del 7 sep al 27 oct, sacadas de cal.com con su `uid` exacto (Gmail estaba sin cuota),
+cargadas con el mismo código del webhook en dos pasadas (primero enlazar, después crear). Resultado:
+20 enlazadas a fichas existentes, sin tocarlas; 4 leads nuevos (José López, Dayan Benavides, Luis
+Fernando González Ledezma y Fabricio Torres A, este último cliente antiguo que no estaba en el CRM);
+1 cancelada sin enlazar. **La corrida en seco evitó tres duplicados**: Pacific Star y Expat se
+cargaron de golpe sin correo de contacto, y quien agenda por Xceed no es el contacto del lead. De ahí
+salieron las reglas de dominio de empresa y de citas anteriores (CRM `47d3988`). Las citas viejas no
+tienen `ref`: su visita sigue saliendo solo por el método del §4 del 26 oct.
+
+### Cómo se mide en la próxima revisión
+
+- **Citas por campaña**: `appointments` con `ref` → `sitesessions.sessionId` → `entryCampaignId`.
+  Una cita sin `ref` no salió de un botón del sitio (enlace directo o reserva anterior al 27 oct).
+- **WhatsApp y correo por campaña**: el «Llegó por» de cada lead con `firstContactAt` cargado, o la
+  misma búsqueda por script sobre `contactActions`.
+- **Clics de «Agendar» que no terminaron en cita**: sesiones con `scheduleMeeting` sin cita con su
+  `ref`.
+- **Excluir la visita de prueba** `600803b0-71a6-47a7-a1f3-0f28077f9204` (28 oct 01:04 UTC,
+  `/software` con la campaña de Software puesta a mano, sin gclid).
+
+### Pendiente al cierre del 27 oct
+
+- Robert: pegar el secreto en el webhook de cal.com de Link Design y crearlo (formulario preparado;
+  el secreto no se puede escribir por el navegador desde acá).
+- La cuenta de cal.com de Kravõnia (`cal.com/kravonia`) es otra: falta la pregunta oculta `ref` y su
+  webhook (`/api/public/calcom/ar`), con Robert logueado en esa cuenta.
+- Con el webhook creado: una reserva de prueba con `hola@linkdesign.cr` (enlaza a la ficha de Link
+  Design, no crea lead), verificar que llega con su `ref`, cancelarla, y volver a correr la carga
+  para las reservas hechas entre el 27 oct 18:29 UTC y la creación del webhook.
+- «Llegó por» está en la ficha de leads, no en la de clientes.
