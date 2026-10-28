@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 0ae6d052-546c-431c-9f03-a56447457bfe
-  modified: 2026-10-27T03:21:40.858Z
+  modified: 2026-10-28T01:12:37.136Z
 ---
 
 Google Ads solo sabe que hubo un "contacto". **El CRM sabe quién era, por qué canal llegó y si
@@ -83,6 +83,16 @@ Colecciones que importan para Ads:
    en Gmail el correo de un prospecto nuevo ese día. Las copias son raras (2 en 7 semanas en
    «Búsqueda»), así que una coincidencia de día y hora sí pesa; con WhatsApp, que hay casi a diario,
    no. El 8 sep 2026 así apareció el Hotel Paraíso Verde, que no estaba en el CRM.
+12. **Desde el 27 oct 2026 el emparejamiento ya no es a mano** (puntos 8–11 quedan para lo
+   anterior a esa fecha). La visita guarda en `sitesessions` los botones tocados
+   (`contactActions`, con hora corregida), la campaña (`entryCampaignId` = `gad_campaignid`), el
+   dispositivo y la llegada real (`enteredAt`). Las citas de cal.com llegan por webhook a la
+   colección `appointments` con `ref` = sessionId de la visita y `leadId`; las 25 desde el 7 sep se
+   cargaron a mano el mismo día, sin `ref`. Para WhatsApp y correo, el lead lleva
+   `firstContactAt` (hora del primer mensaje, la anota Robert) y la ficha muestra «Llegó por».
+   **Regla de Robert: el primer canal manda**: si quien agenda ya está en el CRM, su ficha no se
+   toca; solo una persona nueva nace con el canal «Cita en el sitio». Detalle y cómo medir:
+   bitácora, entrada del 27 oct. Excluir la visita de prueba `600803b0-…` del 28 oct.
 
 **Why:** el 13 ago 2026 la inferencia desde Ads decía que Costa Rica había dejado de generar
 formularios. El CRM lo confirmó con fecha exacta (el último es del 7 jul) **y corrigió un error**:
