@@ -2965,13 +2965,14 @@ tienen `ref`: su visita sigue saliendo solo por el método del §4 del 26 oct.
 
 ### Pendiente al cierre del 27 oct
 
-- Robert: pegar el secreto en el webhook de cal.com de Link Design y crearlo (formulario preparado;
-  el secreto no se puede escribir por el navegador desde acá).
+- ~~Webhook de cal.com de Link Design~~: creado la misma noche (Robert pegó el secreto; Ping test
+  200). Prueba de punta a punta: visita a `/contacto` → «Agendar» → reserva con `hola@linkdesign.cr`
+  para el 26 nov → llegó con su `ref`, unida a la ficha de Link Design sin tocarla → cancelada, y la
+  cancelación también llegó. **Excluir de los análisis** la visita
+  `dfd4f9d1-3075-46ea-875f-929edd074929` y la cita `tB2P4fXM6C5QrxPpzgDMid` (28 oct, 01:43 UTC). No
+  hubo reservas entre la carga a mano y la creación del webhook: no quedó hueco.
 - ~~La cuenta de cal.com de Kravõnia~~: hecho la misma noche, con su prueba de punta a punta
   (detalle en `docs/bitacora-ads.md` de kravonia-simple). El flujo completo quedó verificado ahí:
   `ref` en la URL → pregunta oculta → webhook firmado → cita con su visita y su lead → cancelación.
   Para Link Design falta solo crear el webhook (la pregunta oculta ya está).
-- Con el webhook creado: una reserva de prueba con `hola@linkdesign.cr` (enlaza a la ficha de Link
-  Design, no crea lead), verificar que llega con su `ref`, cancelarla, y volver a correr la carga
-  para las reservas hechas entre el 27 oct 18:29 UTC y la creación del webhook.
 - «Llegó por» está en la ficha de leads, no en la de clientes.
