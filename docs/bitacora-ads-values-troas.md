@@ -2967,8 +2967,10 @@ tienen `ref`: su visita sigue saliendo solo por el método del §4 del 26 oct.
 
 - Robert: pegar el secreto en el webhook de cal.com de Link Design y crearlo (formulario preparado;
   el secreto no se puede escribir por el navegador desde acá).
-- La cuenta de cal.com de Kravõnia (`cal.com/kravonia`) es otra: falta la pregunta oculta `ref` y su
-  webhook (`/api/public/calcom/ar`), con Robert logueado en esa cuenta.
+- ~~La cuenta de cal.com de Kravõnia~~: hecho la misma noche, con su prueba de punta a punta
+  (detalle en `docs/bitacora-ads.md` de kravonia-simple). El flujo completo quedó verificado ahí:
+  `ref` en la URL → pregunta oculta → webhook firmado → cita con su visita y su lead → cancelación.
+  Para Link Design falta solo crear el webhook (la pregunta oculta ya está).
 - Con el webhook creado: una reserva de prueba con `hola@linkdesign.cr` (enlaza a la ficha de Link
   Design, no crea lead), verificar que llega con su `ref`, cancelarla, y volver a correr la carga
   para las reservas hechas entre el 27 oct 18:29 UTC y la creación del webhook.
