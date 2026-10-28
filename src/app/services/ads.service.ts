@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { ClickTrackingService } from '../lead-form/services/click-tracking.service';
 import { LeadTrackingService } from '../lead-form/services/lead-tracking.service';
 import { modulateValueBySession } from '../lead-form/utils/lead-score';
+import { SessionLanguageService } from './session-language.service';
 
 declare var gtag: Function;
 
@@ -72,6 +73,9 @@ export class AdsService {
   private readonly isBrowser: boolean;
   private readonly clicks = inject(ClickTrackingService);
   private readonly tracking = inject(LeadTrackingService);
+  // Cada clic de contacto queda también en la visita (beacon de sesiones al CRM), con su hora:
+  // es lo que permite llevar una conversión de Ads a la persona que escribió o agendó.
+  private readonly session = inject(SessionLanguageService);
 
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -98,6 +102,7 @@ export class AdsService {
   /** Click en WhatsApp (value base 10, modulado por calidad de sesión). */
   whatsapp(): void {
     this.clicks.record('WhatsApp');
+    this.session.recordContact('whatsapp');
     this.fireConversion(
       ADS_CONVERSIONS.CONTACTO_WHATSAPP,
       this.modulatedValue(CONTACTO_BASE_VALUE.whatsapp)
@@ -107,6 +112,7 @@ export class AdsService {
   /** Copiar el correo (value base 50, modulado por calidad de sesión). */
   emailCopy(): void {
     this.clicks.record('Copiar correo');
+    this.session.recordContact('emailCopy');
     this.fireConversion(
       ADS_CONVERSIONS.CONTACTO_CORREO,
       this.modulatedValue(CONTACTO_BASE_VALUE.emailCopy)
@@ -116,6 +122,7 @@ export class AdsService {
   /** Click en "Agendar reunión" (value base 10, modulado por calidad de sesión). */
   scheduleMeeting(): void {
     this.clicks.record('Agendar reunión');
+    this.session.recordContact('scheduleMeeting');
     this.fireConversion(
       ADS_CONVERSIONS.CONTACTO_REUNION,
       this.modulatedValue(CONTACTO_BASE_VALUE.scheduleMeeting)

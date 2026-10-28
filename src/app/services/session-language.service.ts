@@ -4,6 +4,18 @@ import { NavigationEnd, Router } from '@angular/router';
 
 import { environment } from '../../environments/environment';
 import { Lang, LanguageService } from './language.service';
+import {
+  ContactAction,
+  ContactActionType,
+  SessionDevice,
+  appendContact,
+  campaignIdFrom,
+  detectDevice,
+  sanitizeCampaignId,
+  sanitizeContactActions,
+  sanitizeDevice,
+  withCalendarRef
+} from './session-contact';
 
 /**
  * Clave de sessionStorage (prefijo del proyecto) con el estado acumulado de la sesión.
@@ -35,6 +47,9 @@ const SESSION_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
  */
 const ACTIVITY_EVENTS = ['pointerdown', 'pointermove', 'scroll', 'keydown', 'touchstart'] as const;
 
+/** Usos de un enlace en los que se le agrega el sessionId (clic, rueda, menú contextual). */
+const LINK_USE_EVENTS = ['click', 'auxclick', 'contextmenu'] as const;
+
 /**
  * Estado que sobrevive recargas de la pestaña. Los acumuladores continúan donde quedaron:
  * el upsert del CRM usa $max por campo, así que el beacon de la sesión debe mandar siempre
@@ -58,6 +73,12 @@ interface StoredSessionState {
   entryUtmMedium: string | null;
   entryUtmCampaign: string | null;
   entryGclid: string | null;
+  // — Emparejamiento con Ads y con los contactos (beacon v3, oct 2026) —
+  /** Momento del primer load (reloj del browser). Falta en sesiones anteriores al deploy. */
+  enteredAtMs?: number;
+  entryCampaignId: string | null;
+  entryDevice: SessionDevice | null;
+  contactActions: ContactAction[];
 }
 
 // Topes espejo del zod del CRM (payload fuera de rango → 400; mejor recortar acá).
@@ -152,6 +173,12 @@ export class SessionLanguageService {
   private entryUtmMedium: string | null = null;
   private entryUtmCampaign: string | null = null;
   private entryGclid: string | null = null;
+  // — Emparejamiento (beacon v3; los tres primeros fijados SOLO en el primer load) —
+  private enteredAtMs: number | undefined = undefined;
+  private entryCampaignId: string | null = null;
+  private entryDevice: SessionDevice | null = null;
+  /** Botones de contacto tocados en la sesión (los registra AdsService). */
+  private contactActions: ContactAction[] = [];
 
   // — Acumuladores crudos (los «bolsillos» por idioma) —
   private activeMsEs = 0;
@@ -237,6 +264,21 @@ export class SessionLanguageService {
     };
     window.addEventListener('pagehide', onPageHide);
 
+    // Enlaces de «Agendar»: en el momento de usarlos se les agrega el sessionId en la pregunta
+    // oculta `ref` de cal.com, así la cita llega al CRM con la visita que la produjo. Un solo
+    // listener en captura cubre todos los botones (y los que se agreguen), también la rueda
+    // del mouse y «copiar enlace».
+    const onLinkUse = (event: Event): void => {
+      const target = event.target;
+      const link = target instanceof Element ? target.closest('a[href*="cal.com/"]') : null;
+      if (link instanceof HTMLAnchorElement) {
+        link.href = withCalendarRef(link.href, this.sessionId);
+      }
+    };
+    for (const eventName of LINK_USE_EVENTS) {
+      document.addEventListener(eventName, onLinkUse, true);
+    }
+
     // Único interval liviano: si la ventana venció, cierra el tramo (capado a la última
     // interacción + 30 s — ver closeSegment). La próxima interacción lo reabre.
     const idleTimer = window.setInterval(() => {
@@ -253,6 +295,9 @@ export class SessionLanguageService {
       }
       document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('pagehide', onPageHide);
+      for (const eventName of LINK_USE_EVENTS) {
+        document.removeEventListener(eventName, onLinkUse, true);
+      }
       window.clearInterval(idleTimer);
     });
   }
@@ -297,6 +342,15 @@ export class SessionLanguageService {
       this.entryUtmCampaign =
         typeof stored.entryUtmCampaign === 'string' ? stored.entryUtmCampaign : null;
       this.entryGclid = typeof stored.entryGclid === 'string' ? stored.entryGclid : null;
+      // Beacon v3: una sesión que arrancó antes del deploy no los trae y no los manda (el CRM
+      // la distingue por eso; inventar la hora de llegada acá la falsearía).
+      this.enteredAtMs =
+        typeof stored.enteredAtMs === 'number' && Number.isInteger(stored.enteredAtMs) && stored.enteredAtMs > 0
+          ? stored.enteredAtMs
+          : undefined;
+      this.entryCampaignId = sanitizeCampaignId(stored.entryCampaignId);
+      this.entryDevice = sanitizeDevice(stored.entryDevice);
+      this.contactActions = sanitizeContactActions(stored.contactActions);
       return;
     }
 
@@ -312,7 +366,25 @@ export class SessionLanguageService {
     this.entryUtmMedium = entryParam(params, 'utm_medium', MAX_UTM_LEN);
     this.entryUtmCampaign = entryParam(params, 'utm_campaign', MAX_UTM_LEN);
     this.entryGclid = entryParam(params, 'gclid', MAX_GCLID_LEN);
+    this.enteredAtMs = Date.now();
+    this.entryCampaignId = campaignIdFrom(params);
+    this.entryDevice = detectDevice(navigator.userAgent, navigator.maxTouchPoints || 0);
     this.persistState();
+  }
+
+  /**
+   * Botón de contacto tocado (lo llama AdsService junto con la conversión). Se manda en el acto:
+   * así la hora llega al CRM pegada al toque, y el «copiar correo», que no oculta la página, no
+   * espera a que la persona se vaya.
+   */
+  recordContact(type: ContactActionType): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    this.contactActions = appendContact(this.contactActions, type, Date.now(), location.pathname);
+    // Tocar un botón es interacción real aunque no haya habido otra.
+    this.hadInteraction = true;
+    this.send();
   }
 
   /** Persiste el acumulado (se llama al enviar: pagehide/hidden — cubre la recarga). */
@@ -333,7 +405,11 @@ export class SessionLanguageService {
         entryUtmSource: this.entryUtmSource,
         entryUtmMedium: this.entryUtmMedium,
         entryUtmCampaign: this.entryUtmCampaign,
-        entryGclid: this.entryGclid
+        entryGclid: this.entryGclid,
+        enteredAtMs: this.enteredAtMs,
+        entryCampaignId: this.entryCampaignId,
+        entryDevice: this.entryDevice,
+        contactActions: this.contactActions
       };
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
@@ -435,7 +511,20 @@ export class SessionLanguageService {
       entryUtmSource: this.entryUtmSource,
       entryUtmMedium: this.entryUtmMedium,
       entryUtmCampaign: this.entryUtmCampaign,
-      entryGclid: this.entryGclid
+      entryGclid: this.entryGclid,
+      // Emparejamiento (beacon v3). `clientNow` le permite al CRM corregir las horas si el
+      // reloj del dispositivo está mal puesto. Los datos de entrada v3 solo van si la sesión
+      // arrancó con este código (`enteredAtMs` es la marca): una sesión pre-deploy no los
+      // midió, y mandarlos en null la haría pasar por una visita sin campaña.
+      clientNow: Date.now(),
+      ...(this.enteredAtMs !== undefined
+        ? {
+            enteredAtMs: this.enteredAtMs,
+            entryCampaignId: this.entryCampaignId,
+            entryDevice: this.entryDevice
+          }
+        : {}),
+      contactActions: this.contactActions
     };
 
     if (!environment.crmEndpoint) {
