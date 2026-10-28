@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { ContactFooterComponent, ContactInfo } from './contact-footer.component';
 import { LeadFormService } from '../lead-form/services/lead-form.service';
 import { LanguageService } from '../services/language.service';
+import { AdsService } from '../services/ads.service';
 
 const info: ContactInfo = {
   email: 'hola@test.com',
@@ -142,6 +143,33 @@ describe('ContactFooterComponent', () => {
     const fixture = createFixture();
     const meta = [...(fixture.nativeElement as HTMLElement).querySelectorAll('.cf-location--meta')].map((n) => n.textContent?.trim());
     expect(meta).toEqual(['Mon-Fri, 8am-5pm', 'Legal ID 3-101-912048']);
+    TestBed.inject(LanguageService).set('es');
+  });
+
+  // Las postulaciones van a otra casilla para no inflar «copiar correo», que es una conversión
+  // de Ads (bitácora de Ads, 27 oct 2026): enlace simple, sin botón de copiar ni conversión.
+  it('muestra el correo para postulaciones como enlace simple, sin conversión', () => {
+    const emailCopy = vi.spyOn(TestBed.inject(AdsService), 'emailCopy');
+    const fixture = createFixture();
+    const el = fixture.nativeElement as HTMLElement;
+
+    const jobs = el.querySelector('.cf-jobs')!;
+    expect(jobs.textContent?.replace(/\s+/g, ' ').trim()).toBe('¿Buscas trabajo? Escribe a talento@linkdesign.cr');
+    const link = jobs.querySelector<HTMLAnchorElement>('a')!;
+    expect(link.getAttribute('href')).toBe('mailto:talento@linkdesign.cr');
+    expect(jobs.querySelector('button')).toBeNull();
+
+    link.addEventListener('click', (e) => e.preventDefault());
+    link.click();
+    expect(emailCopy).not.toHaveBeenCalled();
+    fixture.destroy();
+  });
+
+  it('traduce la línea de postulaciones en inglés', () => {
+    TestBed.inject(LanguageService).set('en');
+    const fixture = createFixture();
+    const jobs = (fixture.nativeElement as HTMLElement).querySelector('.cf-jobs')!;
+    expect(jobs.textContent?.replace(/\s+/g, ' ').trim()).toBe('Looking for a job? Write to talento@linkdesign.cr');
     TestBed.inject(LanguageService).set('es');
   });
 

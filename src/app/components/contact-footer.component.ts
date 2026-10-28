@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { LanguageService } from '../services/language.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { AdsService } from '../services/ads.service';
-import { COMPANY_LEGAL, COMPANY_SCHEDULE } from '../company-info';
+import { COMPANY_JOBS, COMPANY_LEGAL, COMPANY_SCHEDULE } from '../company-info';
 import { LeadFormComponent } from './lead-form.component';
 import {
   LucideCalendar,
@@ -95,6 +95,13 @@ export type SystemContext = {
             </a>
           </li>
         </ul>
+
+        <!-- Postulaciones a otra casilla, como enlace simple: copiar el correo de contacto es una
+             conversión de Ads, y esta línea no tiene que disparar ninguna. -->
+        <p class="cf-jobs">
+          {{ jobs().lead }} {{ jobs().action }}
+          <a class="cf-jobs__link" [href]="'mailto:' + jobsEmail">{{ jobsEmail }}</a>
+        </p>
 
         <p class="cf-location">{{ info().location }}</p>
         @for (line of footerLines(); track line) {
@@ -237,6 +244,26 @@ export type SystemContext = {
       outline: none;
     }
 
+    /* Postulaciones: misma letra que la ubicación, pegada a los canales de contacto. */
+    .cf-jobs {
+      margin: 1.3rem 0 0;
+      color: #8a8a8a;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .cf-jobs__link {
+      color: #b2b2b2;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+      transition: color 180ms ease;
+    }
+
+    .cf-jobs__link:hover,
+    .cf-jobs__link:focus-visible {
+      color: #ffffff;
+    }
+
     .cf-location {
       margin: 1.6rem 0 0;
       color: #8a8a8a;
@@ -352,6 +379,9 @@ export class ContactFooterComponent {
   });
 
   protected readonly year = new Date().getFullYear();
+
+  protected readonly jobs = computed(() => COMPANY_JOBS[this.lang()]);
+  protected readonly jobsEmail = COMPANY_JOBS.email;
 
   protected readonly copied = signal(false);
 

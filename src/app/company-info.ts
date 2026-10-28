@@ -11,6 +11,17 @@ export const COMPANY_LEGAL = {
   label: { es: 'Cédula jurídica', en: 'Legal ID' }
 } as const;
 
+/**
+ * Correo para quien busca trabajo, aparte del de contacto (alias de hola@ en Workspace). Va como
+ * enlace simple, sin el botón de copiar: copiar hola@ es una conversión de Ads, y una postulación
+ * la inflaría (bitácora de Ads, 27 oct 2026; en Kravõnia ya pasaba).
+ */
+export const COMPANY_JOBS = {
+  email: 'talento@linkdesign.cr',
+  es: { lead: '¿Buscas trabajo?', action: 'Escribe a' },
+  en: { lead: 'Looking for a job?', action: 'Write to' }
+} as const;
+
 /** Horario de atención: largo para /contacto, corto para el pie. Coincide con el horario de las campañas (L-V 8-17). */
 export const COMPANY_SCHEDULE = {
   es: { long: 'Lunes a viernes, 8 a 17', short: 'L-V, 8 a 17' },

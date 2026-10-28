@@ -21,6 +21,19 @@ describe('ContactPageComponent', () => {
     expect(labels).toEqual(['Canales', 'Información', 'Áreas de trabajo']);
   });
 
+  // Las postulaciones van a otra casilla para no inflar «copiar correo», que es una conversión
+  // de Ads (bitácora de Ads, 27 oct 2026): enlace simple dentro de Información, sin botón de copiar.
+  it('muestra el correo para postulaciones en Información, como enlace simple', () => {
+    const fixture = TestBed.createComponent(ContactPageComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    const jobs = el.querySelector('.ct-info .ct-jobs')!;
+    expect(jobs.textContent?.replace(/\s+/g, ' ').trim()).toBe('¿Buscas trabajo? Escribe a talento@linkdesign.cr');
+    expect(jobs.querySelector('a')?.getAttribute('href')).toBe('mailto:talento@linkdesign.cr');
+    expect(jobs.querySelector('button')).toBeNull();
+  });
+
   it('el interruptor alterna entre la información y el formulario dentro del recuadro', () => {
     const fixture = TestBed.createComponent(ContactPageComponent);
     fixture.detectChanges();

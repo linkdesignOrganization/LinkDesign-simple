@@ -25,7 +25,7 @@ import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { TrackSectionDirective } from '../directives/track-section.directive';
 import { LanguageService } from '../services/language.service';
 import { AdsService } from '../services/ads.service';
-import { COMPANY_SCHEDULE } from '../company-info';
+import { COMPANY_JOBS, COMPANY_SCHEDULE } from '../company-info';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 
 @Component({
@@ -132,6 +132,12 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
               <li>{{ info.location }}</li>
               <li>{{ t().schedule }}</li>
               <li>{{ t().response }}</li>
+              <!-- Postulaciones a otra casilla, como enlace simple: copiar el correo de contacto
+                   es una conversión de Ads, y esta línea no tiene que disparar ninguna. -->
+              <li class="ct-jobs">
+                {{ jobs().lead }} {{ jobs().action }}
+                <a class="ct-jobs__link" [href]="'mailto:' + jobsEmail">{{ jobsEmail }}</a>
+              </li>
             </ul>
           </article>
 
@@ -451,6 +457,17 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
       line-height: 1.5;
     }
 
+    .ct-jobs__link {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
+    .ct-jobs__link:hover,
+    .ct-jobs__link:focus-visible {
+      color: var(--accent);
+    }
+
     /* Áreas de trabajo: link con flecha. */
     .ct-area {
       display: flex;
@@ -554,6 +571,8 @@ export class ContactPageComponent {
   private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
   protected readonly t = computed(() => CONTACT_TEXT[this.lang()]);
+  protected readonly jobs = computed(() => COMPANY_JOBS[this.lang()]);
+  protected readonly jobsEmail = COMPANY_JOBS.email;
 
   constructor() {
     // Solo en el browser: `afterNextRender` no corre en el prerender. Se remide cuando cambian
