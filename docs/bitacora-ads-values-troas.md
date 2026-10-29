@@ -3087,3 +3087,47 @@ si Robert quiere certeza antes, basta un correo desde cualquier cuenta de afuera
 
 **En la revisión del 23 nov**: cada «copiar correo» de las dos campañas contra la bandeja, y cuántas
 postulaciones llegan a `talento@` y cuántas siguen llegando a `hola@`.
+
+## 28 oct 2026 — «Búsqueda» y «Software» no compiten entre sí
+
+Robert preguntó si hay algún indicador de que las dos campañas de Costa Rica compitan. No lo hay, y
+se midió de cinco maneras en la ventana 23 jul – 27 oct (las dos en amplia con su keyword actual).
+**Sin acción.**
+
+### Lo medido
+
+- **Términos de búsqueda.** De ~1.300 términos visibles (634 de «Búsqueda», 664 de «Software») sólo
+  9 aparecieron en las dos, con **13,67 USD de 2.410 gastados (0,6 %)**: «soluciones digitales»
+  (10,68, dos clics de «Software») y la marca («link design», «linkdesign», 2,99 entre las dos); los
+  otros siete, sin clics. Por vocabulario, «Búsqueda» gastó 0,00 en términos de software (5
+  impresiones) y «Software» 0,63 en términos de web (un clic, «netweb»).
+- **Categorías de términos** (`campaign_search_term_insight`, que incluye lo que el informe de
+  términos oculta): ninguna categoría con nombre en común. Sólo coincide el balde «sin etiqueta» (61 %
+  de las impresiones de «Búsqueda», 85 % de las de «Software»), que no informa nada.
+- **Negativas cruzadas.** Cada campaña bloquea el vocabulario de la otra: «Búsqueda» niega
+  `software`, `sistemas`, `app`, `programa`, `desarrollo de software` exacta y un centenar más;
+  «Software» niega `web`, `pagina(s)`, `sitio`, `landing page`, `ecommerce` y unas trescientas más.
+  Esto es lo que las mantiene separadas.
+- **Destinos y reparto.** `/web` y `/software`; las dos L–V 8–17 y misma geo; presupuestos separados,
+  y la estrategia de cartera de «Software» contiene sólo esa campaña.
+- **Subasta.** Dentro de una cuenta Google elige un solo anuncio propio por búsqueda: las dos
+  campañas no pueden subirse el precio una a la otra. El alza del clic de «Software» ya quedó explicada
+  por la puja propia (§8 del 26 oct).
+
+### El cruce existió en enero–febrero y se cerró
+
+Gasto de «Búsqueda» en términos de software: 16,14 (ene) y 14,27 (feb; parte por su grupo
+«Software», hoy eliminado, antes de que la campaña propia tomara ese terreno) y **0,00 todos los
+meses desde marzo**. Gasto de «Software» en términos de web: 2,47 (feb), 4,48 (mar), 0,63 (ago) y nada
+el resto. La ventana 1 feb – 22 jul da 66 términos comunes, pero casi todos son de software donde
+«Búsqueda» apareció una o dos veces sin clic, la mayoría en febrero; mes a mes, el gasto de «Software»
+en términos que ese mismo mes tocó «Búsqueda» no pasa de 16 USD (jun, «empresas de tecnologia en costa
+rica», donde «Búsqueda» tuvo 2 impresiones y ningún clic).
+
+### Límites
+
+- El informe de términos muestra el 58 % del gasto de «Búsqueda» y el 38 % del de «Software»; lo
+  oculto no se puede revisar término por término. Las categorías y las negativas sí lo cubren y dicen
+  lo mismo, pero el solape medido es un piso.
+- La marca la cubren las dos sin campaña de marca propia: 2,99 USD en tres meses. Sin acción.
+- No se midió si una misma persona tocó anuncios de las dos campañas: eso no está en Ads.
