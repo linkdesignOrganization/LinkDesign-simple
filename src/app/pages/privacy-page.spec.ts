@@ -14,8 +14,8 @@ describe('PrivacyPageComponent', () => {
     const el = fixture.nativeElement as HTMLElement;
 
     expect(el.querySelector('.pp-title')?.textContent?.trim()).toBe('Política de privacidad');
-    // 7 secciones del array + "Contacto" manual.
-    expect(el.querySelectorAll('.pp-section').length).toBe(8);
+    // 10 secciones del array + "Contacto" manual.
+    expect(el.querySelectorAll('.pp-section').length).toBe(11);
 
     const mailto = el.querySelector('a.pp-link[href^="mailto:"]');
     expect(mailto?.getAttribute('href')).toBe('mailto:hola@linkdesign.cr');

@@ -151,11 +151,13 @@ type PrivacyText = {
 const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
   es: {
     title: 'Política de privacidad',
-    updated: 'Última actualización: Junio de 2026',
+    updated: 'Última actualización: Noviembre de 2026',
     intro:
       'En Link Design construimos software y sitios web a medida. Esta política explica qué datos ' +
       'recopilamos cuando visitas nuestro sitio o nos contactas, cómo los usamos y qué derechos ' +
-      'tienes sobre ellos. Al usar el sitio, aceptas las prácticas que describimos aquí.',
+      'tienes sobre ellos. Al usar el sitio, aceptas las prácticas que describimos aquí. Link Design ' +
+      'es el nombre comercial de 3-101-912048 Sociedad Anónima, cédula jurídica 3-101-912048, con ' +
+      'domicilio en San José, Costa Rica.',
     contactTitle: 'Contacto',
     contactText:
       'Si tienes dudas sobre esta política o sobre el tratamiento de tus datos, escríbenos a',
@@ -183,6 +185,31 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         ]
       },
       {
+        title: 'Conversaciones por WhatsApp',
+        body: [
+          'Cuando nos escribes por WhatsApp recibimos tu número de teléfono o tu nombre de usuario, el ' +
+            'nombre de tu perfil y los mensajes y archivos que nos envías. Los recibimos y respondemos ' +
+            'mediante la plataforma WhatsApp Business de Meta, y los guardamos en nuestro sistema de ' +
+            'atención a clientes para darle seguimiento a tu consulta.',
+          'Usamos esas conversaciones solo para responderte, darle seguimiento a tu solicitud y medir, ' +
+            'de forma agregada, por qué canal nos llegan las consultas. No las usamos para enviarte ' +
+            'publicidad sin tu consentimiento. Si prefieres que no te escribamos más por WhatsApp, ' +
+            'avísanos en el mismo chat y dejaremos de hacerlo.'
+        ]
+      },
+      {
+        title: 'Empresas que conectan su WhatsApp a nuestro sistema',
+        body: [
+          'Cuando una empresa cliente conecta su número de WhatsApp Business a nuestro sistema, tratamos ' +
+            'por cuenta de esa empresa los mensajes de sus clientes, sus contactos y, si lo autoriza, el ' +
+            'historial de sus conversaciones. Lo hacemos con el único fin de prestarle el servicio de ' +
+            'atención y seguimiento; la empresa es la responsable de esos datos.',
+          'Los datos que recibimos a través de las plataformas de Meta no se venden ni se usan para ' +
+            'publicidad. Guardamos cifrados los permisos de acceso que Meta nos entrega, y la empresa ' +
+            'puede desconectar su número en cualquier momento desde la aplicación WhatsApp Business.'
+        ]
+      },
+      {
         title: 'Cómo protegemos tu información',
         body: [
           'Aplicamos medidas de seguridad razonables para proteger tus datos frente a accesos no ' +
@@ -195,7 +222,9 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         body: [
           'No vendemos ni alquilamos tus datos personales. Solo los compartimos con los proveedores ' +
             'tecnológicos necesarios para operar el sitio y prestar nuestros servicios, siempre bajo ' +
-            'acuerdos de confidencialidad, o cuando una obligación legal así lo requiera.'
+            'acuerdos de confidencialidad, o cuando una obligación legal así lo requiera. Entre ellos ' +
+            'están Microsoft Azure, donde se alojan el sitio y nuestro sistema de atención, Google, para ' +
+            'la medición del sitio y la publicidad, y Meta, para las conversaciones por WhatsApp.'
         ]
       },
       {
@@ -215,6 +244,15 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         ]
       },
       {
+        title: 'Cómo pedir que borremos tus datos',
+        body: [
+          'Para que eliminemos tus datos, incluidas tus conversaciones de WhatsApp, escríbenos a ' +
+            'hola@linkdesign.cr o al mismo chat de WhatsApp desde el número que usaste, y dinos qué ' +
+            'quieres que borremos. Lo hacemos en cuanto recibimos tu solicitud y te avisamos cuando esté ' +
+            'hecho.'
+        ]
+      },
+      {
         title: 'Cambios a esta política',
         body: [
           'Podemos actualizar esta política en cualquier momento. Cuando lo hagamos, publicaremos la ' +
@@ -225,11 +263,12 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
   },
   en: {
     title: 'Privacy policy',
-    updated: 'Last updated: June 2026',
+    updated: 'Last updated: November 2026',
     intro:
       'At Link Design we build custom software and websites. This policy explains what data we collect ' +
       'when you visit our site or contact us, how we use it and what rights you have over it. By ' +
-      'using the site, you accept the practices described here.',
+      'using the site, you accept the practices described here. Link Design is the trade name of ' +
+      '3-101-912048 Sociedad Anónima, legal ID 3-101-912048, based in San José, Costa Rica.',
     contactTitle: 'Contact',
     contactText:
       'If you have questions about this policy or how we handle your data, write to us at',
@@ -257,6 +296,31 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         ]
       },
       {
+        title: 'WhatsApp conversations',
+        body: [
+          'When you message us on WhatsApp we receive your phone number or username, your profile name ' +
+            "and the messages and files you send us. We receive and answer them through Meta's " +
+            'WhatsApp Business platform, and we store them in our customer service system to follow ' +
+            'up on your inquiry.',
+          'We use those conversations only to answer you, follow up on your request and measure, in ' +
+            "aggregate, which channel inquiries come from. We don't use them to send you advertising " +
+            "without your consent. If you'd rather we stop messaging you on WhatsApp, tell us in the " +
+            'same chat and we will.'
+        ]
+      },
+      {
+        title: 'Businesses that connect their WhatsApp to our system',
+        body: [
+          'When a client business connects its WhatsApp Business number to our system, we process, on ' +
+            "that business's behalf, its customers' messages, its contacts and, if it authorizes it, " +
+            'its conversation history. We do so only to provide it with the customer service and ' +
+            'follow-up service; the business is responsible for that data.',
+          "Data we receive through Meta's platforms is not sold or used for advertising. We store the " +
+            'access permissions Meta gives us encrypted, and the business can disconnect its number ' +
+            'at any time from the WhatsApp Business app.'
+        ]
+      },
+      {
         title: 'How we protect your information',
         body: [
           'We apply reasonable security measures to protect your data against unauthorized access, ' +
@@ -269,7 +333,9 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         body: [
           "We don't sell or rent your personal data. We only share it with the technology providers " +
             'needed to run the site and deliver our services, always under confidentiality ' +
-            'agreements, or when a legal obligation requires it.'
+            'agreements, or when a legal obligation requires it. They include Microsoft Azure, which ' +
+            'hosts the site and our customer service system, Google, for site measurement and ' +
+            'advertising, and Meta, for WhatsApp conversations.'
         ]
       },
       {
@@ -286,6 +352,15 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
           'You can request access to your data, the correction of inaccurate information, its ' +
             'deletion, the restriction of its use or the withdrawal of your consent at any time. To ' +
             'exercise them, write to us at hola@linkdesign.cr.'
+        ]
+      },
+      {
+        title: 'How to ask us to delete your data',
+        body: [
+          'To have your data deleted, including your WhatsApp conversations, write to ' +
+            'hola@linkdesign.cr or to the same WhatsApp chat from the number you used, and tell us ' +
+            "what you want deleted. We do it as soon as we receive your request and let you know when " +
+            "it's done."
         ]
       },
       {
