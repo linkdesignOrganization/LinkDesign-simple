@@ -3228,10 +3228,13 @@ sólo el presupuesto y el pase a cartera** (que sin techo equivale a la estrateg
 Desde el 28 oct, ocho reservas (siete de Costa Rica, una de Argentina) por el webhook. **Ninguna vino de
 un anuncio.** Clientes: Expat (Melissa Valverde), Pacific Star y Xceed. Prospectos: Grupo ACA (dos,
 la segunda reprogramada: «Propuesta oferta aplicación control de costos»; el lead del 20 oct que el
-26 oct quedó como llegado sin anuncio), y tres personas nuevas que nacieron como «Cita en el sitio»:
-**Nassar Abogados** (2 nov, rediseño web, visita sin anuncio que entró por el inicio), **Sharit Chaves
-Ureña** (domingo 15 nov, «Diseño Software», visita sin anuncio a `/software`) y, en Argentina,
-Eduardo Recuna (9 nov, visita sin anuncio que entró por el inicio).
+26 oct quedó como llegado sin anuncio), y dos personas nuevas que nacieron como «Cita en el sitio»:
+**Nassar Abogados** (2 nov, rediseño web, visita sin anuncio que entró por el inicio) y **Sharit Chaves
+Ureña** (domingo 15 nov, «Diseño Software», visita sin anuncio a `/software`). La de Argentina, del
+9 nov (visita sin anuncio que entró por el inicio), es de **Eduardo Recuna, el contacto de Energy
+Check** (cliente; corregido el mismo día con la bitácora de Kravõnia): una reunión del proyecto. Quedó
+unida al lead duplicado `…851d11`, que ya fue borrado, porque la ficha de Energy Check sigue sin su
+nombre ni su correo.
 
 Las de Nassar y Recuna llegaron **sin `ref`**, aunque las dos visitas tocaron «Agendar» en `/contacto`
 tres y cuatro minutos antes (07:58 → 08:01 y 08:23 → 08:27). La de Sharit, desde `/software`, sí lo
