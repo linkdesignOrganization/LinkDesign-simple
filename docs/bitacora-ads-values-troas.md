@@ -3327,9 +3327,17 @@ vuelve a 9–17 %, tusitioya.com.ar sube a 16 % la del 19 oct (nos pasa 31 %), D
 la racha buena de septiembre como tasa base, los WhatsApp sin verificar y la demanda. Squarespace sí
 encarece las semanas de noviembre. La recomendación no cambia.
 
-Recomendado a Robert, pendiente: pausar "Software #2" y bajar "Búsqueda #2" de 24 a 20 (el 24 se
+Recomendado a Robert: pausar "Software #2" y bajar "Búsqueda #2" de 24 a 20 (el 24 se
 sostenía en un techo que no existe, y el dinero de más compra posición en una subasta más cara); la
 prueba de «ROAS objetivo» queda para después, para no mezclar dos cambios en la misma campaña.
+
+**Aplicado con su OK (17 nov, 19:59 CR = 22:59 AR, fuera de horario)**, por API con prueba en seco y
+lectura de vuelta: "Software #2" `PAUSED` (presupuesto 10 y cartera `12290923780` sin tocar) y
+"Búsqueda #2" de 24 a **20** por día (presupuesto propio, una sola campaña; su cartera `12289237512`
+sin tocar). Argentina pasa de ~USD 1.030 a ~610 al mes. **Cómo se lee**: "Búsqueda #2" desde el 18 nov,
+cuatro semanas (≈ 15 dic, la misma fecha que tenía la decisión de fondo sobre "Software #2"): clics por
+día (el 27 oct: con 20 compraba los mismos que con 24), CPC, primera posición y, sobre todo, prospectos
+verificados (formularios, correos de la bandeja, citas con `ref`, WhatsApp con `firstContactAt`).
 
 ### Excluir de los análisis
 
