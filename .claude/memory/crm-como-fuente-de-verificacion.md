@@ -93,6 +93,14 @@ Colecciones que importan para Ads:
    **Regla de Robert: el primer canal manda**: si quien agenda ya está en el CRM, su ficha no se
    toca; solo una persona nueva nace con el canal «Cita en el sitio». Detalle y cómo medir:
    bitácora, entrada del 27 oct. Excluir la visita de prueba `600803b0-…` del 28 oct.
+13. **Una cita puede llegar sin `ref` aunque haya salido del botón** (17 nov 2026): si se toca
+   «Agendar» antes de que cargue el JavaScript, cal.com se abre sin `ref` y `withEventReplay`
+   igual anota el `scheduleMeeting` segundos después (reproducido con Playwright). Pasó con 2 de 3
+   citas del sitio (Nassar Abogados CR, 2 nov; Eduardo Recuna AR, 9 nov). Para atribuirla: la visita
+   del mismo sitio con `scheduleMeeting` 3–5 min antes de la reserva. **Arreglado el mismo 17 nov en
+   los dos sitios**: un script en el `<head>` fija el número antes de que cargue la aplicación, que lo
+   adopta (`takeEarlySessionId`); una cita sin `ref` desde entonces ya no salió del botón. Y desde ese
+   día la hora del primer mensaje es **obligatoria** al crear un lead de WhatsApp o correo (CRM `12e085f`). Excluir las visitas de prueba del 17 nov (`b57be6ca-…`, `e3bcc427-…`, `08ff57fd-…`).
 
 **Why:** el 13 ago 2026 la inferencia desde Ads decía que Costa Rica había dejado de generar
 formularios. El CRM lo confirmó con fecha exacta (el último es del 7 jul) **y corrigió un error**:

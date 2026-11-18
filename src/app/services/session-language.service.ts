@@ -14,6 +14,8 @@ import {
   sanitizeCampaignId,
   sanitizeContactActions,
   sanitizeDevice,
+  SESSION_ID_PATTERN,
+  takeEarlySessionId,
   withCalendarRef
 } from './session-contact';
 
@@ -22,6 +24,12 @@ import {
  * sessionStorage vive por pestaña: recargas de la misma pestaña = misma sesión.
  */
 const STORAGE_KEY = 'linkdesign-session-language';
+
+/**
+ * Número de visita que fija el script del <head> de index.html cuando se toca «Agendar» antes de
+ * que arranque la aplicación (ver `takeEarlySessionId`). El nombre está repetido en ese script.
+ */
+const EARLY_ID_KEY = 'linkdesign-session-early-id';
 
 /**
  * Ventana de interacción: sin eventos reales por 30 s la sesión deja de contar como activa.
@@ -37,8 +45,6 @@ const IDLE_CHECK_MS = 5_000;
 const MAX_ACTIVE_MS = 8 * 60 * 60 * 1000; // 8 horas
 const MAX_PAGES = 500;
 
-/** Charset/largo del sessionId que exige el CRM — valida lo re-leído de sessionStorage. */
-const SESSION_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
 
 /**
  * Eventos que cuentan como interacción real (pointer/scroll/tecla/touch) — el espejo moderno
@@ -109,6 +115,15 @@ function externalReferrer(): string | null {
 function entryParam(params: URLSearchParams, key: string, maxLen: number): string | null {
   const value = (params.get(key) || '').trim();
   return value ? value.slice(0, maxLen) : null;
+}
+
+/** sessionStorage, o null si el navegador lo bloquea (leerlo ya puede tirar). */
+function sessionStorageOrNull(): Storage | null {
+  try {
+    return sessionStorage;
+  } catch {
+    return null;
+  }
 }
 
 function createSessionId(): string {
@@ -354,7 +369,9 @@ export class SessionLanguageService {
       return;
     }
 
-    this.sessionId = createSessionId();
+    // Si se tocó «Agendar» antes de que arrancara la aplicación, el script de index.html ya fijó
+    // el número de la visita y lo mandó a cal.com: se adopta, así la cita y la visita coinciden.
+    this.sessionId = takeEarlySessionId(sessionStorageOrNull(), EARLY_ID_KEY) ?? createSessionId();
     this.entryLang = /^\/en(?=\/|$)/.test(location.pathname) ? 'en' : 'es';
     this.enteredViaEnUrl = this.entryLang === 'en';
     // Atribución de entrada: SOLO acá (primer load de la sesión) — un clic desde una IA,

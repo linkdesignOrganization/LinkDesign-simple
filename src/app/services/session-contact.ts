@@ -24,6 +24,32 @@ export const MAX_CONTACT_ACTIONS = 20;
 /** Pregunta oculta del formulario de cal.com que recibe el sessionId de la visita. */
 export const CALENDAR_REF_PARAM = 'ref';
 
+/**
+ * Charset/largo del sessionId que exige el CRM. El script del <head> de index.html usa el mismo
+ * patrón: si cambia acá, cambia allá.
+ */
+export const SESSION_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
+
+/**
+ * Número de visita que fijó el script del <head> de index.html porque se tocó «Agendar» antes de
+ * que arrancara la aplicación (y que ya viajó a cal.com como `ref`). Se adopta una sola vez: se
+ * borra al leerlo para que no lo herede otra sesión. Null si no hay, si no es válido o si
+ * sessionStorage está bloqueado.
+ */
+export function takeEarlySessionId(
+  storage: Pick<Storage, 'getItem' | 'removeItem'> | null,
+  key: string
+): string | null {
+  if (!storage) return null;
+  try {
+    const value = storage.getItem(key);
+    storage.removeItem(key);
+    return value && SESSION_ID_PATTERN.test(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
 const CONTACT_TYPES: readonly ContactActionType[] = ['whatsapp', 'emailCopy', 'scheduleMeeting'];
 const CAMPAIGN_ID_PATTERN = /^\d{1,20}$/;
 const MAX_PATH_LEN = 512;

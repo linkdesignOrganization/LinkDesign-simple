@@ -6,6 +6,7 @@ import {
   sanitizeCampaignId,
   sanitizeContactActions,
   sanitizeDevice,
+  takeEarlySessionId,
   withCalendarRef
 } from './session-contact';
 
@@ -94,5 +95,46 @@ describe('lo re-leído de sessionStorage', () => {
     expect(sanitizeCampaignId(23552967347)).toBeNull();
     expect(sanitizeDevice('mobile')).toBe('mobile');
     expect(sanitizeDevice('heladera')).toBeNull();
+  });
+});
+
+/**
+ * «Agendar» tocado antes de que arranque la aplicación (17 nov 2026): el script del <head> de
+ * index.html fija el número de la visita, lo pone en el enlace de cal.com y lo deja en
+ * sessionStorage; la aplicación lo adopta al iniciar la sesión, y así la cita llega al CRM con
+ * la visita que la produjo. Antes, la cita llegaba sin `ref` (2 de 3 en las primeras semanas).
+ */
+describe('el número de visita que fijó el script de index.html', () => {
+  const KEY = 'linkdesign-session-early-id';
+  function storage(initial: Record<string, string> = {}) {
+    const data = new Map(Object.entries(initial));
+    return {
+      getItem: (k: string) => data.get(k) ?? null,
+      removeItem: (k: string) => void data.delete(k),
+      has: (k: string) => data.has(k)
+    };
+  }
+
+  it('se adopta y se borra, para que no lo herede otra sesión', () => {
+    const s = storage({ [KEY]: '0d6f1c2e-6c1b-4b7a-9d55-3c1f1e2a9b10' });
+    expect(takeEarlySessionId(s, KEY)).toBe('0d6f1c2e-6c1b-4b7a-9d55-3c1f1e2a9b10');
+    expect(s.has(KEY)).toBe(false);
+  });
+
+  it('sin número previo, o con uno que el CRM rechazaría, no adopta nada', () => {
+    expect(takeEarlySessionId(storage(), KEY)).toBeNull();
+    expect(takeEarlySessionId(storage({ [KEY]: 'corto' }), KEY)).toBeNull();
+    expect(takeEarlySessionId(storage({ [KEY]: '<script>alert(1)</script>' }), KEY)).toBeNull();
+  });
+
+  it('con sessionStorage bloqueado no rompe', () => {
+    const roto = {
+      getItem: () => {
+        throw new Error('bloqueado');
+      },
+      removeItem: () => undefined
+    };
+    expect(takeEarlySessionId(roto, KEY)).toBeNull();
+    expect(takeEarlySessionId(null, KEY)).toBeNull();
   });
 });

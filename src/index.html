@@ -47,6 +47,51 @@
   <meta name="twitter:image" content="https://linkdesign.cr/og-image.png">
   <meta name="twitter:image:alt" content="Link Design: desarrollo web y software en Costa Rica">
 
+  <!-- «Agendar» antes de que arranque la aplicación (17 nov 2026). El número de la visita viaja a
+       cal.com como `ref` para que la cita llegue al CRM unida a su visita; lo agregaba solo la
+       aplicación, así que un toque en los primeros segundos (en un 4G flojo la página tarda en
+       cargar) abría cal.com sin él. Este script corre antes que todo: toma el número de la sesión
+       en curso o fija uno nuevo, que la aplicación adopta al arrancar (`takeEarlySessionId`).
+       Las claves y el patrón son los de session-language.service.ts y session-contact.ts. -->
+  <script>
+    (function () {
+      var STORAGE_KEY = 'linkdesign-session-language';
+      var EARLY_ID_KEY = 'linkdesign-session-early-id';
+      var PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
+      function sessionId() {
+        try {
+          var stored = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || 'null');
+          if (stored && typeof stored.id === 'string' && PATTERN.test(stored.id)) return stored.id;
+          var early = sessionStorage.getItem(EARLY_ID_KEY);
+          if (early && PATTERN.test(early)) return early;
+          var fresh = window.crypto && typeof crypto.randomUUID === 'function'
+            ? crypto.randomUUID()
+            : 's-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+          sessionStorage.setItem(EARLY_ID_KEY, fresh);
+          return fresh;
+        } catch (e) {
+          return '';
+        }
+      }
+      function onLinkUse(event) {
+        var target = event.target;
+        var link = target && target.closest ? target.closest('a[href*="cal.com/"]') : null;
+        if (!link) return;
+        try {
+          var url = new URL(link.href);
+          if (!/(^|\.)cal\.com$/i.test(url.hostname)) return;
+          var id = sessionId();
+          if (!id) return;
+          url.searchParams.set('ref', id);
+          link.href = url.toString();
+        } catch (e) {}
+      }
+      ['click', 'auxclick', 'contextmenu'].forEach(function (name) {
+        document.addEventListener(name, onLinkUse, true);
+      });
+    })();
+  </script>
+
   <!-- Favicon de Link Design -->
   <link rel="icon" type="image/png" href="favicon.png">
 

@@ -3131,3 +3131,179 @@ rica», donde «Búsqueda» tuvo 2 impresiones y ningún clic).
   lo mismo, pero el solape medido es un piso.
 - La marca la cubren las dos sin campaña de marca propia: 2,99 USD en tres meses. Sin acción.
 - No se midió si una misma persona tocó anuncios de las dos campañas: eso no está en Ads.
+
+## 17 nov 2026 — Chequeo intermedio: los techos de CPC no existen en Búsqueda, y una cita tocada antes de que cargue la página llega sin su visita
+
+Pedido por Robert («pegarle una checkeada»), seis días antes de la revisión del 23 nov. Ventana
+**28 oct – 16 nov** (14 días hábiles, el primero entero con todo lo del 26–27 oct) contra **7 sep –
+23 oct** (35). **No se tocó nada en Google Ads.**
+
+### Verificaciones previas
+
+- Repo al día con `origin/main`; `verificar_acceso.py` en verde en sus cinco escalones.
+- `change_event` 19 oct – 17 nov: después de los cambios por API del 26 y 27 oct, **nada**. La última
+  tanda de negativas es del 26 oct (85 por campaña, desde la interfaz).
+- Los cuatro anuncios, `APPROVED`. Ninguna campaña en aprendizaje; las de Costa Rica figuran
+  `ELIGIBLE`, las argentinas `LIMITED / BUDGET_CONSTRAINED`.
+
+### 1. Los techos de CPC se aceptan y se ignoran
+
+La referencia de la API, `MaximizeConversionValue` (v24), sobre `cpc_bid_ceiling_micros`: «Note that
+for Google Ads Search campaigns, bid limits are not supported and are disregarded by the bidding
+system». La de `TargetRoas` no trae esa nota. El 26 oct se validó con `validate_only` y se releyó del
+servidor: eso probó que Google **acepta** el campo, no que la puja lo use.
+
+Los datos lo confirman. Precio exacto de cada clic (horas de `segments.hour` con un solo clic):
+
+| campaña (techo) | horas de 1 clic, antes | sobre el techo | horas de 1 clic, después | sobre el techo | los más caros después |
+|---|---:|---:|---:|---:|---|
+| «Software» (10,00) | 73 | 9 (12 %) | 26 | **3 (12 %)** | 19,80 (11 nov), 16,05 (29 oct), 12,46 (13 nov, «inteliti») |
+| «Búsqueda #2» (3,50) | 96 | 18 (19 %) | 46 | **13 (28 %)** | 23,01 (13 nov), 20,38 (28 oct), 9,70 |
+| «Software #2» (5,00) | 75 | 25 (33 %) | 37 | **12 (32 %)** | 17,18 (17 nov), 16,72 (2 nov), 13,30 |
+
+La proporción de clics por encima del techo no bajó en ninguna. **Lo que rige desde el 26–27 oct es
+sólo el presupuesto y el pase a cartera** (que sin techo equivale a la estrategia estándar):
+
+- «Software»: el argumento del techo «= un día de presupuesto» (27 oct, noche) queda sin objeto. Sigue
+  pasando un clic de más de 10 por semana, como antes.
+- «Búsqueda #2» (decisión 8 de Kravõnia, 27 oct): «se queda en 24, con tope» se apoyaba en que el tope
+  impidiera gastar el dinero de más en clics caros. No lo impide.
+- Un techo real en Búsqueda exige otro tipo de estrategia. Maximizar clics con techo y CPC manual
+  dejan de optimizar por contactos (descartadas el 26 oct). **La que conserva la optimización por
+  value y admite techo es «ROAS objetivo» de cartera** (`TARGET_ROAS`): la ayuda de Google
+  (answer 6268637) dice que sus límites de puja «are available for Search and Shopping portfolio bid
+  strategies» y se usan en las subastas de la Red de Búsqueda, aunque no los recomienda. Una cartera
+  `TARGET_ROAS` con `cpc_bid_ceiling_micros` pasa `validate_only` (17 nov), lo que otra vez prueba que se
+  acepta, no que se respete. Requisitos y costos: ≥ 15 conversiones en 30 días a nivel de seguimiento
+  (se cumplen, casi todas scroll); Google pide esperar 4 semanas desde un cambio de values (el de
+  «Agendar» fue el 26 oct → 23 nov); y el objetivo manda: ROAS de 28 oct – 16 nov con las conversiones
+  que pujan, «Búsqueda» 59 %, «Software» 25 %, «Búsqueda #2» 31 %, «Software #2» 16 %, medidos sobre
+  pocos contactos (un correo copiado lo duplica). Alto, recorta clics; bajo, la puja apunta a él y paga
+  más por clic hasta el techo (la lección del tCPA de Zacate). Pendiente de Robert.
+- Mientras tanto las carteras no hacen daño y quedan como están. Solo sus nombres («…techo CPC
+  10,00», «…3,50», «…5,00») inducen a error; renombrarlas es inocuo.
+
+### 2. «Software»: hace lo que se esperaba del recorte a 10
+
+| ventana | clics | por día | costo/día | CPC | CTR | cuota | perd. presup. | perd. rank | sup. abs. | WhatsApp | correo | reunión |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 7 sep – 23 oct | 150 | 4,3 | 21,01 | 4,90 | 6,4 % | 29,8 % | 35,4 % | 34,8 % | 55,5 % | 10 | 4 | 1 |
+| **28 oct – 16 nov** | **41** | **2,9** | **14,32** | **4,89** | 5,5 % | 32,2 % | 26,4 % | 41,4 % | 51,6 % | 3 | 0 | 1 |
+
+- **~61 clics al mes** a 4,89: lo proyectado el 27 oct (~60 a ~5). Mismo precio, mismos contactos por
+  clic (9,8 por 100 contra 10,0), menos volumen. Gasta ~14 por día hábil (10 × 30,4 / ~21).
+- Días con un solo clic: 29 oct (16,05), 6 nov (5,52) y 11 nov (19,80).
+- **Visitas pagas que tocaron un botón** (`contactActions`, cuadran una a una con Ads): WhatsApp el
+  5 nov 12:01 (celular, entrada `/contacto`), 12 nov 08:14 (celular; además tocó «Agendar» a las 08:13
+  y 08:22 y no reservó), 13 nov 08:03 (computadora) y 17 nov 08:59 (computadora). Ninguna tiene lead
+  en el CRM todavía: **prospectos verificados, cero por ahora**, a la espera de que Robert diga quién
+  escribió a esas horas.
+
+### 3. «Búsqueda»: con «Agendar» a 10, la puja se calmó y el clic bajó
+
+| ventana | clics | por día | costo/día | CPC | CTR | cuota | perd. presup. | perd. rank | sup. abs. | WhatsApp | correo | reunión |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 7 sep – 23 oct | 171 | 4,9 | 14,54 | 2,98 | 9,9 % | 34,2 % | 47,5 % | 18,4 % | 49,9 % | 12 | 2 | 7 |
+| **28 oct – 16 nov** | **68** | **4,9** | **13,05** | **2,69** | 9,4 % | 38,0 % | **25,8 %** | 36,2 % | **36,5 %** | 5 | 1 | **0** |
+
+- Mismos clics por día, **10 % más baratos**, salir primero 50 → 36,5 %, y la pérdida por presupuesto
+  cae a la mitad: con menos value que perseguir, la puja ofrece menos. Es lo esperable del cambio de
+  «Agendar» (60 → 10, 26 oct) y la confirmación de que la pérdida de 47 % del 26 oct era la puja, no
+  demanda represada. La campaña ya no figura limitada por presupuesto.
+- **Cero clics de «Agendar»** contra 7 en la ventana anterior (esperados ~2,8 a esa tasa; P ≈ 0,06):
+  encaja con que la puja dejó de buscar a quien toca el botón, pero no alcanza para afirmarlo.
+- WhatsApp por 100 clics: 7,4 (base 7,0). Sin cambio.
+- **QS 5 → 6 desde la semana del 2 nov**: el CTR esperado sube a Por encima y la relevancia del
+  anuncio baja a Promedio; la página sigue Por debajo. Sin cambio de anuncio nuestro.
+- **El correo copiado es un prospecto: el CFIA.** Visita paga de `/web`, copia a las 15:07 del 29 oct;
+  a las 15:12 entra a hola@ «CFIA Solicitud de Cotización Diseño de Página Web» (sitio del Colegio de
+  Ingenieros Civiles y tienda virtual), que Robert respondió a las 16:08. No está en el CRM.
+- WhatsApp de visitas pagas, a confirmar con Robert: 28 oct 13:32 (computadora), 9 nov 11:40
+  (computadora), 9 nov 12:21 (celular), 10 nov 09:34 (celular) y 12 nov 15:52 (celular).
+- Semana a semana es ruido: la del 2 nov, 16 clics a 3,88 y ningún contacto; la del 9 nov, 36 a 2,33
+  y cuatro WhatsApp.
+
+### 4. Las citas: si se toca «Agendar» antes de que cargue la página, llega sin su visita
+
+Desde el 28 oct, ocho reservas (siete de Costa Rica, una de Argentina) por el webhook. **Ninguna vino de
+un anuncio.** Clientes: Expat (Melissa Valverde), Pacific Star y Xceed. Prospectos: Grupo ACA (dos,
+la segunda reprogramada: «Propuesta oferta aplicación control de costos»; el lead del 20 oct que el
+26 oct quedó como llegado sin anuncio), y tres personas nuevas que nacieron como «Cita en el sitio»:
+**Nassar Abogados** (2 nov, rediseño web, visita sin anuncio que entró por el inicio), **Sharit Chaves
+Ureña** (domingo 15 nov, «Diseño Software», visita sin anuncio a `/software`) y, en Argentina,
+Eduardo Recuna (9 nov, visita sin anuncio que entró por el inicio).
+
+Las de Nassar y Recuna llegaron **sin `ref`**, aunque las dos visitas tocaron «Agendar» en `/contacto`
+tres y cuatro minutos antes (07:58 → 08:01 y 08:23 → 08:27). La de Sharit, desde `/software`, sí lo
+trae. El campo oculto está en los tres eventos; en las dos sin `ref` llegó vacío.
+
+**Causa, reproducida con Playwright en producción**: el `ref` lo agrega al enlace un listener de
+`session-language.service.ts` que existe sólo cuando la aplicación arrancó. Con el JavaScript demorado
+(como en un 4G flojo: el LCP es de ~6 s), el toque abre cal.com **sin** `ref`, y segundos después
+`withEventReplay` reproduce el `(click)` de Angular, que anota el `scheduleMeeting` en la visita y
+dispara la conversión. Con la página ya cargada, el mismo botón lleva el `ref` siempre (entrando
+directo a `/contacto` y llegando desde el inicio). No es exclusivo de `/contacto`: vale para cualquier
+«Agendar» tocado en los primeros segundos.
+
+Arreglo propuesto, **pendiente de Robert**: en el CRM, cuando una cita llega sin `ref`, unirla a la
+visita del mismo sitio que tocó «Agendar» en los minutos previos (la misma lógica que «Llegó por» usa
+para WhatsApp). Corrige también las ya llegadas.
+
+### 5. Correo y postulaciones
+
+- Una sola copia de correo desde un anuncio en Costa Rica: el CFIA (§3). La de una visita sin anuncio
+  del 29 oct, 09:45, es BLD, que a las 09:48 pidió actualizar su cotización.
+- **`talento@` funciona**: dos postulaciones, 28 y 29 oct, llegaron ahí; a hola@ no llegó ninguna desde
+  el 28 oct. Cierra la prueba del alias que el 27 oct quedó a medias.
+
+### 6. Términos: tres semanas sin negativas, el ruido sigue chico
+
+Visible: 63 % del costo de «Búsqueda» y 34 % del de «Software». Lo ajeno con clic: «dropship» (12,38,
+«Búsqueda»), «inteliti» (12,46, «Software», el clic de 12,46 del 13 nov) y «lira development» (6,13), más
+algunos en inglés de 1–2 USD. Candidatas a negativa; no se agregaron.
+
+### 7. Argentina, para su bitácora
+
+Detalle en la de Kravõnia cuando se haga su revisión; acá lo que salió de pasada:
+
+- Los dos techos son inertes (§1).
+- «Búsqueda #2»: el CPC subió de 2,82 a 3,42 y los contactos por 100 clics bajaron de 12,8 a 6,9, pero
+  la caída empezó las semanas del 12 y el 19 oct, antes de los cambios. Un prospecto verificado:
+  **FilmOh!** (WhatsApp 13 nov 06:41, `firstContactAt`, al minuto de una visita paga de `/web`).
+- «Software #2»: un WhatsApp en 48 clics (antes ~13 por 100 sin contar los correos). **QS 4 → 3 desde la
+  semana del 2 nov porque la relevancia del anuncio bajó a Por debajo**, justo después del cambio de
+  títulos del 27 oct, que sacó «Empresa de Software a Medida» y «Empresa de Software Argentina» frente a
+  la keyword «empresa de desarrollo de software». CTR 5,4 → 3,9 %.
+
+### Excluir de los análisis
+
+Visitas de prueba de este chequeo (17 nov, Playwright, sin gclid; Ads no las ve porque la etiqueta
+estaba bloqueada): `b57be6ca-53a6-4698-81d4-84596f2e446a`, `e3bcc427-fa2b-4fb9-a8a4-8aff87f8f759` y
+`08ff57fd-3a15-4409-8454-15a70f773edb`, las tres con `scheduleMeeting` en `/contacto`.
+
+### Para el 23 nov
+
+La revisión sigue en pie, ahora con la lectura de techos resuelta. Lo que falta es el desenlace de los
+nueve WhatsApp de visitas pagas de Costa Rica (horas en §2 y §3): con `firstContactAt` cargado en cada
+lead, «Llegó por» los une solo.
+
+### Ejecutado la misma noche, a pedido de Robert
+
+1. **«Software» pausada** (17 nov, 19:21 CR, fuera de horario), por API con prueba en seco y lectura
+   de vuelta: `status = PAUSED`. Su motivo: con los datos limpios de esta ventana no da resultados (41
+   clics y 200 USD en 14 días hábiles, ningún prospecto verificado). Lo que queda sin saber: los cuatro
+   WhatsApp de «Software» del §2; si alguno resulta un prospecto, se reconsidera. La cartera
+   `12289262293` y el presupuesto de 10 quedan como estaban. «Búsqueda» sigue negando `software`,
+   `sistemas` y similares, así que esas búsquedas ya no muestran ningún anuncio de Costa Rica.
+2. **La hora del primer mensaje es obligatoria al crear un lead de WhatsApp o correo** (CRM
+   `12e085f`): en el formulario y en `createLeadSchema`; no al editar ni en el alta directa de un
+   cliente. Seis pruebas del servidor y siete del formulario, vistas fallar sin la regla.
+3. **«Agendar» lleva el `ref` aunque se toque antes de que cargue la página** (§4), en los dos sitios
+   (Kravõnia `107c53f` y el commit de esta entrada): un script en el `<head>` de `index.html` fija el
+   número de la visita (el de la sesión en curso o uno nuevo, en `*-session-early-id`) y lo pone en el
+   enlace desde el primer instante; la aplicación lo adopta al arrancar (`takeEarlySessionId`).
+   Verificado con Playwright sobre el build local, con el JavaScript demorado 6 s: el enlace sale con
+   `ref`, la sesión adopta el mismo número y anota el toque. Las citas de Nassar y Recuna no se
+   corrigieron a mano: sus dos visitas eran sin anuncio, así que la atribución no cambia.
+4. Lo demás que salió en el chequeo es de la cuenta y no del sitio (las negativas candidatas del §6,
+   renombrar las carteras, la prueba de «ROAS objetivo» en «Búsqueda #2»): **no se tocó**.
