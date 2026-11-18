@@ -3278,6 +3278,48 @@ Detalle en la de Kravõnia cuando se haga su revisión; acá lo que salió de pa
   títulos del 27 oct, que sacó «Empresa de Software a Medida» y «Empresa de Software Argentina» frente a
   la keyword «empresa de desarrollo de software». CTR 5,4 → 3,9 %.
 
+### 7 bis. Argentina, leída la misma noche (para la bitácora de Kravõnia)
+
+Pedida por Robert. Va acá porque la bitácora de Kravõnia tiene cambios sin commitear de otra sesión.
+
+**Desde el 7 oct casi no entran prospectos argentinos, y no es por un cambio nuestro.** 8 sep – 6 oct:
+USD 1.151, 346 clics, 12 prospectos (8 seguros de un anuncio; LP SRL ganado). 7 oct – 16 nov: USD 1.494,
+430 clics, **1** (FilmOh!, WhatsApp de "Búsqueda #2" el 13 nov). Cero formularios (el último, 6 oct) y
+cero correos de prospectos en `hola@kravonia.ar`; la racha de septiembre fue buena, pero al ritmo de
+agosto (1,7 por 100 clics) se esperaban ~7. En "Búsqueda #2", WhatsApp por 100 clics 10,4 → 6,1 desde
+la semana del 12 oct (P ≈ 0,02; moviendo los bordes, 9,9 → 6,0) y CPC 2,8 → 3,4: cada contacto cuesta
+~el doble. Descartado: el sitio no cambió del 6 al 26 oct, el formulario responde (preflight CORS desde
+`kravonia.ar` y `/health` OK) y los anuncios cambiaron el 27 oct. Sin verificar: 11 WhatsApp de visitas
+pagas de "Búsqueda #2" y 2 de "Software #2" desde el 28 oct. "Software #2": USD 1.264 desde el 17 ago
+y un solo prospecto verificado (Romina Pérez, formulario del 5 oct).
+
+**Estadísticas de subasta de "Búsqueda #2"** (Robert, capturas de la interfaz; la fila «Usted» cuadra con
+la API): cuota · solape · arriba nuestro · superior absoluta.
+
+| | 8 sep – 23 oct | 26 oct – 17 nov |
+|---|---|---|
+| propia: cuota · parte superior · superior absoluta | 43,0 · 66,8 · 28,0 | 41,0 · 72,1 · **33,1** |
+| hostinger.com | 19,0 · 17,9 · 49,9 · 21,1 | 18,3 · 19,2 · 53,1 · 22,8 |
+| rednodo.com (hosting) | 11,2 · 11,7 · 70,6 · 47,1 | **19,6** · 14,9 · 62,1 · 36,6 |
+| squarespace.com | no figura | **12,8 · 14,4 · 64,6 · 42,5** |
+| tusitioya.com.ar | no figura | 11,4 · 10,1 · 21,8 · 5,3 |
+| ideamos.com.ar | 12,2 · 13,1 · 54,7 · 35,0 | 11,0 · 10,3 · 35,3 · 17,3 |
+| donweb.com (hosting) | < 10 · 4,1 · 39,5 · 12,0 | 10,2 · **9,3** · 37,9 · 9,1 |
+| manadigital.com.ar | 11,0 · 11,4 · 20,6 · 11,6 | < 10 · 6,5 · 25,2 · 14,9 |
+
+**La subasta se llenó de constructores de sitios y empresas de hosting**: entró Squarespace (nos pasa
+65 % de las veces que coincidimos), RedNodo casi duplicó su cuota y Donweb duplicó el solape; las
+agencias (ideamos, manadigital, astros) quedaron igual o abajo. Nosotros subimos en la página (superior
+absoluta 28 → 33 %) pagando más. Los términos van en la misma dirección: «desarrollo web» bajó de 16 a
+6 % de los clics visibles (30 → 13) y suben «creación / armado / creadores de páginas web» (términos de
+«hacerlo uno mismo», 8 → 11 % de los clics). Es el patrón de Costa Rica (lovable.dev, godaddy y hostinger
+en «Búsqueda», 26 oct). **Encaja con menos contactos por clic y clic más caro, pero no lo prueba**: las
+dos ventanas no separan el 7 oct; la segmentación por semana en la interfaz diría cuándo entró Squarespace.
+
+Recomendado a Robert, pendiente: pausar "Software #2" y bajar "Búsqueda #2" de 24 a 20 (el 24 se
+sostenía en un techo que no existe, y el dinero de más compra posición en una subasta más cara); la
+prueba de «ROAS objetivo» queda para después, para no mezclar dos cambios en la misma campaña.
+
 ### Excluir de los análisis
 
 Visitas de prueba de este chequeo (17 nov, Playwright, sin gclid; Ads no las ve porque la etiqueta
