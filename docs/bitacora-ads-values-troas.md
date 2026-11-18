@@ -3316,6 +3316,17 @@ absoluta 28 → 33 %) pagando más. Los términos van en la misma dirección: «
 en «Búsqueda», 26 oct). **Encaja con menos contactos por clic y clic más caro, pero no lo prueba**: las
 dos ventanas no separan el 7 oct; la segmentación por semana en la interfaz diría cuándo entró Squarespace.
 
+**Corregido con la segmentación por semana** (CSV que exportó Robert, 8 sep – 17 nov; la fila «Usted»
+cuadra con la API de "Búsqueda #2" semana a semana; trae los 15 competidores más grandes, no los chicos
+como wix.com y panda-digital-pro.com): **Squarespace no explica la caída, entró después.** Su solape fue
+de 0,6–4,8 % todas las semanas hasta la del 26 oct y saltó a 15,2 / 24,2 / 16,6 % las del 2, 9 y 16 nov.
+La caída de contactos empieza la semana del 12 oct, y esa semana y la siguiente la subasta no muestra
+nada nuevo de ese tamaño: daniladigital.com.ar pasa a 30 % de solape la del 12 oct (nos pasa 37 %) y
+vuelve a 9–17 %, tusitioya.com.ar sube a 16 % la del 19 oct (nos pasa 31 %), Donweb crece de a poco
+(1,7 → 6 %) y lader.com.ar desaparece después de la del 5 oct. **La causa sigue sin aparecer**; quedan
+la racha buena de septiembre como tasa base, los WhatsApp sin verificar y la demanda. Squarespace sí
+encarece las semanas de noviembre. La recomendación no cambia.
+
 Recomendado a Robert, pendiente: pausar "Software #2" y bajar "Búsqueda #2" de 24 a 20 (el 24 se
 sostenía en un techo que no existe, y el dinero de más compra posición en una subasta más cara); la
 prueba de «ROAS objetivo» queda para después, para no mezclar dos cambios en la misma campaña.
