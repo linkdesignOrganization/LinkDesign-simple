@@ -3280,6 +3280,10 @@ Detalle en la de Kravõnia cuando se haga su revisión; acá lo que salió de pa
 Visitas de prueba de este chequeo (17 nov, Playwright, sin gclid; Ads no las ve porque la etiqueta
 estaba bloqueada): `b57be6ca-53a6-4698-81d4-84596f2e446a`, `e3bcc427-fa2b-4fb9-a8a4-8aff87f8f759` y
 `08ff57fd-3a15-4409-8454-15a70f773edb`, las tres con `scheduleMeeting` en `/contacto`.
+Y dos más de la verificación en producción del arreglo (17 nov, ~19:50 CR, también con
+`scheduleMeeting` en `/contacto`): `4d9478f4-ef10-41ba-aaf0-de3fbcdd4ac9` (linkdesign.cr) y
+`456aecd0-71a1-452c-839b-95c35c690045` (kravonia.ar). Bloquear `sendBeacon` y las peticiones al CRM
+desde Playwright no alcanzó: la visita llegó igual.
 
 ### Para el 23 nov
 
